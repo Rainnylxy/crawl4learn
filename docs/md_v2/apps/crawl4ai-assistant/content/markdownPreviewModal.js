@@ -13,33 +13,33 @@ class MarkdownPreviewModal {
       addSeparators: true,
       includeXPath: false,
       textOnly: false,
-      ...options
+      ...options,
     };
     this.onGenerateMarkdown = null;
-    this.currentMarkdown = '';
+    this.currentMarkdown = "";
   }
 
   show(generateMarkdownCallback) {
     this.onGenerateMarkdown = generateMarkdownCallback;
-    
+
     if (!this.modal) {
       this.createModal();
     }
-    
+
     // Generate initial markdown
     this.updateContent();
-    this.modal.style.display = 'block';
+    this.modal.style.display = "block";
   }
 
   hide() {
     if (this.modal) {
-      this.modal.style.display = 'none';
+      this.modal.style.display = "none";
     }
   }
 
   createModal() {
-    this.modal = document.createElement('div');
-    this.modal.className = 'c4ai-c2c-preview';
+    this.modal = document.createElement("div");
+    this.modal.className = "c4ai-c2c-preview";
     this.modal.innerHTML = `
       <div class="c4ai-preview-header">
         <div class="c4ai-toolbar-dots">
@@ -75,120 +75,138 @@ class MarkdownPreviewModal {
         <button class="c4ai-cloud-btn" disabled>Send to Cloud (Coming Soon)</button>
       </div>
     `;
-    
+
     document.body.appendChild(this.modal);
-    
+
     // Make modal draggable
     if (window.C4AI_Utils && window.C4AI_Utils.makeDraggable) {
       window.C4AI_Utils.makeDraggable(this.modal);
     }
-    
+
     // Position preview modal
-    this.modal.style.position = 'fixed';
-    this.modal.style.top = '50%';
-    this.modal.style.left = '50%';
-    this.modal.style.transform = 'translate(-50%, -50%)';
-    this.modal.style.zIndex = '999999';
-    
+    this.modal.style.position = "fixed";
+    this.modal.style.top = "50%";
+    this.modal.style.left = "50%";
+    this.modal.style.transform = "translate(-50%, -50%)";
+    this.modal.style.zIndex = "999999";
+
     this.setupEventListeners();
   }
 
   setupEventListeners() {
     // Close button
-    this.modal.querySelector('.c4ai-preview-close').addEventListener('click', () => {
-      this.hide();
-    });
-    
+    this.modal
+      .querySelector(".c4ai-preview-close")
+      .addEventListener("click", () => {
+        this.hide();
+      });
+
     // Tab switching
-    this.modal.querySelectorAll('.c4ai-tab').forEach(tab => {
-      tab.addEventListener('click', (e) => {
+    this.modal.querySelectorAll(".c4ai-tab").forEach((tab) => {
+      tab.addEventListener("click", (e) => {
         const tabName = e.target.dataset.tab;
         this.switchTab(tabName);
       });
     });
-    
+
     // Wrap toggle
-    const wrapToggle = this.modal.querySelector('.c4ai-wrap-toggle');
-    wrapToggle.addEventListener('click', () => {
-      const panes = this.modal.querySelectorAll('.c4ai-preview-pane');
-      panes.forEach(pane => {
-        pane.classList.toggle('wrap');
+    const wrapToggle = this.modal.querySelector(".c4ai-wrap-toggle");
+    wrapToggle.addEventListener("click", () => {
+      const panes = this.modal.querySelectorAll(".c4ai-preview-pane");
+      panes.forEach((pane) => {
+        pane.classList.toggle("wrap");
       });
-      wrapToggle.classList.toggle('active');
+      wrapToggle.classList.toggle("active");
     });
-    
+
     // Options change
-    this.modal.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-      checkbox.addEventListener('change', async (e) => {
-        this.markdownOptions[e.target.name] = e.target.checked;
-        
-        // Handle text-only mode dependencies
-        if (e.target.name === 'textOnly' && e.target.checked) {
-          const preserveLinksCheckbox = this.modal.querySelector('input[name="preserveLinks"]');
-          if (preserveLinksCheckbox) {
-            preserveLinksCheckbox.checked = false;
-            preserveLinksCheckbox.disabled = true;
-            this.markdownOptions.preserveLinks = false;
+    this.modal
+      .querySelectorAll('input[type="checkbox"]')
+      .forEach((checkbox) => {
+        checkbox.addEventListener("change", async (e) => {
+          this.markdownOptions[e.target.name] = e.target.checked;
+
+          // Handle text-only mode dependencies
+          if (e.target.name === "textOnly" && e.target.checked) {
+            const preserveLinksCheckbox = this.modal.querySelector(
+              'input[name="preserveLinks"]',
+            );
+            if (preserveLinksCheckbox) {
+              preserveLinksCheckbox.checked = false;
+              preserveLinksCheckbox.disabled = true;
+              this.markdownOptions.preserveLinks = false;
+            }
+
+            const includeImagesCheckbox = this.modal.querySelector(
+              'input[name="includeImages"]',
+            );
+            if (includeImagesCheckbox) {
+              includeImagesCheckbox.disabled = true;
+            }
+          } else if (e.target.name === "textOnly" && !e.target.checked) {
+            // Re-enable options when text-only is disabled
+            const preserveLinksCheckbox = this.modal.querySelector(
+              'input[name="preserveLinks"]',
+            );
+            if (preserveLinksCheckbox) {
+              preserveLinksCheckbox.disabled = false;
+            }
+
+            const includeImagesCheckbox = this.modal.querySelector(
+              'input[name="includeImages"]',
+            );
+            if (includeImagesCheckbox) {
+              includeImagesCheckbox.disabled = false;
+            }
           }
-          
-          const includeImagesCheckbox = this.modal.querySelector('input[name="includeImages"]');
-          if (includeImagesCheckbox) {
-            includeImagesCheckbox.disabled = true;
-          }
-        } else if (e.target.name === 'textOnly' && !e.target.checked) {
-          // Re-enable options when text-only is disabled
-          const preserveLinksCheckbox = this.modal.querySelector('input[name="preserveLinks"]');
-          if (preserveLinksCheckbox) {
-            preserveLinksCheckbox.disabled = false;
-          }
-          
-          const includeImagesCheckbox = this.modal.querySelector('input[name="includeImages"]');
-          if (includeImagesCheckbox) {
-            includeImagesCheckbox.disabled = false;
-          }
-        }
-        
-        // Update markdown content
-        await this.updateContent();
+
+          // Update markdown content
+          await this.updateContent();
+        });
       });
-    });
-    
+
     // Action buttons
-    this.modal.querySelector('.c4ai-copy-markdown-btn').addEventListener('click', () => {
-      this.copyToClipboard();
-    });
-    
-    this.modal.querySelector('.c4ai-download-btn').addEventListener('click', () => {
-      this.downloadMarkdown();
-    });
+    this.modal
+      .querySelector(".c4ai-copy-markdown-btn")
+      .addEventListener("click", () => {
+        this.copyToClipboard();
+      });
+
+    this.modal
+      .querySelector(".c4ai-download-btn")
+      .addEventListener("click", () => {
+        this.downloadMarkdown();
+      });
   }
 
   switchTab(tabName) {
     // Update active tab
-    this.modal.querySelectorAll('.c4ai-tab').forEach(tab => {
-      tab.classList.toggle('active', tab.dataset.tab === tabName);
+    this.modal.querySelectorAll(".c4ai-tab").forEach((tab) => {
+      tab.classList.toggle("active", tab.dataset.tab === tabName);
     });
-    
+
     // Update active pane
-    this.modal.querySelectorAll('.c4ai-preview-pane').forEach(pane => {
-      pane.classList.toggle('active', pane.dataset.pane === tabName);
+    this.modal.querySelectorAll(".c4ai-preview-pane").forEach((pane) => {
+      pane.classList.toggle("active", pane.dataset.pane === tabName);
     });
   }
 
   async updateContent() {
     if (!this.onGenerateMarkdown) return;
-    
+
     try {
       // Generate markdown with current options
-      this.currentMarkdown = await this.onGenerateMarkdown(this.markdownOptions);
-      
+      this.currentMarkdown = await this.onGenerateMarkdown(
+        this.markdownOptions,
+      );
+
       // Update markdown pane
       const markdownPane = this.modal.querySelector('[data-pane="markdown"]');
       markdownPane.innerHTML = `<pre><code>${this.escapeHtml(this.currentMarkdown)}</code></pre>`;
-      
+
       // Update preview pane
       const previewPane = this.modal.querySelector('[data-pane="preview"]');
-      
+
       // Use marked.js if available
       if (window.marked) {
         marked.setOptions({
@@ -196,9 +214,9 @@ class MarkdownPreviewModal {
           breaks: true,
           tables: true,
           headerIds: false,
-          mangle: false
+          mangle: false,
         });
-        
+
         const html = marked.parse(this.currentMarkdown);
         previewPane.innerHTML = `<div class="c4ai-markdown-preview">${html}</div>`;
       } else {
@@ -206,53 +224,56 @@ class MarkdownPreviewModal {
         previewPane.innerHTML = `<div class="c4ai-markdown-preview"><pre>${this.escapeHtml(this.currentMarkdown)}</pre></div>`;
       }
     } catch (error) {
-      console.error('Error generating markdown:', error);
-      this.showNotification('Error generating markdown', 'error');
+      console.error("Error generating markdown:", error);
+      this.showNotification("Error generating markdown", "error");
     }
   }
 
   async copyToClipboard() {
     try {
       await navigator.clipboard.writeText(this.currentMarkdown);
-      this.showNotification('Markdown copied to clipboard!');
+      this.showNotification("Markdown copied to clipboard!");
     } catch (err) {
-      console.error('Failed to copy:', err);
-      this.showNotification('Failed to copy. Please try again.', 'error');
+      console.error("Failed to copy:", err);
+      this.showNotification("Failed to copy. Please try again.", "error");
     }
   }
 
   async downloadMarkdown() {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    const timestamp = new Date()
+      .toISOString()
+      .replace(/[:.]/g, "-")
+      .slice(0, -5);
     const filename = `crawl4ai-export-${timestamp}.md`;
-    
+
     // Create blob and download
-    const blob = new Blob([this.currentMarkdown], { type: 'text/markdown' });
+    const blob = new Blob([this.currentMarkdown], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
+
+    const a = document.createElement("a");
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
+
     this.showNotification(`Downloaded ${filename}`);
   }
 
-  showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
+  showNotification(message, type = "success") {
+    const notification = document.createElement("div");
     notification.className = `c4ai-notification c4ai-notification-${type}`;
     notification.textContent = message;
-    
+
     document.body.appendChild(notification);
-    
+
     // Animate in
-    setTimeout(() => notification.classList.add('show'), 10);
-    
+    setTimeout(() => notification.classList.add("show"), 10);
+
     // Remove after 3 seconds
     setTimeout(() => {
-      notification.classList.remove('show');
+      notification.classList.remove("show");
       setTimeout(() => notification.remove(), 300);
     }, 3000);
   }
@@ -274,11 +295,11 @@ class MarkdownPreviewModal {
   // Update options programmatically
   setOptions(options) {
     this.markdownOptions = { ...this.markdownOptions, ...options };
-    
+
     // Update checkboxes to reflect new options
     Object.entries(options).forEach(([key, value]) => {
       const checkbox = this.modal?.querySelector(`input[name="${key}"]`);
-      if (checkbox && typeof value === 'boolean') {
+      if (checkbox && typeof value === "boolean") {
         checkbox.checked = value;
       }
     });
@@ -295,6 +316,6 @@ class MarkdownPreviewModal {
 }
 
 // Export for use in other scripts
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.MarkdownPreviewModal = MarkdownPreviewModal;
 }

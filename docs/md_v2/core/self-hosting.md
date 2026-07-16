@@ -26,6 +26,7 @@ Self-hosting Crawl4AI gives you complete control over your web crawling and data
 When you self-host, you can scale from a single container to a full browser infrastructure, all while maintaining complete control and visibility.
 
 ## Table of Contents
+
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
   - [Option 1: Using Pre-built Docker Hub Images (Recommended)](#option-1-using-pre-built-docker-hub-images-recommended)
@@ -58,6 +59,7 @@ When you self-host, you can scale from a single container to a full browser infr
 ## Prerequisites
 
 Before we dive in, make sure you have:
+
 - Docker installed and running (version 20.10.0 or higher), including `docker compose` (usually bundled with Docker Desktop).
 - `git` for cloning the repository.
 - At least 4GB of RAM available for the container (more recommended for heavy use).
@@ -119,29 +121,31 @@ ANTHROPIC_API_KEY=your-anthropic-key
 # ANTHROPIC_TEMPERATURE=0.3
 EOL
 ```
+
 > 🔑 **Note**: Keep your API keys secure! Never commit `.llm.env` to version control.
 
 #### 3. Run the Container
 
-*   **Basic run:**
-    ```bash
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai \
-      --shm-size=1g \
-      unclecode/crawl4ai:latest
-    ```
+- **Basic run:**
 
-*   **With LLM support:**
-    ```bash
-    # Make sure .llm.env is in the current directory
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai \
-      --env-file .llm.env \
-      --shm-size=1g \
-      unclecode/crawl4ai:latest
-    ```
+  ```bash
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai \
+    --shm-size=1g \
+    unclecode/crawl4ai:latest
+  ```
+
+- **With LLM support:**
+  ```bash
+  # Make sure .llm.env is in the current directory
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai \
+    --env-file .llm.env \
+    --shm-size=1g \
+    unclecode/crawl4ai:latest
+  ```
 
 > The server will be available at `http://localhost:11235`. Visit `/playground` to access the interactive testing interface.
 
@@ -153,12 +157,12 @@ docker stop crawl4ai && docker rm crawl4ai
 
 #### Docker Hub Versioning Explained
 
-*   **Image Name:** `unclecode/crawl4ai`
-*   **Tag Format:** `LIBRARY_VERSION[-SUFFIX]` (e.g., `0.8.0`)
-    *   `LIBRARY_VERSION`: The semantic version of the core `crawl4ai` Python library
-    *   `SUFFIX`: Optional tag for release candidates (``) and revisions (`r1`)
-*   **`latest` Tag:** Points to the most recent stable version
-*   **Multi-Architecture Support:** All images support both `linux/amd64` and `linux/arm64` architectures through a single tag
+- **Image Name:** `unclecode/crawl4ai`
+- **Tag Format:** `LIBRARY_VERSION[-SUFFIX]` (e.g., `0.8.0`)
+  - `LIBRARY_VERSION`: The semantic version of the core `crawl4ai` Python library
+  - `SUFFIX`: Optional tag for release candidates (``) and revisions (`r1`)
+- **`latest` Tag:** Points to the most recent stable version
+- **Multi-Architecture Support:** All images support both `linux/amd64` and `linux/arm64` architectures through a single tag
 
 ### Option 2: Using Docker Compose
 
@@ -187,6 +191,7 @@ cp deploy/docker/.llm.env.example .llm.env
 The Docker setup now supports flexible LLM provider configuration through a hierarchical system:
 
 1. **API Request Parameters** (Highest Priority): Specify per request
+
    ```json
    {
      "url": "https://example.com",
@@ -198,6 +203,7 @@ The Docker setup now supports flexible LLM provider configuration through a hier
    ```
 
 2. **Provider-Specific Environment Variables**: Override for specific providers
+
    ```bash
    # In your .llm.env file:
    OPENAI_TEMPERATURE=0.5
@@ -206,6 +212,7 @@ The Docker setup now supports flexible LLM provider configuration through a hier
    ```
 
 3. **Global Environment Variables**: Set defaults for all providers
+
    ```bash
    # In your .llm.env file:
    LLM_PROVIDER=anthropic/claude-3-opus
@@ -218,6 +225,7 @@ The Docker setup now supports flexible LLM provider configuration through a hier
 The system automatically selects the appropriate API key based on the provider. LiteLLM handles finding the correct environment variable for each provider (e.g., OPENAI_API_KEY for OpenAI, GEMINI_API_TOKEN for Google Gemini, etc.).
 
 **Supported LLM Parameters:**
+
 - `provider`: LLM provider and model (e.g., "openai/gpt-4", "anthropic/claude-3-opus")
 - `temperature`: Controls randomness (0.0-2.0, lower = more focused, higher = more creative)
 - `base_url`: Custom API endpoint for proxy servers or alternative endpoints
@@ -226,28 +234,30 @@ The system automatically selects the appropriate API key based on the provider. 
 
 The `docker-compose.yml` file in the project root provides a simplified approach that automatically handles architecture detection using buildx.
 
-*   **Run Pre-built Image from Docker Hub:**
-    ```bash
-    # Pulls and runs the release candidate from Docker Hub
-    # Automatically selects the correct architecture
-    IMAGE=unclecode/crawl4ai:latest docker compose up -d
-    ```
+- **Run Pre-built Image from Docker Hub:**
 
-*   **Build and Run Locally:**
-    ```bash
-    # Builds the image locally using Dockerfile and runs it
-    # Automatically uses the correct architecture for your machine
-    docker compose up --build -d
-    ```
+  ```bash
+  # Pulls and runs the release candidate from Docker Hub
+  # Automatically selects the correct architecture
+  IMAGE=unclecode/crawl4ai:latest docker compose up -d
+  ```
 
-*   **Customize the Build:**
-    ```bash
-    # Build with all features (includes torch and transformers)
-    INSTALL_TYPE=all docker compose up --build -d
-    
-    # Build with GPU support (for AMD64 platforms)
-    ENABLE_GPU=true docker compose up --build -d
-    ```
+- **Build and Run Locally:**
+
+  ```bash
+  # Builds the image locally using Dockerfile and runs it
+  # Automatically uses the correct architecture for your machine
+  docker compose up --build -d
+  ```
+
+- **Customize the Build:**
+  ```bash
+  # Build with all features (includes torch and transformers)
+  INSTALL_TYPE=all docker compose up --build -d
+
+  # Build with GPU support (for AMD64 platforms)
+  ENABLE_GPU=true docker compose up --build -d
+  ```
 
 > The server will be available at `http://localhost:11235`.
 
@@ -287,25 +297,26 @@ docker buildx build \
 
 #### 3. Run the Container
 
-*   **Basic run (no LLM support):**
-    ```bash
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai-standalone \
-      --shm-size=1g \
-      crawl4ai-local:latest
-    ```
+- **Basic run (no LLM support):**
 
-*   **With LLM support:**
-    ```bash
-    # Make sure .llm.env is in the current directory (project root)
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai-standalone \
-      --env-file .llm.env \
-      --shm-size=1g \
-      crawl4ai-local:latest
-    ```
+  ```bash
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai-standalone \
+    --shm-size=1g \
+    crawl4ai-local:latest
+  ```
+
+- **With LLM support:**
+  ```bash
+  # Make sure .llm.env is in the current directory (project root)
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai-standalone \
+    --env-file .llm.env \
+    --shm-size=1g \
+    crawl4ai-local:latest
+  ```
 
 > The server will be available at `http://localhost:11235`.
 
@@ -462,7 +473,8 @@ Executes JavaScript snippets on the specified URL and returns the full crawl res
 
 The Docker API supports user-provided hook functions, allowing you to customize the crawling behavior by injecting your own Python code at specific points in the crawling pipeline. This powerful feature enables authentication, performance optimization, and custom content extraction without modifying the server code.
 
-> ⚠️ **IMPORTANT SECURITY WARNING**: 
+> ⚠️ **IMPORTANT SECURITY WARNING**:
+>
 > - **Never use hooks with untrusted code or on untrusted websites**
 > - **Be extremely careful when crawling sites that might be phishing or malicious**
 > - **Hook code has access to page context and can interact with the website**
@@ -486,16 +498,16 @@ curl http://localhost:11235/hooks/info
 
 The API supports 8 hook points that match the local SDK:
 
-| Hook Point | Parameters | Description | Best Use Cases |
-|------------|------------|-------------|----------------|
-| `on_browser_created` | `browser` | After browser instance creation | Light setup tasks |
-| `on_page_context_created` | `page, context` | After page/context creation | **Authentication, cookies, route blocking** |
-| `before_goto` | `page, context, url` | Before navigating to URL | Custom headers, logging |
-| `after_goto` | `page, context, url, response` | After navigation completes | Verification, waiting for elements |
-| `on_user_agent_updated` | `page, context, user_agent` | When user agent changes | UA-specific logic |
-| `on_execution_started` | `page, context` | When JS execution begins | JS-related setup |
-| `before_retrieve_html` | `page, context` | Before getting final HTML | **Scrolling, lazy loading** |
-| `before_return_html` | `page, context, html` | Before returning HTML | Final modifications, metrics |
+| Hook Point                | Parameters                     | Description                     | Best Use Cases                              |
+| ------------------------- | ------------------------------ | ------------------------------- | ------------------------------------------- |
+| `on_browser_created`      | `browser`                      | After browser instance creation | Light setup tasks                           |
+| `on_page_context_created` | `page, context`                | After page/context creation     | **Authentication, cookies, route blocking** |
+| `before_goto`             | `page, context, url`           | Before navigating to URL        | Custom headers, logging                     |
+| `after_goto`              | `page, context, url, response` | After navigation completes      | Verification, waiting for elements          |
+| `on_user_agent_updated`   | `page, context, user_agent`    | When user agent changes         | UA-specific logic                           |
+| `on_execution_started`    | `page, context`                | When JS execution begins        | JS-related setup                            |
+| `before_retrieve_html`    | `page, context`                | Before getting final HTML       | **Scrolling, lazy loading**                 |
+| `before_return_html`      | `page, context, html`          | Before returning HTML           | Final modifications, metrics                |
 
 ### Using Hooks in Requests
 
@@ -509,7 +521,7 @@ Add hooks to any crawl request by including the `hooks` parameter:
       "hook_point_name": "async def hook(...): ...",
       "another_hook": "async def hook(...): ..."
     },
-    "timeout": 30  // Optional, default 30 seconds (max 120)
+    "timeout": 30 // Optional, default 30 seconds (max 120)
   }
 }
 ```
@@ -558,7 +570,7 @@ async def hook(page, context, url, **kwargs):
     import base64
     # httpbin.org/basic-auth expects username="user" and password="passwd"
     credentials = base64.b64encode(b"user:passwd").decode('ascii')
-    
+
     await page.set_extra_http_headers({
         'Authorization': f'Basic {credentials}'
     })
@@ -583,14 +595,14 @@ async def hook(page, context, **kwargs):
     await context.route("**/*.{png,jpg,jpeg,gif,webp,svg,ico}", lambda route: route.abort())
     await context.route("**/*.{woff,woff2,ttf,otf,eot}", lambda route: route.abort())
     await context.route("**/*.{mp4,webm,ogg,mp3,wav,flac}", lambda route: route.abort())
-    
+
     # Block common tracking and ad domains
     await context.route("**/googletagmanager.com/*", lambda route: route.abort())
     await context.route("**/google-analytics.com/*", lambda route: route.abort())
     await context.route("**/doubleclick.net/*", lambda route: route.abort())
     await context.route("**/facebook.com/tr/*", lambda route: route.abort())
     await context.route("**/amazon-adsystem.com/*", lambda route: route.abort())
-    
+
     # Disable CSS animations for faster rendering
     await page.add_style_tag(content='''
         *, *::before, *::after {
@@ -598,7 +610,7 @@ async def hook(page, context, **kwargs):
             transition-duration: 0s !important;
         }
     ''')
-    
+
     return page
 """
 }
@@ -622,11 +634,11 @@ async def hook(page, context, **kwargs):
         current_height = await page.evaluate("document.body.scrollHeight")
         if current_height == previous_height:
             break  # No more content to load
-            
+
         await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         await page.wait_for_timeout(2000)  # Wait for content to load
         previous_height = current_height
-    
+
     return page
 """
 }
@@ -641,7 +653,7 @@ response = requests.post("http://localhost:11235/crawl", json={
 #### 5. E-commerce Login (Example Pattern)
 
 ```python
-# SECURITY WARNING: This is a pattern example. 
+# SECURITY WARNING: This is a pattern example.
 # Never use real credentials in code!
 # Always use environment variables or secure vaults.
 
@@ -650,29 +662,29 @@ hooks_code = {
 async def hook(page, context, **kwargs):
     # Example pattern for e-commerce sites
     # DO NOT use real credentials here!
-    
+
     # Navigate to login page first
     await page.goto("https://example-shop.com/login")
-    
+
     # Wait for login form to load
     await page.wait_for_selector("#email", timeout=5000)
-    
+
     # Fill login form (use environment variables in production!)
     await page.fill("#email", "test@example.com")  # Never use real email
     await page.fill("#password", "test_password")   # Never use real password
-    
+
     # Handle "Remember Me" checkbox if present
     try:
         await page.uncheck("#remember_me")  # Don't remember on shared systems
     except:
         pass
-    
+
     # Submit form
     await page.click("button[type='submit']")
-    
+
     # Wait for redirect after login
     await page.wait_for_url("**/account/**", timeout=10000)
-    
+
     return page
 """
 }
@@ -689,17 +701,17 @@ async def hook(page, context, url, response, **kwargs):
     await page.wait_for_selector("#content", timeout=5000)
     return page
 """,
-    
+
     "before_retrieve_html": """
 async def hook(page, context, **kwargs):
     # Extract structured data from Wikipedia infobox
     metadata = await page.evaluate('''() => {
         const infobox = document.querySelector('.infobox');
         if (!infobox) return null;
-        
+
         const data = {};
         const rows = infobox.querySelectorAll('tr');
-        
+
         rows.forEach(row => {
             const header = row.querySelector('th');
             const value = row.querySelector('td');
@@ -707,13 +719,13 @@ async def hook(page, context, **kwargs):
                 data[header.innerText.trim()] = value.innerText.trim();
             }
         });
-        
+
         return data;
     }''')
-    
+
     if metadata:
         print("Extracted metadata:", metadata)
-    
+
     return page
 """
 }
@@ -730,7 +742,7 @@ response = requests.post("http://localhost:11235/crawl", json={
 
 1. **Never Trust User Input**: If accepting hook code from users, always validate and sandbox it
 2. **Avoid Phishing Sites**: Never use hooks on suspicious or unverified websites
-3. **Protect Credentials**: 
+3. **Protect Credentials**:
    - Never hardcode passwords, tokens, or API keys in hook code
    - Use environment variables or secure secret management
    - Rotate credentials regularly
@@ -800,12 +812,12 @@ async def hook(page, context, **kwargs):
     await context.add_cookies([
         {"name": "test_cookie", "value": "test_value", "domain": ".httpbin.org", "path": "/"}
     ])
-    
+
     # Block unnecessary resources for httpbin
     await context.route("**/*.{png,jpg,jpeg}", lambda route: route.abort())
     return page
 """,
-    
+
     "before_goto": """
 async def hook(page, context, url, **kwargs):
     # Add custom headers for testing
@@ -816,7 +828,7 @@ async def hook(page, context, url, **kwargs):
     print(f"[HOOK] Navigating to: {url}")
     return page
 """,
-    
+
     "before_retrieve_html": """
 async def hook(page, context, **kwargs):
     # Simple scroll for any lazy-loaded content
@@ -844,12 +856,12 @@ response = requests.post("http://localhost:11235/crawl", json={
 # Check results
 if response.status_code == 200:
     data = response.json()
-    
+
     # Check hook execution
     if data['hooks']['status']['status'] == 'success':
         print(f"✅ All {len(data['hooks']['status']['attached_hooks'])} hooks executed successfully")
         print(f"Execution stats: {data['hooks']['summary']}")
-    
+
     # Process crawl results
     for result in data['results']:
         print(f"Crawled: {result['url']} - Success: {result['success']}")
@@ -866,6 +878,7 @@ For Python developers, Crawl4AI provides a more convenient way to work with hook
 #### Why Use Function-Based Hooks?
 
 **String-Based Approach (shown above)**:
+
 ```python
 hooks_code = {
     "on_page_context_created": """
@@ -877,6 +890,7 @@ async def hook(page, context, **kwargs):
 ```
 
 **Function-Based Approach (recommended for Python)**:
+
 ```python
 from crawl4ai import Crawl4aiDockerClient
 
@@ -892,6 +906,7 @@ async with Crawl4aiDockerClient(base_url="http://localhost:11235") as client:
 ```
 
 **Benefits**:
+
 - ✅ Write hooks as regular Python functions
 - ✅ Full IDE support (autocomplete, syntax highlighting, type checking)
 - ✅ Easy to test and debug
@@ -1040,13 +1055,14 @@ async def crawl_with_optimizations(url):
 
 #### Choosing the Right Approach
 
-| Approach | Best For | IDE Support | Language |
-|----------|----------|-------------|----------|
-| **String-based** | Non-Python clients, REST APIs, other languages | ❌ None | Any |
-| **Function-based** | Python applications, local development | ✅ Full | Python only |
-| **Docker Client** | Python apps with automatic conversion | ✅ Full | Python only |
+| Approach           | Best For                                       | IDE Support | Language    |
+| ------------------ | ---------------------------------------------- | ----------- | ----------- |
+| **String-based**   | Non-Python clients, REST APIs, other languages | ❌ None     | Any         |
+| **Function-based** | Python applications, local development         | ✅ Full     | Python only |
+| **Docker Client**  | Python apps with automatic conversion          | ✅ Full     | Python only |
 
 **Recommendation**:
+
 - **Python applications**: Use Docker client with function objects (easiest)
 - **Non-Python or REST API**: Use string-based hooks (most flexible)
 - **Manual control**: Use `hooks_to_string()` utility (middle ground)
@@ -1137,12 +1153,14 @@ The Docker deployment includes a powerful asynchronous job queue system with web
 ### Why Use the Job Queue API?
 
 **Traditional Synchronous API (`/crawl`):**
+
 - Client waits for entire crawl to complete
 - Timeout issues with long-running crawls
 - Resource blocking during execution
 - Constant polling required for status updates
 
 **Asynchronous Job Queue API (`/crawl/job`, `/llm/job`):**
+
 - ✅ Submit job and continue immediately
 - ✅ No timeout concerns for long operations
 - ✅ Real-time webhook notifications on completion
@@ -1161,6 +1179,7 @@ POST /crawl/job
 Submit an asynchronous crawl job with optional webhook notification.
 
 **Request Body:**
+
 ```json
 {
   "urls": ["https://example.com"],
@@ -1184,6 +1203,7 @@ Submit an asynchronous crawl job with optional webhook notification.
 ```
 
 **Response:**
+
 ```json
 {
   "task_id": "crawl_1698765432",
@@ -1200,6 +1220,7 @@ POST /llm/job
 Submit an asynchronous LLM extraction job with optional webhook notification.
 
 **Request Body:**
+
 ```json
 {
   "url": "https://example.com/article",
@@ -1218,6 +1239,7 @@ Submit an asynchronous LLM extraction job with optional webhook notification.
 ```
 
 **Response:**
+
 ```json
 {
   "task_id": "llm_1698765432",
@@ -1234,6 +1256,7 @@ GET /job/{task_id}
 Check the status and retrieve results of a submitted job.
 
 **Response (In Progress):**
+
 ```json
 {
   "task_id": "crawl_1698765432",
@@ -1243,6 +1266,7 @@ Check the status and retrieve results of a submitted job.
 ```
 
 **Response (Completed):**
+
 ```json
 {
   "task_id": "crawl_1698765432",
@@ -1261,15 +1285,16 @@ Webhooks provide real-time notifications when your jobs complete, eliminating th
 
 #### Webhook Config Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `webhook_url` | string | Yes | Your HTTP(S) endpoint to receive notifications |
-| `webhook_data_in_payload` | boolean | No | Include full result data in webhook payload (default: false) |
-| `webhook_headers` | object | No | Custom headers for authentication/identification |
+| Parameter                 | Type    | Required | Description                                                  |
+| ------------------------- | ------- | -------- | ------------------------------------------------------------ |
+| `webhook_url`             | string  | Yes      | Your HTTP(S) endpoint to receive notifications               |
+| `webhook_data_in_payload` | boolean | No       | Include full result data in webhook payload (default: false) |
+| `webhook_headers`         | object  | No       | Custom headers for authentication/identification             |
 
 #### Webhook Payload Format
 
 **Success Notification (Crawl Job):**
+
 ```json
 {
   "task_id": "crawl_1698765432",
@@ -1286,6 +1311,7 @@ Webhooks provide real-time notifications when your jobs complete, eliminating th
 ```
 
 **Success Notification (LLM Job):**
+
 ```json
 {
   "task_id": "llm_1698765432",
@@ -1305,6 +1331,7 @@ Webhooks provide real-time notifications when your jobs complete, eliminating th
 ```
 
 **Failure Notification:**
+
 ```json
 {
   "task_id": "crawl_1698765432",
@@ -1495,6 +1522,7 @@ response = requests.post(
 ### Webhook Best Practices
 
 1. **Authentication:** Always use custom headers for webhook authentication
+
    ```json
    "webhook_headers": {
      "X-Webhook-Secret": "your-secret-token"
@@ -1504,6 +1532,7 @@ response = requests.post(
 2. **Idempotency:** Design your webhook handler to be idempotent (safe to receive duplicate notifications)
 
 3. **Fast Response:** Return HTTP 200 quickly; process data asynchronously if needed
+
    ```python
    @app.route('/webhook', methods=['POST'])
    def webhook():
@@ -1514,6 +1543,7 @@ response = requests.post(
    ```
 
 4. **Error Handling:** Handle both success and failure notifications
+
    ```python
    if payload['status'] == 'completed':
        # Process success
@@ -1522,6 +1552,7 @@ response = requests.post(
    ```
 
 5. **Validation:** Verify webhook authenticity using custom headers
+
    ```python
    secret = request.headers.get('X-Webhook-Secret')
    if secret != os.environ['EXPECTED_SECRET']:
@@ -1537,6 +1568,7 @@ response = requests.post(
 
 **1. Batch Processing**
 Submit hundreds of URLs and get notified as each completes:
+
 ```python
 urls = ["https://site1.com", "https://site2.com", ...]
 for url in urls:
@@ -1545,6 +1577,7 @@ for url in urls:
 
 **2. Microservice Integration**
 Integrate with event-driven architectures:
+
 ```python
 # Service A submits job
 task_id = submit_crawl_job(url)
@@ -1559,6 +1592,7 @@ def webhook():
 
 **3. Long-Running Extractions**
 Handle complex LLM extractions without timeouts:
+
 ```python
 submit_llm_job(
     url="https://long-article.com",
@@ -1570,6 +1604,7 @@ submit_llm_job(
 ### Troubleshooting
 
 **Webhook not receiving notifications?**
+
 - Check your webhook URL is publicly accessible
 - Verify firewall/security group settings
 - Use webhook testing tools like webhook.site for debugging
@@ -1577,12 +1612,14 @@ submit_llm_job(
 - Ensure your handler returns 200-299 status code
 
 **Job stuck in processing?**
+
 - Check Redis connection: `docker logs <container_name> | grep redis`
 - Verify worker processes: `docker exec <container_name> ps aux | grep worker`
 - Check server logs: `docker logs <container_name>`
 
 **Need to cancel a job?**
 Jobs are processed asynchronously. If you need to cancel:
+
 - Delete the task from Redis (requires Redis CLI access)
 - Or implement a cancellation endpoint in your webhook handler
 
@@ -1604,27 +1641,27 @@ docker buildx build \
 
 ### Build Arguments Explained
 
-| Argument     | Description                              | Default   | Options                            |
-| :----------- | :--------------------------------------- | :-------- | :--------------------------------- |
-| INSTALL_TYPE | Feature set                              | `default` | `default`, `all`, `torch`, `transformer` |
-| ENABLE_GPU   | GPU support (CUDA for AMD64)           | `false`   | `true`, `false`                    |
-| APP_HOME     | Install path inside container (advanced) | `/app`    | any valid path                   |
-| USE_LOCAL    | Install library from local source        | `true`    | `true`, `false`                    |
-| GITHUB_REPO  | Git repo to clone if USE_LOCAL=false   | *(see Dockerfile)* | any git URL                  |
-| GITHUB_BRANCH| Git branch to clone if USE_LOCAL=false   | `main`    | any branch name                  |
+| Argument      | Description                              | Default            | Options                                  |
+| :------------ | :--------------------------------------- | :----------------- | :--------------------------------------- |
+| INSTALL_TYPE  | Feature set                              | `default`          | `default`, `all`, `torch`, `transformer` |
+| ENABLE_GPU    | GPU support (CUDA for AMD64)             | `false`            | `true`, `false`                          |
+| APP_HOME      | Install path inside container (advanced) | `/app`             | any valid path                           |
+| USE_LOCAL     | Install library from local source        | `true`             | `true`, `false`                          |
+| GITHUB_REPO   | Git repo to clone if USE_LOCAL=false     | _(see Dockerfile)_ | any git URL                              |
+| GITHUB_BRANCH | Git branch to clone if USE_LOCAL=false   | `main`             | any branch name                          |
 
-*(Note: PYTHON_VERSION is fixed by the `FROM` instruction in the Dockerfile)*
+_(Note: PYTHON_VERSION is fixed by the `FROM` instruction in the Dockerfile)_
 
 ### Build Best Practices
 
 1.  **Choose the Right Install Type**
-    *   `default`: Basic installation, smallest image size. Suitable for most standard web scraping and markdown generation.
-    *   `all`: Full features including `torch` and `transformers` for advanced extraction strategies (e.g., CosineStrategy, certain LLM filters). Significantly larger image. Ensure you need these extras.
+    - `default`: Basic installation, smallest image size. Suitable for most standard web scraping and markdown generation.
+    - `all`: Full features including `torch` and `transformers` for advanced extraction strategies (e.g., CosineStrategy, certain LLM filters). Significantly larger image. Ensure you need these extras.
 2.  **Platform Considerations**
-    *   Use `buildx` for building multi-architecture images, especially for pushing to registries.
-    *   Use `docker compose` profiles (`local-amd64`, `local-arm64`) for easy platform-specific local builds.
+    - Use `buildx` for building multi-architecture images, especially for pushing to registries.
+    - Use `docker compose` profiles (`local-amd64`, `local-arm64`) for easy platform-specific local builds.
 3.  **Performance Optimization**
-    *   The image automatically includes platform-specific optimizations (OpenMP for AMD64, OpenBLAS for ARM64).
+    - The image automatically includes platform-specific optimizations (OpenMP for AMD64, OpenBLAS for ARM64).
 
 ---
 
@@ -1720,6 +1757,7 @@ if __name__ == "__main__":
 The Docker client supports the following parameters:
 
 **Client Initialization**:
+
 - `base_url` (str): URL of the Docker server (default: `http://localhost:8000`)
 - `timeout` (float): Request timeout in seconds (default: 30.0)
 - `verify_ssl` (bool): Verify SSL certificates (default: True)
@@ -1727,6 +1765,7 @@ The Docker client supports the following parameters:
 - `log_file` (Optional[str]): Path to log file (default: None)
 
 **crawl() Method**:
+
 - `urls` (List[str]): List of URLs to crawl
 - `browser_config` (Optional[BrowserConfig]): Browser configuration
 - `crawler_config` (Optional[CrawlerRunConfig]): Crawler configuration
@@ -1734,6 +1773,7 @@ The Docker client supports the following parameters:
 - `hooks_timeout` (int): Timeout for each hook execution in seconds (default: 30)
 
 **Returns**:
+
 - Single URL: `CrawlResult` object
 - Multiple URLs: `List[CrawlResult]`
 - Streaming: `AsyncGenerator[CrawlResult]`
@@ -1742,41 +1782,42 @@ The Docker client supports the following parameters:
 
 Crucially, when sending configurations directly via JSON, they **must** follow the `{"type": "ClassName", "params": {...}}` structure for any non-primitive value (like config objects or strategies). Dictionaries must be wrapped as `{"type": "dict", "value": {...}}`.
 
-*(Keep the detailed explanation of Configuration Structure, Basic Pattern, Simple vs Complex, Strategy Pattern, Complex Nested Example, Quick Grammar Overview, Important Rules, Pro Tip)*
+_(Keep the detailed explanation of Configuration Structure, Basic Pattern, Simple vs Complex, Strategy Pattern, Complex Nested Example, Quick Grammar Overview, Important Rules, Pro Tip)_
 
-#### More Examples *(Ensure Schema example uses type/value wrapper)*
+#### More Examples _(Ensure Schema example uses type/value wrapper)_
 
 **Advanced Crawler Configuration**
-*(Keep example, ensure cache_mode uses valid enum value like "bypass")*
+_(Keep example, ensure cache_mode uses valid enum value like "bypass")_
 
 **Extraction Strategy**
+
 ```json
 {
-    "crawler_config": {
-        "type": "CrawlerRunConfig",
+  "crawler_config": {
+    "type": "CrawlerRunConfig",
+    "params": {
+      "extraction_strategy": {
+        "type": "JsonCssExtractionStrategy",
         "params": {
-            "extraction_strategy": {
-                "type": "JsonCssExtractionStrategy",
-                "params": {
-                    "schema": {
-                        "type": "dict",
-                        "value": {
-                           "baseSelector": "article.post",
-                           "fields": [
-                               {"name": "title", "selector": "h1", "type": "text"},
-                               {"name": "content", "selector": ".content", "type": "html"}
-                           ]
-                         }
-                    }
-                }
+          "schema": {
+            "type": "dict",
+            "value": {
+              "baseSelector": "article.post",
+              "fields": [
+                { "name": "title", "selector": "h1", "type": "text" },
+                { "name": "content", "selector": ".content", "type": "html" }
+              ]
             }
+          }
         }
+      }
     }
+  }
 }
 ```
 
-**LLM Extraction Strategy** *(Keep example, ensure schema uses type/value wrapper)*
-*(Keep Deep Crawler Example)*
+**LLM Extraction Strategy** _(Keep example, ensure schema uses type/value wrapper)_
+_(Keep Deep Crawler Example)_
 
 ### LLM Configuration Examples
 
@@ -1804,7 +1845,7 @@ response = requests.post(
 response = requests.post(
     "http://localhost:11235/md",
     json={
-        "url": "https://example.com", 
+        "url": "https://example.com",
         "f": "llm",
         "q": "Write a creative summary of this content",
         "temperature": 1.2  # More creative, varied responses
@@ -1838,7 +1879,7 @@ Switch between providers based on task requirements:
 ```python
 async def smart_extraction(url: str, content_type: str):
     """Select provider and temperature based on content type"""
-    
+
     configs = {
         "technical": {
             "provider": "openai/gpt-4",
@@ -1856,9 +1897,9 @@ async def smart_extraction(url: str, content_type: str):
             "query": "Quick summary in bullet points"
         }
     }
-    
+
     config = configs.get(content_type, configs["quick"])
-    
+
     response = await httpx.post(
         "http://localhost:11235/md",
         json={
@@ -1869,7 +1910,7 @@ async def smart_extraction(url: str, content_type: str):
             "temperature": config["temperature"]
         }
     )
-    
+
     return response.json()
 ```
 
@@ -1986,6 +2027,7 @@ http://localhost:11235/monitor
 **Dashboard Features:**
 
 #### 1. System Health Overview
+
 - **CPU & Memory**: Live usage with progress bars and percentage indicators
 - **Network I/O**: Total bytes sent/received since startup
 - **Server Uptime**: How long your server has been running
@@ -1996,6 +2038,7 @@ http://localhost:11235/monitor
 - **Memory Pressure**: LOW/MEDIUM/HIGH indicator for janitor behavior
 
 #### 2. Live Request Tracking
+
 - **Active Requests**: Currently running crawls with:
   - Request ID for tracking
   - Target URL (truncated for display)
@@ -2011,27 +2054,32 @@ http://localhost:11235/monitor
 - **Filtering**: View all, success only, or errors only
 
 #### 3. Browser Pool Management
+
 Interactive table showing all active browsers:
 
-| Type | Signature | Age | Last Used | Hits | Actions |
-|------|-----------|-----|-----------|------|---------|
-| permanent | abc12345 | 2h | 5s ago | 1,247 | Restart |
-| hot | def67890 | 45m | 2m ago | 89 | Kill / Restart |
-| cold | ghi11213 | 30m | 15m ago | 3 | Kill / Restart |
+| Type      | Signature | Age | Last Used | Hits  | Actions        |
+| --------- | --------- | --- | --------- | ----- | -------------- |
+| permanent | abc12345  | 2h  | 5s ago    | 1,247 | Restart        |
+| hot       | def67890  | 45m | 2m ago    | 89    | Kill / Restart |
+| cold      | ghi11213  | 30m | 15m ago   | 3     | Kill / Restart |
 
 - **Reuse Rate**: Percentage of requests that reused existing browsers
 - **Memory Estimates**: Total memory used by browser pool
 - **Manual Control**: Kill or restart individual browsers
 
 #### 4. Janitor Events Log
+
 Real-time log of browser pool cleanup events:
+
 - When cold browsers are closed due to memory pressure
 - When browsers are promoted from cold to hot pool
 - Forced cleanups triggered manually
 - Detailed cleanup reasons and browser signatures
 
 #### 5. Error Monitoring
+
 Recent errors with full context:
+
 - Timestamp
 - Endpoint where error occurred
 - Target URL
@@ -2050,11 +2098,13 @@ For programmatic monitoring, automation, and integration with your existing infr
 #### Health & Statistics
 
 **Get System Health**
+
 ```bash
 GET /monitor/health
 ```
 
 Returns current system snapshot:
+
 ```json
 {
   "container": {
@@ -2065,9 +2115,9 @@ Returns current system snapshot:
     "uptime_seconds": 7234
   },
   "pool": {
-    "permanent": {"active": true, "memory_mb": 270},
-    "hot": {"count": 3, "memory_mb": 540},
-    "cold": {"count": 1, "memory_mb": 180},
+    "permanent": { "active": true, "memory_mb": 270 },
+    "hot": { "count": 3, "memory_mb": 540 },
+    "cold": { "count": 1, "memory_mb": 180 },
     "total_memory_mb": 990
   },
   "janitor": {
@@ -2078,20 +2128,24 @@ Returns current system snapshot:
 ```
 
 **Get Request Statistics**
+
 ```bash
 GET /monitor/requests?status=all&limit=50
 ```
 
 Query parameters:
+
 - `status`: Filter by `all`, `active`, `completed`, `success`, or `error`
 - `limit`: Number of completed requests to return (1-1000)
 
 **Get Browser Pool Details**
+
 ```bash
 GET /monitor/browsers
 ```
 
 Returns detailed information about all active browsers:
+
 ```json
 {
   "browsers": [
@@ -2123,11 +2177,13 @@ Returns detailed information about all active browsers:
 ```
 
 **Get Endpoint Performance Statistics**
+
 ```bash
 GET /monitor/endpoints/stats
 ```
 
 Returns aggregated metrics per endpoint:
+
 ```json
 {
   "/crawl": {
@@ -2148,15 +2204,18 @@ Returns aggregated metrics per endpoint:
 ```
 
 **Get Timeline Data**
+
 ```bash
 GET /monitor/timeline?metric=memory&window=5m
 ```
 
 Parameters:
+
 - `metric`: `memory`, `requests`, or `browsers`
 - `window`: Currently only `5m` (5-minute window, 5-second resolution)
 
 Returns time-series data for charts:
+
 ```json
 {
   "timestamps": [1699564800, 1699564805, 1699564810, ...],
@@ -2167,11 +2226,13 @@ Returns time-series data for charts:
 #### Logs
 
 **Get Janitor Events**
+
 ```bash
 GET /monitor/logs/janitor?limit=100
 ```
 
 **Get Error Log**
+
 ```bash
 GET /monitor/logs/errors?limit=100
 ```
@@ -2187,6 +2248,7 @@ WS /monitor/ws
 ```
 
 **Connection Example (Python):**
+
 ```python
 import asyncio
 import websockets
@@ -2220,22 +2282,23 @@ asyncio.run(monitor_server())
 ```
 
 **Update Payload Structure:**
+
 ```json
 {
   "timestamp": 1699564823.456,
-  "health": { /* System health snapshot */ },
+  "health": {/* System health snapshot */},
   "requests": {
-    "active": [ /* Currently running */ ],
-    "completed": [ /* Last 10 completed */ ]
+    "active": [/* Currently running */],
+    "completed": [/* Last 10 completed */]
   },
-  "browsers": [ /* All active browsers */ ],
+  "browsers": [/* All active browsers */],
   "timeline": {
-    "memory": { /* Last 5 minutes */ },
-    "requests": { /* Request rate */ },
-    "browsers": { /* Pool composition */ }
+    "memory": {/* Last 5 minutes */},
+    "requests": {/* Request rate */},
+    "browsers": {/* Pool composition */}
   },
-  "janitor": [ /* Last 10 cleanup events */ ],
-  "errors": [ /* Last 10 errors */ ]
+  "janitor": [/* Last 10 cleanup events */],
+  "errors": [/* Last 10 errors */]
 }
 ```
 
@@ -2246,11 +2309,13 @@ asyncio.run(monitor_server())
 Take manual control when needed:
 
 **Force Immediate Cleanup**
+
 ```bash
 POST /monitor/actions/cleanup
 ```
 
 Kills all cold pool browsers immediately (useful when memory is tight):
+
 ```json
 {
   "success": true,
@@ -2259,6 +2324,7 @@ Kills all cold pool browsers immediately (useful when memory is tight):
 ```
 
 **Kill Specific Browser**
+
 ```bash
 POST /monitor/actions/kill_browser
 Content-Type: application/json
@@ -2269,6 +2335,7 @@ Content-Type: application/json
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -2278,6 +2345,7 @@ Response:
 ```
 
 **Restart Browser**
+
 ```bash
 POST /monitor/actions/restart_browser
 Content-Type: application/json
@@ -2290,6 +2358,7 @@ Content-Type: application/json
 For permanent browser, this will close and reinitialize it. For hot/cold browsers, it kills them and lets new requests create fresh ones.
 
 **Reset Statistics**
+
 ```bash
 POST /monitor/stats/reset
 ```
@@ -2303,12 +2372,14 @@ Clears endpoint counters (useful for starting fresh after testing).
 #### Integration with Existing Monitoring Systems
 
 **Prometheus Integration:**
+
 ```bash
 # Scrape metrics endpoint
 curl http://localhost:11235/metrics
 ```
 
 **Custom Dashboard Integration:**
+
 ```python
 # Example: Push metrics to your monitoring system
 import asyncio
@@ -2331,6 +2402,7 @@ async def integrate_monitoring():
 ```
 
 **Alerting Example:**
+
 ```python
 import requests
 import time
@@ -2357,6 +2429,7 @@ while True:
 ```
 
 **Log Aggregation:**
+
 ```python
 import requests
 from datetime import datetime
@@ -2422,6 +2495,7 @@ curl http://localhost:11235/health
 ```
 
 Returns:
+
 ```json
 {
   "status": "healthy",
@@ -2430,6 +2504,7 @@ Returns:
 ```
 
 Other useful endpoints:
+
 - `/metrics` - Prometheus metrics
 - `/schema` - Full API schema
 
@@ -2457,7 +2532,7 @@ app:
 
 # Default LLM Configuration
 llm:
-  provider: "openai/gpt-4o-mini"  # Can be overridden by LLM_PROVIDER env var
+  provider: "openai/gpt-4o-mini" # Can be overridden by LLM_PROVIDER env var
   # api_key: sk-...  # If you pass the API key directly (not recommended)
   # temperature and base_url are controlled via environment variables or request parameters
 
@@ -2474,7 +2549,7 @@ rate_limiting:
   enabled: True
   default_limit: "1000/minute"
   trusted_proxies: []
-  storage_uri: "memory://"  # Use "redis://localhost:6379" if you need persistent/shared limits
+  storage_uri: "memory://" # Use "redis://localhost:6379" if you need persistent/shared limits
 
 # Security Configuration
 # NOTE (0.9.0): the defaults below reflect 0.8.x. In 0.9.0 the Docker server is
@@ -2499,7 +2574,7 @@ crawler:
   rate_limiter:
     base_delay: [1.0, 2.0] # Min/max delay between requests in seconds for dispatcher
   timeouts:
-    stream_init: 30.0  # Timeout for stream initialization
+    stream_init: 30.0 # Timeout for stream initialization
     batch_process: 300.0 # Timeout for non-streaming /crawl processing
 
 # Logging Configuration
@@ -2516,9 +2591,9 @@ observability:
     endpoint: "/health"
 ```
 
-*(JWT Authentication section remains the same, just note the default port is now 11235 for requests)*
+_(JWT Authentication section remains the same, just note the default port is now 11235 for requests)_
 
-*(Configuration Tips and Best Practices remain the same)*
+_(Configuration Tips and Best Practices remain the same)_
 
 ### Customizing Your Configuration
 
@@ -2534,33 +2609,34 @@ You can override the default `config.yml`.
 1.  Create your custom configuration file, e.g., `my-custom-config.yml` locally. Ensure it contains all necessary sections.
 2.  Mount it when running the container:
 
-    *   **Using `docker run`:**
-        ```bash
-        # Assumes my-custom-config.yml is in the current directory
-        docker run -d -p 11235:11235 \
-          --name crawl4ai-custom-config \
-          --env-file .llm.env \
-          --shm-size=1g \
-          -v $(pwd)/my-custom-config.yml:/app/config.yml \
-          unclecode/crawl4ai:latest # Or your specific tag
-        ```
+    - **Using `docker run`:**
 
-    *   **Using `docker-compose.yml`:** Add a `volumes` section to the service definition:
-        ```yaml
-        services:
-          crawl4ai-hub-amd64: # Or your chosen service
-            image: unclecode/crawl4ai:latest
-            profiles: ["hub-amd64"]
-            <<: *base-config
-            volumes:
-              # Mount local custom config over the default one in the container
-              - ./my-custom-config.yml:/app/config.yml
-              # Keep the shared memory volume from base-config
-              - /dev/shm:/dev/shm
-        ```
-        *(Note: Ensure `my-custom-config.yml` is in the same directory as `docker-compose.yml`)*
+      ```bash
+      # Assumes my-custom-config.yml is in the current directory
+      docker run -d -p 11235:11235 \
+        --name crawl4ai-custom-config \
+        --env-file .llm.env \
+        --shm-size=1g \
+        -v $(pwd)/my-custom-config.yml:/app/config.yml \
+        unclecode/crawl4ai:latest # Or your specific tag
+      ```
 
-> 💡 When mounting, your custom file *completely replaces* the default one. Ensure it's a valid and complete configuration.
+    - **Using `docker-compose.yml`:** Add a `volumes` section to the service definition:
+      ```yaml
+      services:
+        crawl4ai-hub-amd64: # Or your chosen service
+          image: unclecode/crawl4ai:latest
+          profiles: ["hub-amd64"]
+          <<: *base-config
+          volumes:
+            # Mount local custom config over the default one in the container
+            - ./my-custom-config.yml:/app/config.yml
+            # Keep the shared memory volume from base-config
+            - /dev/shm:/dev/shm
+      ```
+      _(Note: Ensure `my-custom-config.yml` is in the same directory as `docker-compose.yml`)_
+
+> 💡 When mounting, your custom file _completely replaces_ the default one. Ensure it's a valid and complete configuration.
 
 ### Configuration Recommendations
 
@@ -2599,6 +2675,7 @@ We're here to help you succeed with Crawl4AI! Here's how to get support:
 Congratulations! You now have everything you need to self-host your own Crawl4AI infrastructure with complete control and visibility.
 
 **What You've Learned:**
+
 - ✅ Multiple deployment options (Docker Hub, Docker Compose, manual builds)
 - ✅ Environment configuration and LLM integration
 - ✅ Using the interactive playground for testing
@@ -2612,6 +2689,7 @@ Congratulations! You now have everything you need to self-host your own Crawl4AI
 **Why This Matters:**
 
 By self-hosting Crawl4AI, you:
+
 - 🔒 **Own Your Data**: Everything stays in your infrastructure
 - 📊 **See Everything**: Real-time dashboard shows exactly what's happening
 - 💰 **Control Costs**: Scale within your resources, no per-request fees
@@ -2628,6 +2706,7 @@ By self-hosting Crawl4AI, you:
 5. **Go Production**: Set up alerting, log aggregation, and automated cleanup
 
 **Key Resources:**
+
 - 🎮 **Playground**: `http://localhost:11235/playground` - Interactive testing
 - 📊 **Monitor Dashboard**: `http://localhost:11235/monitor` - Real-time visibility
 - 📖 **Architecture Docs**: `deploy/docker/ARCHITECTURE.md` - Deep technical dive

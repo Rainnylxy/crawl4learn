@@ -1,6 +1,6 @@
 # Crawl4AI v0.8.7: Security Hardening, DomainMapper & Community Fixes
 
-*June 2026 - 7 min read*
+_June 2026 - 7 min read_
 
 ---
 

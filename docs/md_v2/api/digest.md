@@ -15,16 +15,19 @@ async def digest(
 ## Parameters
 
 ### start_url
+
 - **Type**: `str`
 - **Required**: Yes
 - **Description**: The starting URL for the crawl. This should be a valid HTTP/HTTPS URL that serves as the entry point for information gathering.
 
 ### query
-- **Type**: `str`  
+
+- **Type**: `str`
 - **Required**: Yes
 - **Description**: The search query that guides the crawling process. This should contain key terms related to the information you're seeking. The crawler uses this to evaluate relevance and determine which links to follow.
 
 ### resume_from
+
 - **Type**: `Optional[Union[str, Path]]`
 - **Default**: `None`
 - **Description**: Path to a previously saved crawl state file. When provided, the crawler resumes from the saved state instead of starting fresh.
@@ -60,12 +63,12 @@ The `digest()` method implements an intelligent crawling algorithm:
 ```python
 async with AsyncWebCrawler() as crawler:
     adaptive = AdaptiveCrawler(crawler)
-    
+
     state = await adaptive.digest(
         start_url="https://docs.python.org/3/",
         query="async await context managers"
     )
-    
+
     print(f"Crawled {len(state.crawled_urls)} pages")
     print(f"Confidence: {adaptive.confidence:.0%}")
 ```
@@ -127,15 +130,17 @@ adaptive.print_stats(detailed=True)
 ## Query Best Practices
 
 1. **Be Specific**: Use descriptive terms that appear in target content
+
    ```python
    # Good
    query = "python async context managers implementation"
-   
+
    # Too broad
    query = "python programming"
    ```
 
 2. **Include Key Terms**: Add technical terms you expect to find
+
    ```python
    query = "oauth2 jwt refresh tokens authorization"
    ```

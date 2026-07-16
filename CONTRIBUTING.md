@@ -17,27 +17,27 @@ We encourage contributions of all kinds: bug fixes, new features, documentation 
 
 1. **Fork the Repository**: Create your own fork on GitHub.
 2. **Create a Branch**: Base your work on the `develop` branch.
-    
-    ```
-    git checkout develop
-    git checkout -b feature/your-feature-name  # Or bugfix/your-bugfix-name
-    
-    ```
-    
+
+   ```
+   git checkout develop
+   git checkout -b feature/your-feature-name  # Or bugfix/your-bugfix-name
+
+   ```
+
 3. **Make Changes**:
-    - Implement your feature or fix.
-    - If updating documentation (e.g., README.md, mkdocs.yml, or docs/blog/), ensure version references are consistent (e.g., update site_name in mkdocs.yml to reflect the upcoming version if relevant).
-    - For Docker-related changes (e.g., Dockerfile, docker-compose.yml, or docs/md_v2/core/docker-deployment.md), test locally and include build instructions in your PR description.
-    - Add tests if applicable (run `pytest` to verify).
-    - Follow code style guidelines (use black for formatting).
+   - Implement your feature or fix.
+   - If updating documentation (e.g., README.md, mkdocs.yml, or docs/blog/), ensure version references are consistent (e.g., update site_name in mkdocs.yml to reflect the upcoming version if relevant).
+   - For Docker-related changes (e.g., Dockerfile, docker-compose.yml, or docs/md_v2/core/docker-deployment.md), test locally and include build instructions in your PR description.
+   - Add tests if applicable (run `pytest` to verify).
+   - Follow code style guidelines (use black for formatting).
 4. **Commit and Push**:
-    - Use descriptive commit messages (e.g., "Fix: Resolve issue with async crawling").
-    - Push to your fork: `git push origin feature/your-feature-name`.
+   - Use descriptive commit messages (e.g., "Fix: Resolve issue with async crawling").
+   - Push to your fork: `git push origin feature/your-feature-name`.
 5. **Submit a Pull Request**:
-    - Target the `develop` branch.
-    - Provide a clear description: What does it do? Link to any issues. Include screenshots or code examples if helpful.
-    - If your change affects documentation or Docker, mention how it aligns with the version (e.g., "Updates Docker docs for v0.7.0 compatibility").
-    - We'll review and merge approved PRs into `develop`.
+   - Target the `develop` branch.
+   - Provide a clear description: What does it do? Link to any issues. Include screenshots or code examples if helpful.
+   - If your change affects documentation or Docker, mention how it aligns with the version (e.g., "Updates Docker docs for v0.7.0 compatibility").
+   - We'll review and merge approved PRs into `develop`.
 6. **Discuss Large Changes**: For major features or experimental ideas, open an issue first to align with the project's direction.
 
 If your PR involves breaking changes, include a migration guide in the description.
@@ -54,11 +54,11 @@ Releases happen bi-weekly to ship improvements regularly. As a contributor, your
 
 - **Preparation**: A temporary `release/vX.Y.Z` branch is created from `develop`. Any ready features from `next` are merged here.
 - **Final Updates**:
-    - Version bump in code (e.g., `__version__.py`).
-    - Creation of a demo script in `examples/` to showcase new features.
-    - Writing release notes in `docs/blog/` (personal "I" voice from Unclecode, with code examples, impacts, and migration guides if needed).
-    - Documentation updates: README.md (highlights, version refs), mkdocs.yml (site_name with version), docs/blog/index.md (add new release), and copying notes to `docs/md_v2/blog/releases/`.
-    - Docker updates: Dockerfile (version arg), docker-compose.yml, deploy/docker/README.md, and docs/md_v2/core/docker-deployment.md. A release candidate image (e.g., `X.Y.Z-r1`) is built and tested.
+  - Version bump in code (e.g., `__version__.py`).
+  - Creation of a demo script in `examples/` to showcase new features.
+  - Writing release notes in `docs/blog/` (personal "I" voice from Unclecode, with code examples, impacts, and migration guides if needed).
+  - Documentation updates: README.md (highlights, version refs), mkdocs.yml (site_name with version), docs/blog/index.md (add new release), and copying notes to `docs/md_v2/blog/releases/`.
+  - Docker updates: Dockerfile (version arg), docker-compose.yml, deploy/docker/README.md, and docs/md_v2/core/docker-deployment.md. A release candidate image (e.g., `X.Y.Z-r1`) is built and tested.
 - **Testing and Merge**: Full tests run; changes committed and merged to `main` with a tag.
 - **Publication**: Tagged release on GitHub (with notes), publish to PyPI, and push Docker images (stable and `latest` after testing).
 - **Sync**: Back-merge to `develop` and reset `next` for the next cycle.
@@ -79,11 +79,11 @@ If your contribution requires Docker testing or affects docs, it may be part of 
 
 Before submitting a PR:
 
-- [ ]  Based on and targeting `develop`.
-- [ ]  Tests pass (`pytest`).
-- [ ]  Docs updated if needed (e.g., version refs in mkdocs.yml, Docker files).
-- [ ]  No breaking changes without a migration guide.
-- [ ]  Descriptive title and description.
+- [ ] Based on and targeting `develop`.
+- [ ] Tests pass (`pytest`).
+- [ ] Docs updated if needed (e.g., version refs in mkdocs.yml, Docker files).
+- [ ] No breaking changes without a migration guide.
+- [ ] Descriptive title and description.
 
 ## Common Issues
 
@@ -99,4 +99,4 @@ Before submitting a PR:
 
 Thanks for contributing to Crawl4AI — we appreciate your help in making it better!
 
-*Last Updated: Feb 3, 2026*
+_Last Updated: Feb 3, 2026_

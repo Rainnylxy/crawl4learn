@@ -1,6 +1,7 @@
 # Crawl4AI CLI Guide
 
 ## Table of Contents
+
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Configuration](#configuration)
@@ -18,6 +19,7 @@
 - [Best Practices & Tips](#best-practices--tips)
 
 ## Installation
+
 The Crawl4AI CLI will be installed automatically when you install the library.
 
 ## Basic Usage
@@ -101,6 +103,7 @@ crwl https://example.com -c "css_selector=#main,delay_before_return_html=2,scan_
 Two types of extraction are supported:
 
 1. CSS/XPath-based extraction:
+
 ```yaml
 # extract_css.yml
 type: "json-css"
@@ -130,6 +133,7 @@ params:
 ```
 
 2. LLM-based extraction:
+
 ```yaml
 # extract_llm.yml
 type: "llm"
@@ -182,6 +186,7 @@ crwl https://example.com \
 ```
 
 First-time setup:
+
 - Prompts for LLM provider and API token
 - Saves configuration in `~/.crawl4ai/global.yml`
 - Supports various providers (openai/gpt-4, anthropic/claude-3-sonnet, etc.)
@@ -238,6 +243,7 @@ crwl https://example.com -f filter_bm25.yml -o markdown-fit
 ## Complete Examples
 
 1. Basic Extraction:
+
 ```bash
 crwl https://example.com \
     -B browser.yml \
@@ -246,6 +252,7 @@ crwl https://example.com \
 ```
 
 2. Structured Data Extraction:
+
 ```bash
 crwl https://example.com \
     -e extract_css.yml \
@@ -255,6 +262,7 @@ crwl https://example.com \
 ```
 
 3. LLM Extraction with Filtering:
+
 ```bash
 crwl https://example.com \
     -B browser.yml \
@@ -265,6 +273,7 @@ crwl https://example.com \
 ```
 
 4. Interactive Q&A:
+
 ```bash
 # First crawl and view
 crwl https://example.com -o markdown
@@ -299,9 +308,9 @@ crwl https://example.com -q "Summarize the conclusions"
 ## Recap
 
 The Crawl4AI CLI provides:
+
 - Flexible configuration via files and parameters
 - Multiple extraction strategies (CSS, XPath, LLM)
 - Content filtering and optimization
 - Interactive Q&A capabilities
 - Various output formats
-

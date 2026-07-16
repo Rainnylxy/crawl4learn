@@ -6,7 +6,7 @@ This paper presents a novel approach to web crawling that adaptively determines 
 
 ## 1. Introduction
 
-Traditional web crawling approaches follow predetermined patterns (breadth-first, depth-first) without consideration for information sufficiency. This work addresses the fundamental question: *"When do we have enough information to answer a query and similar queries in its domain?"*
+Traditional web crawling approaches follow predetermined patterns (breadth-first, depth-first) without consideration for information sufficiency. This work addresses the fundamental question: _"When do we have enough information to answer a query and similar queries in its domain?"_
 
 We formalize this as an optimal stopping problem in information foraging, introducing metrics for coverage, consistency, and saturation that enable crawlers to make intelligent decisions about when to stop crawling and which links to follow.
 
@@ -15,6 +15,7 @@ We formalize this as an optimal stopping problem in information foraging, introd
 ### 2.1 Definitions
 
 Let:
+
 - **K** = {d₁, d₂, ..., dₙ} be the current knowledge base (crawled documents)
 - **Q** be the user query
 - **L** = {l₁, l₂, ..., lₘ} be available links with preview metadata
@@ -45,6 +46,7 @@ Coverage(K, Q) = Σ(t ∈ Q) log(df(t, K) + 1) × idf(t) / |Q|
 ```
 
 Where:
+
 - df(t, K) = document frequency of term t in knowledge base K
 - idf(t) = inverse document frequency weight
 
@@ -77,6 +79,7 @@ ExpectedGain(l) = Relevance(l, Q) × Novelty(l, K) × Authority(l)
 ```
 
 Components:
+
 - **Relevance**: BM25(preview_text, Q)
 - **Novelty**: 1 - max_similarity(preview, K)
 - **Authority**: f(url_structure, domain_metrics)
@@ -90,24 +93,25 @@ Algorithm: ProgressiveCrawl(start_url, query, θ)
   K ← ∅
   crawled ← {start_url}
   pending ← extract_links(crawl(start_url))
-  
+
   while IS(K, Q) < θ and |crawled| < max_pages:
     candidates ← rank_by_expected_gain(pending, Q, K)
     if max(ExpectedGain(candidates)) < min_gain:
       break  // Diminishing returns
-    
+
     to_crawl ← top_k(candidates)
     new_docs ← parallel_crawl(to_crawl)
     K ← K ∪ new_docs
     crawled ← crawled ∪ to_crawl
     pending ← extract_new_links(new_docs) - crawled
-  
+
   return K
 ```
 
 ### 4.2 Stopping Criteria
 
 Crawling terminates when:
+
 1. IS(K, Q) ≥ θ (sufficient information)
 2. d(IS)/d(crawls) < ε (plateau reached)
 3. |crawled| ≥ max_pages (resource limit)
@@ -127,6 +131,7 @@ AbstractStrategy
 ### 5.2 Statistical Strategy
 
 Pure statistical approach using:
+
 - BM25 for relevance scoring
 - Term frequency analysis for coverage
 - Graph structure for authority
@@ -138,12 +143,14 @@ Pure statistical approach using:
 ### 5.3 Embedding Strategy (Implemented)
 
 Semantic understanding through embeddings:
+
 - Query expansion into semantic variations
 - Coverage mapping in embedding space
 - Gap-driven link selection
 - Validation-based stopping criteria
 
 **Mathematical Framework**:
+
 ```
 Coverage(K, Q) = mean(max_similarity(q, K) for q in Q_expanded)
 Gap(q) = 1 - max_similarity(q, K)
@@ -151,6 +158,7 @@ LinkScore(l) = Σ(Gap(q) × relevance(l, q)) × (1 - redundancy(l, K))
 ```
 
 **Key Parameters**:
+
 - `embedding_k_exp`: Exponential decay factor for distance-to-score mapping
 - `embedding_coverage_radius`: Distance threshold for query coverage
 - `embedding_min_confidence_threshold`: Minimum relevance threshold
@@ -174,14 +182,14 @@ Using LLM to create evaluation data:
 def generate_synthetic_dataset(domain_url):
     # 1. Fully crawl domain
     full_knowledge = exhaustive_crawl(domain_url)
-    
+
     # 2. Generate answerable queries
     queries = llm_generate_queries(full_knowledge)
-    
+
     # 3. Create query variations
     for q in queries:
         variations = generate_variations(q)  # synonyms, sub/super queries
-    
+
     return queries, variations, full_knowledge
 ```
 
@@ -209,6 +217,7 @@ def generate_synthetic_dataset(domain_url):
 ### 7.2 Optimality
 
 Under certain assumptions about link preview accuracy:
+
 - Expected crawls ≤ 2 × optimal_crawls
 - Approximation ratio improves with preview quality
 
@@ -230,6 +239,7 @@ Under certain assumptions about link preview accuracy:
 ### 8.3 Persistence
 
 Knowledge base serialization for:
+
 - Resumable crawls
 - Knowledge sharing
 - Offline analysis
@@ -275,7 +285,7 @@ class StatisticalStrategy:
         consistency = self.calculate_consistency(state)
         saturation = self.calculate_saturation(state)
         return min(coverage, consistency, saturation)
-    
+
     def calculate_coverage(self, state):
         # BM25-based term coverage
         term_scores = []
@@ -284,7 +294,7 @@ class StatisticalStrategy:
             idf = self.idf_cache.get(term, 1.0)
             term_scores.append(log(df + 1) * idf)
         return mean(term_scores) / max_possible_score
-    
+
     def rank_links(self, state):
         scored_links = []
         for link in state.pending_links:

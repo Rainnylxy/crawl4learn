@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 0.8.x   | :white_check_mark: |
+| Version | Supported                 |
+| ------- | ------------------------- |
+| 0.8.x   | :white_check_mark:        |
 | 0.7.x   | :x: (upgrade recommended) |
-| < 0.7   | :x:                |
+| < 0.7   | :x:                       |
 
 ## Reporting a Vulnerability
 
@@ -56,12 +56,14 @@ Instead, please report via one of these methods:
 If you're running the Crawl4AI Docker API in production:
 
 1. **Enable Authentication**
+
    ```yaml
    # config.yml
    security:
      enabled: true
      jwt_enabled: true
    ```
+
    ```bash
    # Set a strong secret key
    export SECRET_KEY="your-secure-random-key-here"
@@ -93,15 +95,15 @@ When using Crawl4AI as a Python library:
 
 ### Fixed in v0.8.0
 
-| ID | Severity | Description | Fix |
-|----|----------|-------------|-----|
+| ID            | Severity | Description                | Fix                           |
+| ------------- | -------- | -------------------------- | ----------------------------- |
 | CVE-pending-1 | CRITICAL | RCE via hooks `__import__` | Removed from allowed builtins |
-| CVE-pending-2 | HIGH | LFI via `file://` URLs | URL scheme validation added |
+| CVE-pending-2 | HIGH     | LFI via `file://` URLs     | URL scheme validation added   |
 
 ### Fixed in v0.8.1
 
-| ID | Severity | Description | Fix |
-|----|----------|-------------|-----|
+| ID            | Severity | Description                                             | Fix                                                                        |
+| ------------- | -------- | ------------------------------------------------------- | -------------------------------------------------------------------------- |
 | CVE-pending-3 | CRITICAL | RCE via deserialization + `eval()` in `/crawl` endpoint | Allowlisted deserializable types; AST-validated computed field expressions |
 
 See [Security Advisory](https://github.com/unclecode/crawl4ai/security/advisories) for details.
@@ -131,4 +133,4 @@ We thank the following security researchers for responsibly disclosing vulnerabi
 
 ---
 
-*Last updated: February 2026*
+_Last updated: February 2026_

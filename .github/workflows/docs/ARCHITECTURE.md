@@ -118,27 +118,32 @@ This document describes the technical architecture of the split release pipeline
 ### 1. Release Pipeline (release.yml)
 
 #### Purpose
+
 Fast publication of Python package and GitHub release.
 
 #### Input
+
 - **Trigger**: Git tag matching `v*` (excluding `test-v*`)
 - **Example**: `v1.2.3`
 
 #### Processing Stages
 
 ##### Stage 1: Version Extraction
+
 ```bash
 Input:  refs/tags/v1.2.3
 Output: VERSION=1.2.3
 ```
 
 **Implementation**:
+
 ```bash
 TAG_VERSION=${GITHUB_REF#refs/tags/v}  # Remove 'refs/tags/v' prefix
 echo "VERSION=$TAG_VERSION" >> $GITHUB_OUTPUT
 ```
 
 ##### Stage 2: Version Validation
+
 ```bash
 Input:  TAG_VERSION=1.2.3
 Check:  crawl4ai/__version__.py contains __version__ = "1.2.3"
@@ -146,6 +151,7 @@ Output: Pass/Fail
 ```
 
 **Implementation**:
+
 ```bash
 PACKAGE_VERSION=$(python -c "from crawl4ai.__version__ import __version__; print(__version__)")
 if [ "$TAG_VERSION" != "$PACKAGE_VERSION" ]; then
@@ -154,6 +160,7 @@ fi
 ```
 
 ##### Stage 3: Package Build
+
 ```bash
 Input:  Source code + pyproject.toml
 Output: dist/crawl4ai-1.2.3.tar.gz
@@ -161,12 +168,14 @@ Output: dist/crawl4ai-1.2.3.tar.gz
 ```
 
 **Implementation**:
+
 ```bash
 python -m build
 # Uses build backend defined in pyproject.toml
 ```
 
 ##### Stage 4: PyPI Upload
+
 ```bash
 Input:  dist/*.{tar.gz,whl}
 Auth:   PYPI_TOKEN
@@ -174,6 +183,7 @@ Output: Package published to PyPI
 ```
 
 **Implementation**:
+
 ```bash
 twine upload dist/*
 # Environment:
@@ -182,6 +192,7 @@ twine upload dist/*
 ```
 
 ##### Stage 5: GitHub Release Creation
+
 ```bash
 Input:  Tag: v1.2.3
         Body: Markdown content
@@ -189,6 +200,7 @@ Output: Published GitHub release
 ```
 
 **Implementation**:
+
 ```yaml
 uses: softprops/action-gh-release@v2
 with:
@@ -201,11 +213,13 @@ with:
 ```
 
 #### Output
+
 - **PyPI Package**: https://pypi.org/project/crawl4ai/1.2.3/
 - **GitHub Release**: Published release on repository
 - **Event**: `release.published` (triggers Docker workflow)
 
 #### Timeline
+
 ```
 0:00 - Tag pushed
 0:01 - Checkout + Python setup
@@ -222,17 +236,20 @@ with:
 ### 2. Docker Release Pipeline (docker-release.yml)
 
 #### Purpose
+
 Build and publish multi-architecture Docker images.
 
 #### Inputs
 
 ##### Input 1: Release Event (Automatic)
+
 ```yaml
 Event: release.published
-Data:  github.event.release.tag_name = "v1.2.3"
+Data: github.event.release.tag_name = "v1.2.3"
 ```
 
 ##### Input 2: Docker Rebuild Tag (Manual)
+
 ```yaml
 Tag: docker-rebuild-v1.2.3
 ```
@@ -240,6 +257,7 @@ Tag: docker-rebuild-v1.2.3
 #### Processing Stages
 
 ##### Stage 1: Version Detection
+
 ```bash
 # From release event:
 VERSION = github.event.release.tag_name.strip("v")
@@ -251,6 +269,7 @@ VERSION = GITHUB_REF.replace("refs/tags/docker-rebuild-v", "")
 ```
 
 ##### Stage 2: Semantic Version Parsing
+
 ```bash
 Input:  VERSION=1.2.3
 Output: MAJOR=1
@@ -259,12 +278,14 @@ Output: MAJOR=1
 ```
 
 **Implementation**:
+
 ```bash
 MAJOR=$(echo $VERSION | cut -d. -f1)    # Extract first component
 MINOR=$(echo $VERSION | cut -d. -f1-2)  # Extract first two components
 ```
 
 ##### Stage 3: Multi-Architecture Setup
+
 ```yaml
 Setup:
   - Docker Buildx (multi-platform builder)
@@ -276,6 +297,7 @@ Platforms:
 ```
 
 **Architecture**:
+
 ```
 GitHub Runner (linux/amd64)
   ├─ Buildx Builder
@@ -285,6 +307,7 @@ GitHub Runner (linux/amd64)
 ```
 
 ##### Stage 4: Docker Hub Authentication
+
 ```bash
 Input:  DOCKER_USERNAME
         DOCKER_TOKEN
@@ -292,10 +315,11 @@ Output: Authenticated Docker client
 ```
 
 ##### Stage 5: Build with Cache
+
 ```yaml
 Cache Configuration:
-  cache-from: type=gha           # Read from GitHub Actions cache
-  cache-to: type=gha,mode=max    # Write all layers
+  cache-from: type=gha # Read from GitHub Actions cache
+  cache-to: type=gha,mode=max # Write all layers
 
 Cache Key Components:
   - Workflow file path
@@ -304,6 +328,7 @@ Cache Key Components:
 ```
 
 **Cache Hierarchy**:
+
 ```
 Cache Entry: main/docker-release.yml/linux-amd64
   ├─ Layer: sha256:abc123... (FROM python:3.12)
@@ -318,6 +343,7 @@ Cache Hit/Miss Logic:
 ```
 
 ##### Stage 6: Tag Generation
+
 ```bash
 Input:  VERSION=1.2.3, MAJOR=1, MINOR=1.2
 
@@ -329,11 +355,13 @@ Output Tags:
 ```
 
 **Tag Strategy**:
+
 - All tags point to same image SHA
 - Users can pin to desired stability level
 - Pushing new version updates `1`, `1.2`, and `latest` automatically
 
 ##### Stage 7: Push to Registry
+
 ```bash
 For each tag:
   For each platform (amd64, arm64):
@@ -348,12 +376,14 @@ Docker CLI automatically selects correct platform on pull
 ```
 
 #### Output
+
 - **Docker Images**: 4 tags × 2 platforms = 8 image variants + 4 manifests
 - **Docker Hub**: https://hub.docker.com/r/unclecode/crawl4ai/tags
 
 #### Timeline
 
 **Cold Cache (First Build)**:
+
 ```
 0:00 - Release event received
 0:01 - Checkout + Buildx setup
@@ -368,6 +398,7 @@ Docker CLI automatically selects correct platform on pull
 ```
 
 **Warm Cache (Code Change Only)**:
+
 ```
 0:00 - Release event received
 0:01 - Checkout + Buildx setup
@@ -694,23 +725,23 @@ Rotation (Manual)
 
 ### Release Pipeline Performance
 
-| Metric | Value | Notes |
-|--------|-------|-------|
-| Cold start | ~2-3 min | First run on new runner |
-| Warm start | ~2-3 min | Minimal caching benefit |
-| PyPI upload | ~30-60 sec | Network-bound |
-| Package build | ~30 sec | CPU-bound |
-| Parallelization | None | Sequential by design |
+| Metric          | Value      | Notes                   |
+| --------------- | ---------- | ----------------------- |
+| Cold start      | ~2-3 min   | First run on new runner |
+| Warm start      | ~2-3 min   | Minimal caching benefit |
+| PyPI upload     | ~30-60 sec | Network-bound           |
+| Package build   | ~30 sec    | CPU-bound               |
+| Parallelization | None       | Sequential by design    |
 
 ### Docker Pipeline Performance
 
-| Metric | Cold Cache | Warm Cache (code) | Warm Cache (deps) |
-|--------|-----------|-------------------|-------------------|
-| Total time | 10-15 min | 1-2 min | 3-5 min |
-| amd64 build | 5-7 min | 30-60 sec | 1-2 min |
-| arm64 build | 5-7 min | 30-60 sec | 1-2 min |
-| Push time | 1-2 min | 30 sec | 30 sec |
-| Cache hit rate | 0% | 85% | 60% |
+| Metric         | Cold Cache | Warm Cache (code) | Warm Cache (deps) |
+| -------------- | ---------- | ----------------- | ----------------- |
+| Total time     | 10-15 min  | 1-2 min           | 3-5 min           |
+| amd64 build    | 5-7 min    | 30-60 sec         | 1-2 min           |
+| arm64 build    | 5-7 min    | 30-60 sec         | 1-2 min           |
+| Push time      | 1-2 min    | 30 sec            | 30 sec            |
+| Cache hit rate | 0%         | 85%               | 60%               |
 
 ### Cache Performance Model
 
@@ -734,16 +765,17 @@ def estimate_build_time(changes):
 
 ### Current Limits
 
-| Resource | Limit | Impact |
-|----------|-------|--------|
-| Workflow concurrency | 20 (default) | Max 20 releases in parallel |
-| Artifact storage | 500 MB/artifact | PyPI packages small (<10 MB) |
-| Cache storage | 10 GB/repo | Docker layers fit comfortably |
-| Workflow run time | 6 hours | Plenty of headroom |
+| Resource             | Limit           | Impact                        |
+| -------------------- | --------------- | ----------------------------- |
+| Workflow concurrency | 20 (default)    | Max 20 releases in parallel   |
+| Artifact storage     | 500 MB/artifact | PyPI packages small (<10 MB)  |
+| Cache storage        | 10 GB/repo      | Docker layers fit comfortably |
+| Workflow run time    | 6 hours         | Plenty of headroom            |
 
 ### Scaling Strategies
 
 #### Horizontal Scaling (Multiple Repos)
+
 ```
 crawl4ai (main)
   ├─ release.yml
@@ -760,10 +792,11 @@ Each repo has independent:
 ```
 
 #### Vertical Scaling (Larger Runners)
+
 ```yaml
 jobs:
   docker:
-    runs-on: ubuntu-latest-8-cores  # GitHub-hosted larger runner
+    runs-on: ubuntu-latest-8-cores # GitHub-hosted larger runner
     # 4x faster builds for CPU-bound layers
 ```
 
@@ -778,12 +811,14 @@ jobs:
 **Failure Point**: PyPI upload fails (network error)
 
 **State**:
+
 - ✓ Version validated
 - ✓ Package built
 - ✗ PyPI upload
 - ✗ GitHub release
 
 **Recovery**:
+
 ```bash
 # Manual upload
 twine upload dist/*
@@ -798,12 +833,14 @@ twine upload dist/*
 **Failure Point**: ARM build fails (dependency issue)
 
 **State**:
+
 - ✓ PyPI published
 - ✓ GitHub release created
 - ✓ amd64 image built
 - ✗ arm64 image build
 
 **Recovery**:
+
 ```bash
 # Fix Dockerfile
 git commit -am "fix: ARM build dependency"
@@ -820,11 +857,13 @@ git push origin docker-rebuild-v1.2.3
 **Failure Point**: GitHub release creation fails
 
 **State**:
+
 - ✓ PyPI published
 - ✗ GitHub release
 - ✗ Docker images
 
 **Recovery**:
+
 ```bash
 # Create release manually
 gh release create v1.2.3 \
@@ -841,11 +880,13 @@ gh release create v1.2.3 \
 ### Metrics to Track
 
 #### Release Pipeline
+
 - Success rate (target: >99%)
 - Duration (target: <3 min)
 - PyPI upload time (target: <60 sec)
 
 #### Docker Pipeline
+
 - Success rate (target: >95%)
 - Duration (target: <15 min cold, <2 min warm)
 - Cache hit rate (target: >80% for code changes)
@@ -853,21 +894,25 @@ gh release create v1.2.3 \
 ### Alerting
 
 **Critical Alerts**:
+
 - Release pipeline failure (blocks release)
 - PyPI authentication failure (expired token)
 
 **Warning Alerts**:
+
 - Docker build >15 min (performance degradation)
 - Cache hit rate <50% (cache issue)
 
 ### Logging
 
 **GitHub Actions Logs**:
+
 - Retention: 90 days
 - Downloadable: Yes
 - Searchable: Limited
 
 **Recommended External Logging**:
+
 ```yaml
 - name: Send logs to external service
   if: failure()

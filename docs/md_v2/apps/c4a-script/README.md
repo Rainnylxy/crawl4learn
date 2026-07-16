@@ -5,23 +5,27 @@ A comprehensive web-based tutorial for learning and experimenting with C4A-Scrip
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.7+
 - Modern web browser (Chrome, Firefox, Safari, Edge)
 
 ### Running the Tutorial
 
 1. **Clone and Navigate**
+
    ```bash
    git clone https://github.com/unclecode/crawl4ai.git
    cd crawl4ai/docs/examples/c4a_script/tutorial/
    ```
 
 2. **Install Dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 3. **Launch the Server**
+
    ```bash
    python server.py
    ```
@@ -46,8 +50,9 @@ CLICK `#start-tutorial`
 ## 🎯 What You'll Learn
 
 ### Core Features
+
 - **📝 Text Editor**: Write C4A-Script with syntax highlighting
-- **🧩 Visual Editor**: Build scripts using drag-and-drop Blockly interface  
+- **🧩 Visual Editor**: Build scripts using drag-and-drop Blockly interface
 - **🎬 Recording Mode**: Capture browser actions and auto-generate scripts
 - **⚡ Live Execution**: Run scripts in real-time with instant feedback
 - **📊 Timeline View**: Visualize and edit automation steps
@@ -55,6 +60,7 @@ CLICK `#start-tutorial`
 ## 📚 Tutorial Content
 
 ### Basic Commands
+
 - **Navigation**: `GO url`
 - **Waiting**: `WAIT selector timeout` or `WAIT seconds`
 - **Clicking**: `CLICK selector`
@@ -62,11 +68,13 @@ CLICK `#start-tutorial`
 - **Scrolling**: `SCROLL DOWN/UP amount`
 
 ### Control Flow
+
 - **Conditionals**: `IF (condition) THEN action`
 - **Loops**: `REPEAT (action, condition)`
 - **Procedures**: Define reusable command sequences
 
 ### Advanced Features
+
 - **JavaScript evaluation**: `EVAL code`
 - **Variables**: `SET name = "value"`
 - **Complex selectors**: CSS selectors in backticks
@@ -76,26 +84,31 @@ CLICK `#start-tutorial`
 The tutorial includes a fully interactive web app with:
 
 ### 1. **Authentication System**
+
 - Login form with validation
 - Session management
 - Protected content
 
 ### 2. **Dynamic Content**
+
 - Infinite scroll products
 - Pagination controls
 - Load more buttons
 
 ### 3. **Complex Forms**
+
 - Multi-step wizards
 - Dynamic field visibility
 - Form validation
 
 ### 4. **Interactive Elements**
+
 - Tabs and accordions
 - Modals and popups
 - Expandable content
 
 ### 5. **Data Tables**
+
 - Sortable columns
 - Search functionality
 - Export options
@@ -103,22 +116,27 @@ The tutorial includes a fully interactive web app with:
 ## 🛠️ Tutorial Features
 
 ### Live Code Editor
+
 - Syntax highlighting
 - Real-time compilation
 - Error messages with suggestions
 
 ### JavaScript Output Viewer
+
 - See generated JavaScript code
 - Edit and test JS directly
 - Understand the compilation
 
 ### Visual Execution
+
 - Step-by-step progress
 - Element highlighting
 - Console output
 
 ### Example Scripts
+
 Load pre-written examples demonstrating:
+
 - Cookie banner handling
 - Login workflows
 - Infinite scroll automation
@@ -128,7 +146,9 @@ Load pre-written examples demonstrating:
 ## 📖 Tutorial Sections
 
 ### 1. Getting Started
+
 Learn basic commands and syntax:
+
 ```c4a
 GO https://example.com
 WAIT `.content` 5
@@ -136,14 +156,18 @@ CLICK `.button`
 ```
 
 ### 2. Handling Dynamic Content
+
 Master waiting strategies and conditionals:
+
 ```c4a
 IF (EXISTS `.popup`) THEN CLICK `.close`
 WAIT `.results` 10
 ```
 
 ### 3. Form Automation
+
 Fill and submit forms:
+
 ```c4a
 CLICK `#email`
 TYPE "user@example.com"
@@ -151,7 +175,9 @@ CLICK `button[type="submit"]`
 ```
 
 ### 4. Advanced Workflows
+
 Build complex automation flows:
+
 ```c4a
 PROC login
   CLICK `#username`
@@ -169,23 +195,29 @@ login
 ## 🎯 Practice Challenges
 
 ### Challenge 1: Cookie & Popups
+
 Handle the cookie banner and newsletter popup that appear on page load.
 
 ### Challenge 2: Complete Login
+
 Successfully log into the application using the demo credentials.
 
 ### Challenge 3: Load All Products
+
 Use infinite scroll to load all 100 products in the catalog.
 
 ### Challenge 4: Multi-step Survey
+
 Complete the entire multi-step survey form.
 
 ### Challenge 5: Full Workflow
+
 Create a script that logs in, browses products, and exports data.
 
 ## 💡 Tips & Tricks
 
 ### 1. Use Specific Selectors
+
 ```c4a
 # Good - specific
 CLICK `button.submit-order`
@@ -195,6 +227,7 @@ CLICK `button`
 ```
 
 ### 2. Always Handle Popups
+
 ```c4a
 # Check for common popups
 IF (EXISTS `.cookie-banner`) THEN CLICK `.accept`
@@ -202,6 +235,7 @@ IF (EXISTS `.newsletter-modal`) THEN CLICK `.close`
 ```
 
 ### 3. Add Appropriate Waits
+
 ```c4a
 # Wait for elements before interacting
 WAIT `.form` 5
@@ -209,6 +243,7 @@ CLICK `#submit`
 ```
 
 ### 4. Use Procedures for Reusability
+
 ```c4a
 PROC handle_popups
   IF (EXISTS `.popup`) THEN CLICK `.close`
@@ -260,6 +295,7 @@ async with AsyncWebCrawler() as crawler:
 ## 📝 Example Scripts
 
 Check the `scripts/` folder for complete examples:
+
 - `01-basic-interaction.c4a` - Getting started
 - `02-login-flow.c4a` - Authentication
 - `03-infinite-scroll.c4a` - Dynamic content
@@ -290,21 +326,27 @@ tutorial/
 ### Key Components
 
 #### 1. TutorialApp (`assets/app.js`)
+
 Main application controller managing:
+
 - Code editor integration (CodeMirror)
 - Script execution and browser preview
 - Tutorial navigation and lessons
 - State management and persistence
 
 #### 2. BlocklyManager (`assets/blockly-manager.js`)
+
 Visual programming interface:
+
 - Custom C4A-Script block definitions
 - Bidirectional sync between visual blocks and text
 - Real-time code generation
 - Dark theme integration
 
 #### 3. Recording System
+
 Powers the recording functionality:
+
 - Browser event capture
 - Smart event grouping and filtering
 - Automatic C4A-Script generation
@@ -313,16 +355,19 @@ Powers the recording functionality:
 ### Customization
 
 #### Adding New Commands
+
 1. **Define Block** (`assets/c4a-blocks.js`)
 2. **Add Generator** (`assets/c4a-generator.js`)
 3. **Update Parser** (`assets/blockly-manager.js`)
 
 #### Themes and Styling
+
 - Main styles: `assets/styles.css`
 - Theme variables: CSS custom properties
 - Dark mode: Auto-applied based on system preference
 
 ### Configuration
+
 ```python
 # server.py configuration
 PORT = 8000
@@ -331,6 +376,7 @@ THREADED = True
 ```
 
 ### API Endpoints
+
 - `GET /` - Main tutorial interface
 - `GET /playground/` - Interactive demo environment
 - `POST /execute` - Script execution endpoint
@@ -341,6 +387,7 @@ THREADED = True
 ### Common Issues
 
 **Port Already in Use**
+
 ```bash
 # Kill existing process
 lsof -ti:8000 | xargs kill -9
@@ -349,16 +396,19 @@ python server.py --port 8001
 ```
 
 **Blockly Not Loading**
+
 - Check browser console for JavaScript errors
 - Verify all static files are served correctly
 - Ensure proper script loading order
 
 **Recording Issues**
+
 - Verify iframe permissions
 - Check cross-origin communication
 - Ensure event listeners are attached
 
 ### Debug Mode
+
 Enable detailed logging by setting `DEBUG = True` in `assets/app.js`
 
 ## 📚 Additional Resources
@@ -371,12 +421,14 @@ Enable detailed logging by setting `DEBUG = True` in `assets/app.js`
 ## 🤝 Contributing
 
 ### Bug Reports
+
 1. Check existing issues on GitHub
 2. Provide minimal reproduction steps
 3. Include browser and system information
 4. Add relevant console logs
 
 ### Feature Requests
+
 1. Fork the repository
 2. Create feature branch: `git checkout -b feature/my-feature`
 3. Test thoroughly with different browsers
@@ -384,6 +436,7 @@ Enable detailed logging by setting `DEBUG = True` in `assets/app.js`
 5. Submit pull request
 
 ### Code Style
+
 - Use consistent indentation (2 spaces for JS, 4 for Python)
 - Add comments for complex logic
 - Follow existing naming conventions

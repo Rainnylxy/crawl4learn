@@ -2,10 +2,10 @@
 
 Crawl4AI provides powerful features for interacting with **dynamic** webpages, handling JavaScript execution, waiting for conditions, and managing multi-step flows. By combining **js_code**, **wait_for**, and certain **CrawlerRunConfig** parameters, you can:
 
-1. Click “Load More” buttons  
-2. Fill forms and submit them  
-3. Wait for elements or data to appear  
-4. Reuse sessions across multiple steps  
+1. Click “Load More” buttons
+2. Fill forms and submit them
+3. Wait for elements or data to appear
+4. Reuse sessions across multiple steps
 
 Below is a quick overview of how to do it.
 
@@ -40,7 +40,7 @@ async def main():
     js_commands = [
         "window.scrollTo(0, document.body.scrollHeight);",
         # 'More' link on Hacker News
-        "document.querySelector('a.morelink')?.click();",  
+        "document.querySelector('a.morelink')?.click();",
     ]
     config = CrawlerRunConfig(js_code=js_commands)
 
@@ -56,6 +56,7 @@ if __name__ == "__main__":
 ```
 
 **Relevant `CrawlerRunConfig` params**:
+
 - **`js_code`**: JavaScript to run **after** `wait_for` and `delay_before_return_html` complete. Runs on the fully-loaded page.
 - **`js_code_before_wait`**: JavaScript to run **before** `wait_for`. Use when you need to trigger loading that `wait_for` then checks.
 - **`js_only`**: If set to `True` on subsequent calls, indicates we're continuing an existing session without a new full navigation.
@@ -101,7 +102,7 @@ from crawl4ai import AsyncWebCrawler, CrawlerRunConfig
 async def main():
     config = CrawlerRunConfig(
         # Wait for at least 30 items on Hacker News
-        wait_for="css:.athing:nth-child(30)"  
+        wait_for="css:.athing:nth-child(30)"
     )
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun(
@@ -110,13 +111,14 @@ async def main():
         )
         print("We have at least 30 items loaded!")
         # Rough check
-        print("Total items in HTML:", result.cleaned_html.count("athing"))  
+        print("Total items in HTML:", result.cleaned_html.count("athing"))
 
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
 **Key param**:
+
 - **`wait_for="css:..."`**: Tells the crawler to wait until that CSS selector is present.
 
 ### 2.2 JavaScript-Based Waiting
@@ -162,9 +164,9 @@ async def main():
         load_more_js = [
             "window.scrollTo(0, document.body.scrollHeight);",
             # The "More" link at page bottom
-            "document.querySelector('a.morelink')?.click();"  
+            "document.querySelector('a.morelink')?.click();"
         ]
-        
+
         next_page_conf = CrawlerRunConfig(
             js_code=load_more_js,
             wait_for="""js:() => {
@@ -188,6 +190,7 @@ if __name__ == "__main__":
 ```
 
 **Key params**:
+
 - **`session_id="hn_session"`**: Keep the same page across multiple calls to `arun()`.
 - **`js_only=True`**: We’re not performing a full reload, just applying JS in the existing page.
 - **`wait_for`** with `js:`: Wait for item count to grow beyond 30.
@@ -246,7 +249,7 @@ async def multi_page_commits():
         verbose=True
     )
     session_id = "github_ts_commits"
-    
+
     base_wait = """js:() => {
         const commits = document.querySelectorAll('li.Box-sc-g0xbh4-0 h4');
         return commits.length > 0;
@@ -273,7 +276,7 @@ async def multi_page_commits():
         const button = document.querySelector(selector);
         if (button) button.click();
         """
-        
+
         # Wait until new commits appear
         wait_for_more = """js:() => {
             const commits = document.querySelectorAll('li.Box-sc-g0xbh4-0 h4');
@@ -312,8 +315,8 @@ if __name__ == "__main__":
 
 **Key Points**:
 
-- **`session_id`**: Keep the same page open.  
-- **`js_code`** + **`wait_for`** + **`js_only=True`**: We do partial refreshes, waiting for new commits to appear.  
+- **`session_id`**: Keep the same page open.
+- **`js_code`** + **`wait_for`** + **`js_only=True`**: We do partial refreshes, waiting for new commits to appear.
 - **`cache_mode=CacheMode.BYPASS`** ensures we always see fresh data each step.
 
 ---
@@ -385,8 +388,7 @@ Crawl4AI's **page interaction** features let you:
 1. **Execute JavaScript** for scrolling, clicks, or form filling.  
 2. **Wait** for CSS or custom JS conditions before capturing data.  
 3. **Handle** multi-step flows (like “Load More”) with partial reloads or persistent sessions.  
-4. **Flatten Shadow DOM** on Web Component sites to extract hidden content.
-5. Combine with **structured extraction** for dynamic sites.
+4. **Flatten Shadow DOM** on Web Component sites to extract hidden content. 5. Combine with **structured extraction** for dynamic sites.
 
 With these tools, you can scrape modern, interactive webpages confidently. For advanced hooking, user simulation, or in-depth config, check the [API reference](../api/parameters.md) or related advanced docs. Happy scripting!
 
@@ -407,11 +409,11 @@ async def crawl_twitter_timeline():
         scroll_by="container_height",   # Scroll by container height each time
         wait_after_scroll=1.0          # Wait 1 second after each scroll
     )
-    
+
     config = CrawlerRunConfig(
         virtual_scroll_config=virtual_config
     )
-    
+
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun(
             url="https://twitter.com/search?q=AI",
@@ -422,11 +424,11 @@ async def crawl_twitter_timeline():
 
 ### Virtual Scroll vs JavaScript Scrolling
 
-| Feature | Virtual Scroll | JS Code Scrolling |
-|---------|---------------|-------------------|
-| **Use Case** | Content replaced during scroll | Content appended or simple scroll |
-| **Configuration** | `VirtualScrollConfig` object | `js_code` with scroll commands |
-| **Automatic Merging** | Yes - merges all unique content | No - captures final state only |
-| **Best For** | Twitter, Instagram, virtual tables | Traditional pages, load more buttons |
+| Feature               | Virtual Scroll                     | JS Code Scrolling                    |
+| --------------------- | ---------------------------------- | ------------------------------------ |
+| **Use Case**          | Content replaced during scroll     | Content appended or simple scroll    |
+| **Configuration**     | `VirtualScrollConfig` object       | `js_code` with scroll commands       |
+| **Automatic Merging** | Yes - merges all unique content    | No - captures final state only       |
+| **Best For**          | Twitter, Instagram, virtual tables | Traditional pages, load more buttons |
 
 For detailed examples and configuration options, see the [Virtual Scroll documentation](../advanced/virtual-scroll.md).

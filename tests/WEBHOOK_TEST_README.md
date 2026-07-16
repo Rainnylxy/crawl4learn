@@ -43,27 +43,32 @@ cd tests
 ### What the Script Does
 
 #### Step 1: Branch Management
+
 - Saves your current branch
 - Fetches the webhook feature branch from remote
 - Switches to the webhook feature branch
 
 #### Step 2: Environment Setup
+
 - Activates your existing virtual environment
 - Installs dependencies from `deploy/docker/requirements.txt`
 - Installs Flask for the webhook receiver
 
 #### Step 3: Service Startup
+
 - Starts Redis server on port 6379
 - Starts Crawl4AI server on port 11235
 - Waits for server health check to pass
 
 #### Step 4: Webhook Test
+
 - Creates a webhook receiver on port 8080
 - Submits a crawl job for `https://example.com` with webhook config
 - Waits for webhook notification (60s timeout)
 - Verifies webhook payload contains expected data
 
 #### Step 5: Cleanup
+
 - Stops webhook receiver
 - Stops Crawl4AI server
 - Stops Redis server
@@ -138,6 +143,7 @@ tail -100 /tmp/crawl4ai_server.log
 ```
 
 Common issues:
+
 - Port 11235 already in use: `lsof -ti:11235 | xargs kill -9`
 - Missing dependencies: Check that all packages are installed
 
@@ -167,6 +173,7 @@ The script has a 60-second timeout for webhook delivery. If the webhook isn't re
 ### Script Interruption
 
 If the script is interrupted (Ctrl+C), cleanup happens automatically via trap. The script will:
+
 - Kill all background processes
 - Stop Redis
 - Return to your original branch

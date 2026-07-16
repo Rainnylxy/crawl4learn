@@ -35,11 +35,13 @@ The server will start on `http://localhost:8000` with a beautiful web interface!
 Once the server is running, open your browser and go to `http://localhost:8000` to access the modern web interface!
 
 #### Pages:
+
 - **Scrape Data**: Enter URLs and queries to extract structured data
 - **Models**: Manage your AI model configurations (add, list, delete)
 - **API Requests**: View history of all scraping requests with cURL commands
 
 #### Features:
+
 - **Minimalist Design**: Clean black-and-white theme inspired by modern web apps
 - **Real-time Results**: See extracted data in formatted JSON
 - **Copy to Clipboard**: Easy copying of results
@@ -84,11 +86,13 @@ curl -X DELETE "http://localhost:8000/models/my-gemini"
 ## Scraping Approaches
 
 ### 1. Schema-based Scraping (Faster)
+
 - Generates CSS selectors for targeted extraction
 - Caches schemas for repeated requests
 - Faster execution for structured websites
 
 ### 2. LLM-based Scraping (More Flexible)
+
 - Direct LLM extraction without schema generation
 - More flexible for complex or dynamic content
 - Better for unstructured data extraction
@@ -229,6 +233,7 @@ The system automatically caches generated schemas based on URL and query combina
 ### API Request History
 
 All API requests are automatically saved with:
+
 - Request details (URL, query, model used)
 - Response data
 - Timestamp
@@ -237,6 +242,7 @@ All API requests are automatically saved with:
 ### Duplicate Prevention
 
 The system prevents saving duplicate requests:
+
 - Same URL + query combinations are not saved multiple times
 - Returns existing request ID for duplicates
 - Keeps the API request history clean

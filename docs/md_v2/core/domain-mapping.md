@@ -6,13 +6,13 @@ Domain mapping goes beyond URL seeding. Instead of checking a single sitemap or 
 
 ### DomainMapper vs AsyncUrlSeeder
 
-| Aspect | AsyncUrlSeeder | DomainMapper |
-|--------|---------------|--------------|
-| **Scope** | Single host, listed URLs only | Entire domain + all subdomains |
-| **Sources** | Sitemap + Common Crawl | 8 sources (sitemap, CC, Wayback, crt.sh, probe, robots.txt, feeds, homepage) |
-| **Subdomain discovery** | No | Yes (Certificate Transparency, DNS, Wayback) |
-| **Soft-404 detection** | No | Yes (fingerprints SPA sites) |
-| **Best for** | Known domains with good sitemaps | Full domain reconnaissance |
+| Aspect                  | AsyncUrlSeeder                   | DomainMapper                                                                 |
+| ----------------------- | -------------------------------- | ---------------------------------------------------------------------------- |
+| **Scope**               | Single host, listed URLs only    | Entire domain + all subdomains                                               |
+| **Sources**             | Sitemap + Common Crawl           | 8 sources (sitemap, CC, Wayback, crt.sh, probe, robots.txt, feeds, homepage) |
+| **Subdomain discovery** | No                               | Yes (Certificate Transparency, DNS, Wayback)                                 |
+| **Soft-404 detection**  | No                               | Yes (fingerprints SPA sites)                                                 |
+| **Best for**            | Known domains with good sitemaps | Full domain reconnaissance                                                   |
 
 **Real-world example**: For `superdesign.dev`, AsyncUrlSeeder found 4 URLs. DomainMapper found **171 URLs across 11 hosts** — including docs, API servers, staging environments, and analytics dashboards that no sitemap listed.
 
@@ -186,6 +186,7 @@ Many modern SPAs return HTTP 200 for every URL — even pages that don't exist. 
 3. **Filtering**: When probing real paths, compares against the fingerprint. If they match → soft-404, filtered out
 
 For `superdesign.dev`, this correctly:
+
 - Blocked **all 25+ probe paths** on `app.superdesign.dev` (SPA that returns 200 for everything)
 - Blocked **476 sitemap URLs** from `app.superdesign.dev` (all rendering the same shell)
 - Kept all 19 legitimate URLs from `docs.superdesign.dev`
@@ -202,26 +203,26 @@ config = DomainMapperConfig(soft_404_detection=False)
 
 ### DomainMapperConfig
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `source` | str | `"sitemap+cc+crt+probe"` | Discovery sources joined by `+` |
-| `max_urls` | int | `-1` | Maximum URLs to return (-1 = unlimited) |
-| `concurrency` | int | `50` | Max concurrent requests across all hosts |
-| `hits_per_sec` | int | `10` | Rate limit in requests/second |
-| `force` | bool | `False` | Bypass all caches |
-| `extract_head` | bool | `True` | Fetch and parse `<head>` metadata |
-| `filter_nonsense_urls` | bool | `True` | Filter static assets and utility URLs |
-| `soft_404_detection` | bool | `True` | Fingerprint and filter soft-404 pages |
-| `query` | str | `None` | BM25 relevance query (requires `extract_head=True`) |
-| `score_threshold` | float | `None` | Minimum relevance score (0.0-1.0) |
-| `scoring_method` | str | `"bm25"` | Scoring algorithm |
-| `probe_paths` | List[str] | `None` | Extra paths to probe on each host |
-| `common_subdomains` | List[str] | `None` | Extra subdomain prefixes to guess |
-| `use_browser_for_homepage` | bool | `False` | Use Playwright for JS-rendered homepages |
-| `verbose` | bool | `None` | Override logger verbose setting |
-| `cache_ttl_hours` | int | `24` | Hours before cached results expire |
-| `dns_timeout` | float | `3.0` | Timeout for DNS resolution (seconds) |
-| `http_timeout` | float | `10.0` | Timeout for HTTP requests (seconds) |
+| Parameter                  | Type      | Default                  | Description                                         |
+| -------------------------- | --------- | ------------------------ | --------------------------------------------------- |
+| `source`                   | str       | `"sitemap+cc+crt+probe"` | Discovery sources joined by `+`                     |
+| `max_urls`                 | int       | `-1`                     | Maximum URLs to return (-1 = unlimited)             |
+| `concurrency`              | int       | `50`                     | Max concurrent requests across all hosts            |
+| `hits_per_sec`             | int       | `10`                     | Rate limit in requests/second                       |
+| `force`                    | bool      | `False`                  | Bypass all caches                                   |
+| `extract_head`             | bool      | `True`                   | Fetch and parse `<head>` metadata                   |
+| `filter_nonsense_urls`     | bool      | `True`                   | Filter static assets and utility URLs               |
+| `soft_404_detection`       | bool      | `True`                   | Fingerprint and filter soft-404 pages               |
+| `query`                    | str       | `None`                   | BM25 relevance query (requires `extract_head=True`) |
+| `score_threshold`          | float     | `None`                   | Minimum relevance score (0.0-1.0)                   |
+| `scoring_method`           | str       | `"bm25"`                 | Scoring algorithm                                   |
+| `probe_paths`              | List[str] | `None`                   | Extra paths to probe on each host                   |
+| `common_subdomains`        | List[str] | `None`                   | Extra subdomain prefixes to guess                   |
+| `use_browser_for_homepage` | bool      | `False`                  | Use Playwright for JS-rendered homepages            |
+| `verbose`                  | bool      | `None`                   | Override logger verbose setting                     |
+| `cache_ttl_hours`          | int       | `24`                     | Hours before cached results expire                  |
+| `dns_timeout`              | float     | `3.0`                    | Timeout for DNS resolution (seconds)                |
+| `http_timeout`             | float     | `10.0`                   | Timeout for HTTP requests (seconds)                 |
 
 ### Output Format
 

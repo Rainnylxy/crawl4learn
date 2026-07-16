@@ -2,14 +2,14 @@ name: Release Pipeline
 on:
   push:
     tags:
-      - 'v*'
-      - '!test-v*'  # Exclude test tags
+      - "v*"
+      - "!test-v*" # Exclude test tags
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Required for creating releases
+      contents: write # Required for creating releases
 
     steps:
       - name: Checkout code
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Extract version from tag
         id: get_version

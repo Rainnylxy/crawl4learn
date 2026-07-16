@@ -7,6 +7,7 @@ This document explains the builtin browser feature in Crawl4AI and how to use it
 The builtin browser is a persistent Chrome instance that Crawl4AI manages for you. It runs in the background and can be used by multiple crawling operations, eliminating the need to start and stop browsers for each crawl.
 
 Benefits include:
+
 - **Faster startup times** - The browser is already running, so your scripts start faster
 - **Shared resources** - All your crawling scripts can use the same browser instance
 - **Simplified management** - No need to worry about CDP URLs or browser processes
@@ -36,6 +37,7 @@ result = await crawler.arun("https://example.com")
 ```
 
 Key points:
+
 1. Set `browser_mode="builtin"` in your BrowserConfig
 2. No need for explicit `start()` call - the crawler will automatically connect to the builtin browser
 3. No need to use a context manager or call `close()` - the browser stays running
@@ -93,12 +95,14 @@ python builtin_browser_example.py
 ## When to Use
 
 The builtin browser is ideal for:
+
 - Scripts that run frequently
 - Development and testing workflows
 - Applications that need to minimize startup time
 - Systems where you want to manage browser instances centrally
 
 You might not want to use it when:
+
 - Running one-off scripts
 - When you need different browser configurations for different tasks
 - In environments where persistent processes are not allowed
@@ -108,11 +112,13 @@ You might not want to use it when:
 If you encounter issues:
 
 1. Check the browser status:
+
    ```
    crwl browser status
    ```
 
 2. Try restarting it:
+
    ```
    crwl browser restart
    ```

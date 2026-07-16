@@ -619,6 +619,7 @@ Our color palette is built around a terminal-dark aesthetic with vibrant cyan an
             <p class="color-usage">Secondary accents, keywords, highlights</p>
         </div>
     </div>
+
 </div>
 
 ### Background Colors
@@ -659,6 +660,7 @@ Our color palette is built around a terminal-dark aesthetic with vibrant cyan an
             <p class="color-usage">Block elements, alternate rows</p>
         </div>
     </div>
+
 </div>
 
 ### Text Colors
@@ -699,6 +701,7 @@ Our color palette is built around a terminal-dark aesthetic with vibrant cyan an
             <p class="color-usage">Disabled states, comments, subtle text</p>
         </div>
     </div>
+
 </div>
 
 ### Semantic Colors
@@ -739,6 +742,7 @@ Our color palette is built around a terminal-dark aesthetic with vibrant cyan an
             <p class="color-usage">Info messages, external links</p>
         </div>
     </div>
+
 </div>
 
 ---
@@ -753,11 +757,12 @@ Our typography system is built around **Dank Mono**, a monospace font that reinf
 ### Font Family
 
 ```css
---font-primary: 'Dank Mono', dm, Monaco, Courier New, monospace;
---font-code: 'Dank Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+--font-primary: "Dank Mono", dm, Monaco, Courier New, monospace;
+--font-code: "Dank Mono", "Monaco", "Menlo", "Consolas", monospace;
 ```
 
 **Font Weights:**
+
 - Regular: 400
 - Bold: 700
 - Italic: 400 (italic variant)
@@ -873,10 +878,11 @@ Our typography system is built around **Dank Mono**, a monospace font that reinf
                 <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
             </div>
             <pre style="margin: 0; padding: 1rem; background: #070708;"><code>&lt;button class="brand-btn brand-btn-secondary"&gt;
-  View Documentation
+
+View Documentation
 &lt;/button&gt;</code></pre>
-        </div>
-    </div>
+</div>
+</div>
 
     <div class="component-card">
         <h3 class="component-title">Accent Button</h3>
@@ -890,10 +896,11 @@ Our typography system is built around **Dank Mono**, a monospace font that reinf
                 <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
             </div>
             <pre style="margin: 0; padding: 1rem; background: #070708;"><code>&lt;button class="brand-btn brand-btn-accent"&gt;
-  Try Beta Features
+
+Try Beta Features
 &lt;/button&gt;</code></pre>
-        </div>
-    </div>
+</div>
+</div>
 
     <div class="component-card">
         <h3 class="component-title">Ghost Button</h3>
@@ -907,10 +914,11 @@ Our typography system is built around **Dank Mono**, a monospace font that reinf
                 <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
             </div>
             <pre style="margin: 0; padding: 1rem; background: #070708;"><code>&lt;button class="brand-btn brand-btn-ghost"&gt;
-  Learn More
+
+Learn More
 &lt;/button&gt;</code></pre>
-        </div>
-    </div>
+</div>
+</div>
 </div>
 
 ### Badges & Status Indicators
@@ -950,6 +958,7 @@ Our typography system is built around **Dank Mono**, a monospace font that reinf
         <p class="brand-card-description">Generate optimized context files for your favorite LLM when working with Crawl4AI. Get focused, relevant documentation based on your needs.</p>
         <button class="brand-btn brand-btn-primary" style="margin-top: 1rem;">Launch Builder →</button>
     </div>
+
 </div>
 
 <div class="code-showcase" style="margin-top: 2rem;">
@@ -1041,35 +1050,38 @@ Our spacing system is based on multiples of **10px** for consistency and ease of
 ### Layout Patterns
 
 #### Terminal Container
+
 Full-height, flex-column layout with sticky header
 
 ```css
 .terminal-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 ```
 
 #### Content Grid
+
 Auto-fit responsive grid for cards and components
 
 ```css
 .component-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }
 ```
 
 #### Centered Content
+
 Maximum width with auto margins for centered layouts
 
 ```css
 .content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 ```
 
@@ -1083,6 +1095,7 @@ Maximum width with auto margins for centered layouts
 ### When to Use Each Style
 
 **Documentation Pages (`docs/md_v2/core`, `/advanced`, etc.)**
+
 - Use main documentation styles from `styles.css` and `layout.css`
 - Terminal theme with sidebar navigation
 - Dense, informative content
@@ -1090,6 +1103,7 @@ Maximum width with auto margins for centered layouts
 - Focus on readability and technical accuracy
 
 **Landing Pages (`docs/md_v2/apps/crawl4ai-assistant`, etc.)**
+
 - Use `assistant.css` style approach
 - Hero sections with gradients
 - Feature cards with hover effects
@@ -1098,6 +1112,7 @@ Maximum width with auto margins for centered layouts
 - Marketing-focused, visually engaging
 
 **App Home (`docs/md_v2/apps/index.md`)**
+
 - Grid-based card layouts
 - Status badges
 - Call-to-action buttons
@@ -1105,6 +1120,7 @@ Maximum width with auto margins for centered layouts
 - Mix of informational and promotional
 
 **Interactive Apps (`docs/md_v2/apps/llmtxt`, `/c4a-script`)**
+
 - Full-screen application layouts
 - Interactive controls
 - Real-time feedback
@@ -1112,6 +1128,7 @@ Maximum width with auto margins for centered layouts
 - Functional over decorative
 
 **Chrome Extension (`popup.css`)**
+
 - Compact, fixed-width design (380px)
 - Clear mode selection
 - Session indicators
@@ -1140,6 +1157,7 @@ Maximum width with auto margins for centered layouts
             Don't use arbitrary colors not in the brand palette
         </div>
     </div>
+
 </div>
 
 <div class="guideline-grid">
@@ -1166,6 +1184,7 @@ Maximum width with auto margins for centered layouts
             Don't use non-monospace fonts (breaks terminal feel)
         </div>
     </div>
+
 </div>
 
 <div class="guideline-grid">
@@ -1193,6 +1212,7 @@ Maximum width with auto margins for centered layouts
             Don't put status indicators in plain text
         </div>
     </div>
+
 </div>
 
 ---
@@ -1218,8 +1238,8 @@ All interactive elements must have visible focus indicators:
 ```css
 button:focus,
 a:focus {
-    outline: 2px solid #50ffff;
-    outline-offset: 2px;
+  outline: 2px solid #50ffff;
+  outline-offset: 2px;
 }
 ```
 
@@ -1229,10 +1249,10 @@ Respect `prefers-reduced-motion` for users who need it:
 
 ```css
 @media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-    }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 ```
 
@@ -1247,41 +1267,41 @@ Use these CSS variables for consistency across all styles:
 
 ```css
 :root {
-    /* Colors */
-    --primary-color: #50ffff;
-    --primary-dimmed: #09b5a5;
-    --primary-green: #0fbbaa;
-    --accent-color: #f380f5;
+  /* Colors */
+  --primary-color: #50ffff;
+  --primary-dimmed: #09b5a5;
+  --primary-green: #0fbbaa;
+  --accent-color: #f380f5;
 
-    /* Backgrounds */
-    --background-color: #070708;
-    --bg-secondary: #1a1a1a;
-    --code-bg-color: #3f3f44;
-    --border-color: #3f3f44;
+  /* Backgrounds */
+  --background-color: #070708;
+  --bg-secondary: #1a1a1a;
+  --code-bg-color: #3f3f44;
+  --border-color: #3f3f44;
 
-    /* Text */
-    --font-color: #e8e9ed;
-    --secondary-color: #d5cec0;
-    --tertiary-color: #a3abba;
+  /* Text */
+  --font-color: #e8e9ed;
+  --secondary-color: #d5cec0;
+  --tertiary-color: #a3abba;
 
-    /* Semantic */
-    --success-color: #50ff50;
-    --error-color: #ff3c74;
-    --warning-color: #f59e0b;
+  /* Semantic */
+  --success-color: #50ff50;
+  --error-color: #ff3c74;
+  --warning-color: #f59e0b;
 
-    /* Typography */
-    --font-primary: 'Dank Mono', dm, Monaco, Courier New, monospace;
-    --global-font-size: 14px;
-    --global-line-height: 1.6;
+  /* Typography */
+  --font-primary: "Dank Mono", dm, Monaco, Courier New, monospace;
+  --global-font-size: 14px;
+  --global-line-height: 1.6;
 
-    /* Spacing */
-    --global-space: 10px;
+  /* Spacing */
+  --global-space: 10px;
 
-    /* Layout */
-    --header-height: 65px;
-    --sidebar-width: 280px;
-    --toc-width: 340px;
-    --content-max-width: 90em;
+  /* Layout */
+  --header-height: 65px;
+  --sidebar-width: 280px;
+  --toc-width: 340px;
+  --content-max-width: 90em;
 }
 ```
 

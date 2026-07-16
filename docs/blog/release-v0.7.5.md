@@ -1,6 +1,6 @@
 # 🚀 Crawl4AI v0.7.5: The Docker Hooks & Security Update
 
-*September 29, 2025 • 8 min read*
+_September 29, 2025 • 8 min read_
 
 ---
 
@@ -74,6 +74,7 @@ if result.get('success'):
 ```
 
 **Available Hook Points:**
+
 - `on_browser_created`: Browser setup
 - `on_page_context_created`: Page context configuration
 - `before_goto`: Pre-navigation setup
@@ -155,6 +156,7 @@ if results and results.success:
 ```
 
 **Benefits of Function-Based Hooks:**
+
 - ✅ Full IDE support (autocomplete, syntax highlighting)
 - ✅ Type checking and linting
 - ✅ Easier to test and debug
@@ -205,6 +207,7 @@ response = requests.post("http://localhost:11235/md", json=llm_payload)
 ```
 
 **New Features:**
+
 - Custom `temperature` parameter for creativity control
 - `base_url` for custom API endpoints
 - Multi-provider environment variable support
@@ -252,6 +255,7 @@ async def test_https_preservation():
 ## 🛠️ Bug Fixes and Improvements
 
 ### Major Fixes
+
 - **URL Processing**: Fixed '+' sign preservation in query parameters (#1332)
 - **Proxy Configuration**: Enhanced proxy string parsing (old `proxy` parameter deprecated)
 - **Docker Error Handling**: Comprehensive error messages with status codes
@@ -264,7 +268,9 @@ async def test_https_preservation():
 - **Performance Issues**: Resolved backoff strategy failures and timeout handling (#989)
 
 ### Community-Reported Issues Fixed
+
 This release addresses multiple issues reported by the community through GitHub issues and Discord discussions:
+
 - Fixed browser configuration reference errors
 - Resolved dependency conflicts with cssselect
 - Improved error messaging for failed authentications
@@ -272,6 +278,7 @@ This release addresses multiple issues reported by the community through GitHub 
 - Fixed edge cases in URL normalization
 
 ### Configuration Updates
+
 ```python
 # Old proxy config (deprecated)
 # browser_config = BrowserConfig(proxy="http://proxy:8080")
@@ -304,12 +311,14 @@ docker run -p 11235:11235 unclecode/crawl4ai:latest
 ```
 
 **Try the Demo:**
+
 ```bash
 # Run working examples
 python docs/releases_review/demo_v0.7.5.py
 ```
 
 **Resources:**
+
 - 📖 Documentation: [docs.crawl4ai.com](https://docs.crawl4ai.com)
 - 🐙 GitHub: [github.com/unclecode/crawl4ai](https://github.com/unclecode/crawl4ai)
 - 💬 Discord: [discord.gg/crawl4ai](https://discord.gg/jP8KfhDhyN)

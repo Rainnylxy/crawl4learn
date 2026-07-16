@@ -1,6 +1,6 @@
 # 🚀 Crawl4AI v0.7.4: The Intelligent Table Extraction & Performance Update
 
-*August 17, 2025 • 6 min read*
+_August 17, 2025 • 6 min read_
 
 ---
 
@@ -27,7 +27,7 @@ Today I'm releasing Crawl4AI v0.7.4—the Intelligent Table Extraction & Perform
 ```python
 from crawl4ai import (
     AsyncWebCrawler,
-    CrawlerRunConfig, 
+    CrawlerRunConfig,
     LLMConfig,
     LLMTableExtraction,
     CacheMode
@@ -61,14 +61,14 @@ config = CrawlerRunConfig(
 async with AsyncWebCrawler() as crawler:
     # Extract complex tables with intelligence
     result = await crawler.arun(
-        "https://en.wikipedia.org/wiki/List_of_countries_by_GDP", 
+        "https://en.wikipedia.org/wiki/List_of_countries_by_GDP",
         config=config
     )
-    
+
     # Access extracted tables directly
     for i, table in enumerate(result.tables):
         print(f"Table {i}: {len(table['data'])} rows × {len(table['headers'])} columns")
-        
+
         # Convert to pandas DataFrame instantly
         import pandas as pd
         df = pd.DataFrame(table['data'], columns=table['headers'])
@@ -117,6 +117,7 @@ for table in result.tables:
 - **Metadata Extraction**: Captures table context, captions, and relationships
 
 **Expected Real-World Impact:**
+
 - **Financial Analysis**: Extract complex earnings tables and financial statements
 - **Research & Academia**: Process large datasets from Wikipedia, research papers
 - **E-commerce**: Handle product comparison tables with complex layouts
@@ -139,19 +140,20 @@ async with AsyncWebCrawler() as crawler:
     # These will now run with true concurrency
     urls = [
         "https://httpbin.org/delay/1",
-        "https://httpbin.org/delay/1", 
+        "https://httpbin.org/delay/1",
         "https://httpbin.org/delay/1",
         "https://httpbin.org/delay/1"
     ]
-    
+
     # Processes in truly parallel fashion
     results = await crawler.arun_many(urls)
-    
+
     # Performance improvement: ~4x faster for fast-completing tasks
     print(f"Processed {len(results)} URLs with true concurrency")
 ```
 
 **Expected Real-World Impact:**
+
 - **API Crawling**: 3-4x faster processing of REST endpoints and API documentation
 - **Batch URL Processing**: Significant speedup for large URL lists
 - **Monitoring Systems**: Faster health checks and status page monitoring
@@ -195,7 +197,7 @@ async with AsyncWebCrawler(config=browser_config) as crawler:
 # Now properly handles all URL formats
 urls = [
     "https://example.com",
-    "raw://static-html-content", 
+    "raw://static-html-content",
     "raw:file://local-file.html"
 ]
 
@@ -219,7 +221,7 @@ from crawl4ai import BrowserConfig, ProxyConfig
 # String format
 proxy_config = ProxyConfig("http://proxy.example.com:8080")
 
-# Dictionary format  
+# Dictionary format
 proxy_config = ProxyConfig({
     "server": "http://proxy.example.com:8080",
     "username": "user",
@@ -246,7 +248,7 @@ This release includes several Docker and infrastructure improvements:
 Enhanced documentation includes:
 
 - **LLM Table Extraction Guide**: Comprehensive examples and best practices
-- **Migration Documentation**: Updated patterns for new table extraction methods  
+- **Migration Documentation**: Updated patterns for new table extraction methods
 - **Docker Deployment**: Complete deployment guide with examples
 - **Performance Optimization**: Guidelines for concurrent crawling
 
@@ -263,8 +265,8 @@ Thanks to our contributors and community for feedback, bug reports, and feature 
 
 ---
 
-*Crawl4AI v0.7.4 delivers intelligent table extraction and significant performance improvements. The new LLMTableExtraction strategy handles complex tables that were previously impossible to process, while concurrency improvements make batch operations 3-4x faster. Try the intelligent table extraction—it's a game changer for data extraction workflows!*
+_Crawl4AI v0.7.4 delivers intelligent table extraction and significant performance improvements. The new LLMTableExtraction strategy handles complex tables that were previously impossible to process, while concurrency improvements make batch operations 3-4x faster. Try the intelligent table extraction—it's a game changer for data extraction workflows!_
 
 **Happy Crawling! 🕷️**
 
-*- The Crawl4AI Team*
+_- The Crawl4AI Team_

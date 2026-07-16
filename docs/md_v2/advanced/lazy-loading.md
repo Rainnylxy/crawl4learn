@@ -4,7 +4,7 @@ Many websites now load images **lazily** as you scroll. If you need to ensure th
 
 1. **`wait_for_images=True`** – Wait for images to fully load.  
 2. **`scan_full_page`** – Force the crawler to scroll the entire page, triggering lazy loads.  
-3. **`scroll_delay`** – Add small delays between scroll steps.  
+3. **`scroll_delay`** – Add small delays between scroll steps.
 
 **Note**: If the site requires multiple “Load More” triggers or complex interactions, see the [Page Interaction docs](../core/page-interaction.md). For sites with virtual scrolling (Twitter/Instagram style), see the [Virtual Scroll docs](virtual-scroll.md).
 
@@ -33,7 +33,7 @@ async def main():
 
     async with AsyncWebCrawler(config=BrowserConfig(headless=True)) as crawler:
         result = await crawler.arun("https://www.example.com/gallery", config=config)
-        
+
         if result.success:
             images = result.media.get("images", [])
             print("Images found:", len(images))
@@ -49,15 +49,15 @@ if __name__ == "__main__":
 **Explanation**:
 
 - **`wait_for_images=True`**  
-  The crawler tries to ensure images have finished loading before finalizing the HTML.  
+  The crawler tries to ensure images have finished loading before finalizing the HTML.
 - **`scan_full_page=True`**  
-  Tells the crawler to attempt scrolling from top to bottom. Each scroll step helps trigger lazy loading.  
+  Tells the crawler to attempt scrolling from top to bottom. Each scroll step helps trigger lazy loading.
 - **`scroll_delay=0.5`**  
   Pause half a second between each scroll step. Helps the site load images before continuing.
 
 **When to Use**:
 
-- **Lazy-Loading**: If images appear only when the user scrolls into view, `scan_full_page` + `scroll_delay` helps the crawler see them.  
+- **Lazy-Loading**: If images appear only when the user scrolls into view, `scan_full_page` + `scroll_delay` helps the crawler see them.
 - **Heavier Pages**: If a page is extremely long, be mindful that scanning the entire page can be slow. Adjust `scroll_delay` or the max scroll steps as needed.
 
 ---
@@ -86,18 +86,22 @@ This approach ensures you see **all** images from the main domain while ignoring
 
 ## Tips & Troubleshooting
 
-1. **Long Pages**  
-   - Setting `scan_full_page=True` on extremely long or infinite-scroll pages can be resource-intensive.  
-   - Consider using [hooks](../core/page-interaction.md) or specialized logic to load specific sections or “Load More” triggers repeatedly.
+1. **Long Pages**
 
-2. **Mixed Image Behavior**  
-   - Some sites load images in batches as you scroll. If you’re missing images, increase your `scroll_delay` or call multiple partial scrolls in a loop with JS code or hooks.
+- Setting `scan_full_page=True` on extremely long or infinite-scroll pages can be resource-intensive.
+- Consider using [hooks](../core/page-interaction.md) or specialized logic to load specific sections or “Load More” triggers repeatedly.
 
-3. **Combining with Dynamic Wait**  
-   - If the site has a placeholder that only changes to a real image after a certain event, you might do `wait_for="css:img.loaded"` or a custom JS `wait_for`.
+2. **Mixed Image Behavior**
 
-4. **Caching**  
-   - If `cache_mode` is enabled, repeated crawls might skip some network fetches. If you suspect caching is missing new images, set `cache_mode=CacheMode.BYPASS` for fresh fetches.
+- Some sites load images in batches as you scroll. If you’re missing images, increase your `scroll_delay` or call multiple partial scrolls in a loop with JS code or hooks.
+
+3. **Combining with Dynamic Wait**
+
+- If the site has a placeholder that only changes to a real image after a certain event, you might do `wait_for="css:img.loaded"` or a custom JS `wait_for`.
+
+4. **Caching**
+
+- If `cache_mode` is enabled, repeated crawls might skip some network fetches. If you suspect caching is missing new images, set `cache_mode=CacheMode.BYPASS` for fresh fetches.
 
 ---
 

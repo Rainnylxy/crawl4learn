@@ -8,24 +8,31 @@
 ## Advisory 1: Remote Code Execution via Hooks Parameter
 
 ### Title
+
 Remote Code Execution in Docker API via Hooks Parameter
 
 ### Severity
+
 Critical
 
 ### CVSS Score
+
 10.0 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H)
 
 ### CWE
+
 CWE-94 (Improper Control of Generation of Code)
 
 ### Package
+
 crawl4ai (Docker API deployment)
 
 ### Affected Versions
+
 < 0.8.0
 
 ### Patched Versions
+
 0.8.0
 
 ### Description
@@ -33,6 +40,7 @@ crawl4ai (Docker API deployment)
 A critical remote code execution vulnerability exists in the Crawl4AI Docker API deployment. The `/crawl` endpoint accepts a `hooks` parameter containing Python code that is executed using `exec()`. The `__import__` builtin was included in the allowed builtins, allowing attackers to import arbitrary modules and execute system commands.
 
 **Attack Vector:**
+
 ```json
 POST /crawl
 {
@@ -48,6 +56,7 @@ POST /crawl
 ### Impact
 
 An unauthenticated attacker can:
+
 - Execute arbitrary system commands
 - Read/write files on the server
 - Exfiltrate sensitive data (environment variables, API keys)
@@ -82,24 +91,31 @@ Discovered by Neo by ProjectDiscovery (https://projectdiscovery.io)
 ## Advisory 2: Local File Inclusion via file:// URLs
 
 ### Title
+
 Local File Inclusion in Docker API via file:// URLs
 
 ### Severity
+
 High
 
 ### CVSS Score
+
 8.6 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N)
 
 ### CWE
+
 CWE-22 (Improper Limitation of a Pathname to a Restricted Directory)
 
 ### Package
+
 crawl4ai (Docker API deployment)
 
 ### Affected Versions
+
 < 0.8.0
 
 ### Patched Versions
+
 0.8.0
 
 ### Description
@@ -107,6 +123,7 @@ crawl4ai (Docker API deployment)
 A local file inclusion vulnerability exists in the Crawl4AI Docker API. The `/execute_js`, `/screenshot`, `/pdf`, and `/html` endpoints accept `file://` URLs, allowing attackers to read arbitrary files from the server filesystem.
 
 **Attack Vector:**
+
 ```json
 POST /execute_js
 {
@@ -118,6 +135,7 @@ POST /execute_js
 ### Impact
 
 An unauthenticated attacker can:
+
 - Read sensitive files (`/etc/passwd`, `/etc/shadow`, application configs)
 - Access environment variables via `/proc/self/environ`
 - Discover internal application structure
@@ -134,6 +152,7 @@ An unauthenticated attacker can:
 ### Fix Details
 
 Added URL scheme validation to block:
+
 - `file://` URLs
 - `javascript:` URLs
 - `data:` URLs

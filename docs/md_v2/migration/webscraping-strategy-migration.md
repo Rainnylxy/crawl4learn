@@ -29,9 +29,11 @@ config = CrawlerRunConfig(
 You have three options:
 
 ### Option 1: Do Nothing (Recommended)
+
 Your code will continue to work. `WebScrapingStrategy` is permanently aliased to `LXMLWebScrapingStrategy`.
 
 ### Option 2: Update Imports (Optional)
+
 For clarity, you can update your imports:
 
 ```python
@@ -45,6 +47,7 @@ strategy = LXMLWebScrapingStrategy()
 ```
 
 ### Option 3: Use Default Configuration
+
 Since `LXMLWebScrapingStrategy` is the default, you can omit the strategy parameter:
 
 ```python
@@ -82,6 +85,7 @@ class MyCustomStrategy(WebScrapingStrategy):
 ## Performance Benefits
 
 By consolidating to LXML:
+
 - **10-20x faster** HTML parsing for large documents
 - **Lower memory usage**
 - **Consistent behavior** across all use cases

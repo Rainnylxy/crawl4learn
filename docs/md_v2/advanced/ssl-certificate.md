@@ -1,6 +1,6 @@
 # `SSLCertificate` Reference
 
-The **`SSLCertificate`** class encapsulates an SSL certificate’s data and allows exporting it in various formats (PEM, DER, JSON, or text). It’s used within **Crawl4AI** whenever you set **`fetch_ssl_certificate=True`** in your **`CrawlerRunConfig`**.  
+The **`SSLCertificate`** class encapsulates an SSL certificate’s data and allows exporting it in various formats (PEM, DER, JSON, or text). It’s used within **Crawl4AI** whenever you set **`fetch_ssl_certificate=True`** in your **`CrawlerRunConfig`**.
 
 ## 1. Overview
 
@@ -30,11 +30,12 @@ class SSLCertificate:
 ```
 
 ### Typical Use Case
+
 1. You **enable** certificate fetching in your crawl by:
    ```python
    CrawlerRunConfig(fetch_ssl_certificate=True, ...)
    ```
-2. After `arun()`, if `result.ssl_certificate` is present, it’s an instance of **`SSLCertificate`**.  
+2. After `arun()`, if `result.ssl_certificate` is present, it’s an instance of **`SSLCertificate`**.
 3. You can **read** basic properties (issuer, subject, validity) or **export** them in multiple formats.
 
 ---
@@ -42,6 +43,7 @@ class SSLCertificate:
 ## 2. Construction & Fetching
 
 ### 2.1 **`from_url(url, timeout=10)`**
+
 Manually load an SSL certificate from a given URL (port 443). Typically used internally, but you can call it directly if you want:
 
 ```python
@@ -51,6 +53,7 @@ if cert:
 ```
 
 ### 2.2 **`from_file(file_path)`**
+
 Load from a file containing certificate data in ASN.1 or DER. Rarely needed unless you have local cert files:
 
 ```python
@@ -58,6 +61,7 @@ cert = SSLCertificate.from_file("/path/to/cert.der")
 ```
 
 ### 2.3 **`from_binary(binary_data)`**
+
 Initialize from raw binary. E.g., if you captured it from a socket or another source:
 
 ```python
@@ -70,17 +74,18 @@ cert = SSLCertificate.from_binary(raw_bytes)
 
 After obtaining a **`SSLCertificate`** instance (e.g. `result.ssl_certificate` from a crawl), you can read:
 
-1. **`issuer`** *(dict)*  
-   - E.g. `{"CN": "My Root CA", "O": "..."}`
-2. **`subject`** *(dict)*  
-   - E.g. `{"CN": "example.com", "O": "ExampleOrg"}`
-3. **`valid_from`** *(str)*  
-   - NotBefore date/time. Often in ASN.1/UTC format.
-4. **`valid_until`** *(str)*  
-   - NotAfter date/time.
-5. **`fingerprint`** *(str)*  
-   - The SHA-256 digest (lowercase hex).  
-   - E.g. `"d14d2e..."`
+1. **`issuer`** _(dict)_
+
+- E.g. `{"CN": "My Root CA", "O": "..."}`
+  2. **`subject`** _(dict)_
+- E.g. `{"CN": "example.com", "O": "ExampleOrg"}`
+  3. **`valid_from`** _(str)_
+- NotBefore date/time. Often in ASN.1/UTC format.
+  4. **`valid_until`** _(str)_
+- NotAfter date/time.
+  5. **`fingerprint`** _(str)_
+- The SHA-256 digest (lowercase hex).
+- E.g. `"d14d2e..."`
 
 ---
 
@@ -89,17 +94,20 @@ After obtaining a **`SSLCertificate`** instance (e.g. `result.ssl_certificate` f
 Once you have a **`SSLCertificate`** object, you can **export** or **inspect** it:
 
 ### 4.1 **`to_json(filepath=None)` → `Optional[str]`**
-- Returns a JSON string containing the parsed certificate fields.  
+
+- Returns a JSON string containing the parsed certificate fields.
 - If `filepath` is provided, saves it to disk instead, returning `None`.
 
 **Usage**:
+
 ```python
 json_data = cert.to_json()  # returns JSON string
 cert.to_json("certificate.json")  # writes file, returns None
 ```
 
 ### 4.2 **`to_pem(filepath=None)` → `Optional[str]`**
-- Returns a PEM-encoded string (common for web servers).  
+
+- Returns a PEM-encoded string (common for web servers).
 - If `filepath` is provided, saves it to disk instead.
 
 ```python
@@ -108,7 +116,8 @@ cert.to_pem("/path/to/cert.pem")     # saved to file
 ```
 
 ### 4.3 **`to_der(filepath=None)` → `Optional[bytes]`**
-- Returns the original DER (binary ASN.1) bytes.  
+
+- Returns the original DER (binary ASN.1) bytes.
 - If `filepath` is specified, writes the bytes there instead.
 
 ```python
@@ -117,7 +126,8 @@ cert.to_der("certificate.der")
 ```
 
 ### 4.4 (Optional) **`export_as_text()`**
-- If you see a method like `export_as_text()`, it typically returns an OpenSSL-style textual representation.  
+
+- If you see a method like `export_as_text()`, it typically returns an OpenSSL-style textual representation.
 - Not always needed, but can help for debugging or manual inspection.
 
 ---
@@ -148,12 +158,12 @@ async def main():
             print("Issuer CN:", cert.issuer.get("CN", ""))
             print("Valid until:", cert.valid_until)
             print("Fingerprint:", cert.fingerprint)
-            
+
             # 2. Export
             cert.to_json(os.path.join(tmp_dir, "certificate.json"))
             cert.to_pem(os.path.join(tmp_dir, "certificate.pem"))
             cert.to_der(os.path.join(tmp_dir, "certificate.der"))
-    
+
 if __name__ == "__main__":
     asyncio.run(main())
 ```
@@ -172,8 +182,8 @@ if __name__ == "__main__":
 
 ### Summary
 
-- **`SSLCertificate`** is a convenience class for capturing and exporting the **TLS certificate** from your crawled site(s).  
-- Common usage is in the **`CrawlResult.ssl_certificate`** field, accessible after setting `fetch_ssl_certificate=True`.  
+- **`SSLCertificate`** is a convenience class for capturing and exporting the **TLS certificate** from your crawled site(s).
+- Common usage is in the **`CrawlResult.ssl_certificate`** field, accessible after setting `fetch_ssl_certificate=True`.
 - Offers quick access to essential certificate details (`issuer`, `subject`, `fingerprint`) and is easy to export (PEM, DER, JSON) for further analysis or server usage.
 
 Use it whenever you need **insight** into a site’s certificate or require some form of cryptographic or compliance check.

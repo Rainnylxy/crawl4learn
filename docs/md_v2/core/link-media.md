@@ -1,9 +1,9 @@
-# Link & Media 
+# Link & Media
 
 In this tutorial, you’ll learn how to:
 
-1. Extract links (internal, external) from crawled pages  
-2. Filter or exclude specific domains (e.g., social media or custom domains)  
+1. Extract links (internal, external) from crawled pages
+2. Filter or exclude specific domains (e.g., social media or custom domains)
 3. Access and ma### 3.2 Excluding Images
 
 #### Excluding External Images
@@ -29,14 +29,17 @@ crawler_cfg = CrawlerRunConfig(
 ```
 
 This setting removes all images very early in the processing pipeline, which significantly improves memory efficiency and processing speed. This is particularly useful when:
+
 - You don't need image data in your results
 - You're crawling image-heavy pages that cause memory issues
 - You want to focus only on text content
-- You need to maximize crawling speeddata (especially images) in the crawl result  
+- You need to maximize crawling speeddata (especially images) in the crawl result
+
 4. Configure your crawler to exclude or prioritize certain images
 
-> **Prerequisites**  
-> - You have completed or are familiar with the [AsyncWebCrawler Basics](../core/simple-crawling.md) tutorial.  
+> **Prerequisites**
+>
+> - You have completed or are familiar with the [AsyncWebCrawler Basics](../core/simple-crawling.md) tutorial.
 > - You can run Crawl4AI in your environment (Playwright, Python, etc.).
 
 ---
@@ -98,9 +101,9 @@ result.links = {
 }
 ```
 
-- **`href`**: The raw hyperlink URL.  
-- **`text`**: The link text (if any) within the `<a>` tag.  
-- **`title`**: The `title` attribute of the link (if present).  
+- **`href`**: The raw hyperlink URL.
+- **`text`**: The link text (if any) within the `<a>` tag.
+- **`title`**: The `title` attribute of the link (if present).
 - **`base_domain`**: The domain extracted from `href`. Helpful for filtering or grouping by domain.
 
 ---
@@ -132,7 +135,7 @@ async def extract_link_heads_example():
     Complete example showing link head extraction with scoring.
     This will crawl a documentation site and extract head content from internal links.
     """
-    
+
     # Configure link head extraction
     config = CrawlerRunConfig(
         # Enable link head extraction with detailed configuration
@@ -152,55 +155,55 @@ async def extract_link_heads_example():
         only_text=True,
         verbose=True
     )
-    
+
     async with AsyncWebCrawler() as crawler:
         # Crawl a documentation site (great for testing)
         result = await crawler.arun("https://docs.python.org/3/", config=config)
-        
+
         if result.success:
             print(f"✅ Successfully crawled: {result.url}")
             print(f"📄 Page title: {result.metadata.get('title', 'No title')}")
-            
+
             # Access links (now enhanced with head data and scores)
             internal_links = result.links.get("internal", [])
             external_links = result.links.get("external", [])
-            
+
             print(f"\n🔗 Found {len(internal_links)} internal links")
             print(f"🌍 Found {len(external_links)} external links")
-            
+
             # Count links with head data
-            links_with_head = [link for link in internal_links 
+            links_with_head = [link for link in internal_links
                              if link.get("head_data") is not None]
             print(f"🧠 Links with head data extracted: {len(links_with_head)}")
-            
+
             # Show the top 3 scoring links
             print(f"\n🏆 Top 3 Links with Full Scoring:")
             for i, link in enumerate(links_with_head[:3]):
                 print(f"\n{i+1}. {link['href']}")
                 print(f"   Link Text: '{link.get('text', 'No text')[:50]}...'")
-                
+
                 # Show all three score types
                 intrinsic = link.get('intrinsic_score')
-                contextual = link.get('contextual_score') 
+                contextual = link.get('contextual_score')
                 total = link.get('total_score')
-                
+
                 if intrinsic is not None:
                     print(f"   📊 Intrinsic Score: {intrinsic:.2f}/10.0 (URL quality & context)")
                 if contextual is not None:
                     print(f"   🎯 Contextual Score: {contextual:.3f} (BM25 relevance to query)")
                 if total is not None:
                     print(f"   ⭐ Total Score: {total:.3f} (combined final score)")
-                
+
                 # Show extracted head data
                 head_data = link.get("head_data", {})
                 if head_data:
                     title = head_data.get("title", "No title")
                     description = head_data.get("meta", {}).get("description", "No description")
-                    
+
                     print(f"   📰 Title: {title[:60]}...")
                     if description:
                         print(f"   📝 Description: {description[:80]}...")
-                    
+
                     # Show extraction status
                     status = link.get("head_extraction_status", "unknown")
                     print(f"   ✅ Extraction Status: {status}")
@@ -213,6 +216,7 @@ if __name__ == "__main__":
 ```
 
 **Expected Output:**
+
 ```
 ✅ Successfully crawled: https://docs.python.org/3/
 📄 Page title: 3.13.5 Documentation
@@ -242,27 +246,27 @@ from crawl4ai import LinkPreviewConfig
 link_preview_config = LinkPreviewConfig(
     # BASIC SETTINGS
     verbose=True,                    # Show detailed logs (recommended for learning)
-    
+
     # LINK FILTERING
     include_internal=True,           # Include same-domain links
     include_external=True,           # Include different-domain links
     max_links=50,                   # Maximum links to process (prevents overload)
-    
+
     # PATTERN FILTERING
     include_patterns=[               # Only process links matching these patterns
-        "*/docs/*", 
-        "*/api/*", 
+        "*/docs/*",
+        "*/api/*",
         "*/reference/*"
     ],
     exclude_patterns=[               # Skip links matching these patterns
         "*/login*",
         "*/admin*"
     ],
-    
+
     # PERFORMANCE SETTINGS
     concurrency=10,                  # How many links to process simultaneously
     timeout=5,                      # Seconds to wait per link
-    
+
     # RELEVANCE SCORING
     query="machine learning API",    # Query for BM25 contextual scoring
     score_threshold=0.3,            # Only include links above this score
@@ -274,6 +278,7 @@ link_preview_config = LinkPreviewConfig(
 Each extracted link gets three different scores:
 
 #### 1. **Intrinsic Score (0-10)** - URL and Content Quality
+
 Based on URL structure, link text quality, and page context:
 
 ```python
@@ -290,6 +295,7 @@ Based on URL structure, link text quality, and page context:
 ```
 
 #### 2. **Contextual Score (0-1)** - BM25 Relevance to Query
+
 Only available when you provide a `query`. Uses BM25 algorithm against head content:
 
 ```python
@@ -299,6 +305,7 @@ Only available when you provide a `query`. Uses BM25 algorithm against head cont
 ```
 
 #### 3. **Total Score** - Smart Combination
+
 Intelligently combines intrinsic and contextual scores with fallbacks:
 
 ```python
@@ -311,6 +318,7 @@ Intelligently combines intrinsic and contextual scores with fallbacks:
 ### 2.5 Practical Use Cases
 
 #### Use Case 1: Research Assistant
+
 Find the most relevant documentation pages:
 
 ```python
@@ -327,15 +335,15 @@ async def research_assistant():
         ),
         score_links=True
     )
-    
+
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun("https://scikit-learn.org/", config=config)
-        
+
         if result.success:
             # Get high-scoring links
             good_links = [link for link in result.links.get("internal", [])
                          if link.get("total_score", 0) > 0.7]
-            
+
             print(f"🎯 Found {len(good_links)} highly relevant links:")
             for link in good_links[:5]:
                 print(f"⭐ {link['total_score']:.3f} - {link['href']}")
@@ -343,6 +351,7 @@ async def research_assistant():
 ```
 
 #### Use Case 2: Content Discovery
+
 Find all API endpoints and references:
 
 ```python
@@ -358,13 +367,13 @@ async def api_discovery():
         ),
         score_links=True
     )
-    
+
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun("https://docs.example-api.com/", config=config)
-        
+
         if result.success:
             api_links = result.links.get("internal", [])
-            
+
             # Group by endpoint type
             endpoints = {}
             for link in api_links:
@@ -374,7 +383,7 @@ async def api_discovery():
                         endpoints.setdefault("GET", []).append(link)
                     elif "POST" in title:
                         endpoints.setdefault("POST", []).append(link)
-            
+
             for method, links in endpoints.items():
                 print(f"\n{method} Endpoints ({len(links)}):")
                 for link in links[:3]:
@@ -382,6 +391,7 @@ async def api_discovery():
 ```
 
 #### Use Case 3: Link Quality Analysis
+
 Analyze website structure and content quality:
 
 ```python
@@ -394,26 +404,26 @@ async def quality_analysis():
         ),
         score_links=True
     )
-    
+
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun("https://your-website.com/", config=config)
-        
+
         if result.success:
             links = result.links.get("internal", [])
-            
+
             # Analyze intrinsic scores
             scores = [link.get('intrinsic_score', 0) for link in links]
             avg_score = sum(scores) / len(scores) if scores else 0
-            
+
             print(f"📊 Link Quality Analysis:")
             print(f"   Average intrinsic score: {avg_score:.2f}/10.0")
             print(f"   High quality links (>7.0): {len([s for s in scores if s > 7.0])}")
             print(f"   Low quality links (<3.0): {len([s for s in scores if s < 3.0])}")
-            
+
             # Find problematic links
-            bad_links = [link for link in links 
+            bad_links = [link for link in links
                         if link.get('intrinsic_score', 0) < 2.0]
-            
+
             if bad_links:
                 print(f"\n⚠️  Links needing attention:")
                 for link in bad_links[:5]:
@@ -431,6 +441,7 @@ async def quality_analysis():
 ### 2.7 Troubleshooting
 
 **No head data extracted?**
+
 ```python
 # Check your configuration:
 config = CrawlerRunConfig(
@@ -441,6 +452,7 @@ config = CrawlerRunConfig(
 ```
 
 **Scores showing as None?**
+
 ```python
 # Make sure scoring is enabled:
 config = CrawlerRunConfig(
@@ -452,6 +464,7 @@ config = CrawlerRunConfig(
 ```
 
 **Process taking too long?**
+
 ```python
 # Optimize performance:
 link_preview_config = LinkPreviewConfig(
@@ -468,9 +481,9 @@ link_preview_config = LinkPreviewConfig(
 
 Some websites contain hundreds of third-party or affiliate links. You can filter out certain domains at **crawl time** by configuring the crawler. The most relevant parameters in `CrawlerRunConfig` are:
 
-- **`exclude_external_links`**: If `True`, discard any link pointing outside the root domain.  
-- **`exclude_social_media_domains`**: Provide a list of social media platforms (e.g., `["facebook.com", "twitter.com"]`) to exclude from your crawl.  
-- **`exclude_social_media_links`**: If `True`, automatically skip known social platforms.  
+- **`exclude_external_links`**: If `True`, discard any link pointing outside the root domain.
+- **`exclude_social_media_domains`**: Provide a list of social media platforms (e.g., `["facebook.com", "twitter.com"]`) to exclude from your crawl.
+- **`exclude_social_media_links`**: If `True`, automatically skip known social platforms.
 - **`exclude_domains`**: Provide a list of custom domains you want to exclude (e.g., `["spammyads.com", "tracker.net"]`).
 
 ### 3.1 Example: Excluding External & Social Media Links
@@ -493,7 +506,7 @@ async def main():
         if result.success:
             print("[OK] Crawled:", result.url)
             print("Internal links count:", len(result.links.get("internal", [])))
-            print("External links count:", len(result.links.get("external", [])))  
+            print("External links count:", len(result.links.get("external", [])))
             # Likely zero external links in this scenario
         else:
             print("[ERROR]", result.error_message)
@@ -566,13 +579,13 @@ result.media = {
 
 Depending on your Crawl4AI version or scraping strategy, these dictionaries can include fields like:
 
-- **`src`**: The media URL (e.g., image source)  
-- **`alt`**: The alt text for images (if present)  
-- **`desc`**: A snippet of nearby text or a short description (optional)  
-- **`score`**: A heuristic relevance score if you’re using content-scoring features  
-- **`width`**, **`height`**: If the crawler detects dimensions for the image/video  
-- **`type`**: Usually `"image"`, `"video"`, or `"audio"`  
-- **`group_id`**: If you’re grouping related media items, the crawler might assign an ID  
+- **`src`**: The media URL (e.g., image source)
+- **`alt`**: The alt text for images (if present)
+- **`desc`**: A snippet of nearby text or a short description (optional)
+- **`score`**: A heuristic relevance score if you’re using content-scoring features
+- **`width`**, **`height`**: If the crawler detects dimensions for the image/video
+- **`type`**: Usually `"image"`, `"video"`, or `"audio"`
+- **`group_id`**: If you’re grouping related media items, the crawler might assign an ID
 
 With these details, you can easily filter out or focus on certain images (for instance, ignoring images with very low scores or a different domain), or gather metadata for analytics.
 
@@ -590,8 +603,8 @@ This setting attempts to discard images from outside the primary domain, keeping
 
 ### 4.3 Additional Media Config
 
-- **`screenshot`**: Set to `True` if you want a full-page screenshot stored as `base64` in `result.screenshot`.  
-- **`pdf`**: Set to `True` if you want a PDF version of the page in `result.pdf`.  
+- **`screenshot`**: Set to `True` if you want a full-page screenshot stored as `base64` in `result.screenshot`.
+- **`pdf`**: Set to `True` if you want a PDF version of the page in `result.pdf`.
 - **`capture_mhtml`**: Set to `True` if you want an MHTML snapshot of the page in `result.mhtml`. This format preserves the entire web page with all its resources (CSS, images, scripts) in a single file, making it perfect for archiving or offline viewing.
 - **`wait_for_images`**: If `True`, attempts to wait until images are fully loaded before final extraction.
 
@@ -605,10 +618,10 @@ async def main():
     crawler_cfg = CrawlerRunConfig(
         capture_mhtml=True  # Enable MHTML capture
     )
-    
+
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun("https://example.com", config=crawler_cfg)
-        
+
         if result.success and result.mhtml:
             # Save the MHTML snapshot to a file
             with open("example.mhtml", "w", encoding="utf-8") as f:
@@ -622,6 +635,7 @@ if __name__ == "__main__":
 ```
 
 The MHTML format is particularly useful because:
+
 - It captures the complete page state including all resources
 - It can be opened in most modern browsers for offline viewing
 - It preserves the page exactly as it appeared during crawling
@@ -638,7 +652,7 @@ import asyncio
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
 
 async def main():
-    # Suppose we want to keep only internal links, remove certain domains, 
+    # Suppose we want to keep only internal links, remove certain domains,
     # and discard external images from the final crawl data.
     crawler_cfg = CrawlerRunConfig(
         exclude_external_links=True,
@@ -654,17 +668,17 @@ async def main():
 
         if result.success:
             print("[OK] Crawled:", result.url)
-            
+
             # 1. Links
             in_links = result.links.get("internal", [])
             ext_links = result.links.get("external", [])
             print("Internal link count:", len(in_links))
             print("External link count:", len(ext_links))  # should be zero with exclude_external_links=True
-            
+
             # 2. Images
             images = result.media.get("images", [])
             print("Images found:", len(images))
-            
+
             # Let's see a snippet of these images
             for i, img in enumerate(images[:3]):
                 print(f"  - {img['src']} (alt={img.get('alt','')}, score={img.get('score','N/A')})")
@@ -679,19 +693,23 @@ if __name__ == "__main__":
 
 ## 6. Common Pitfalls & Tips
 
-1. **Conflicting Flags**:  
-   - `exclude_external_links=True` but then also specifying `exclude_social_media_links=True` is typically fine, but understand that the first setting already discards *all* external links. The second becomes somewhat redundant.  
-   - `exclude_external_images=True` but want to keep some external images? Currently no partial domain-based setting for images, so you might need a custom approach or hook logic.
+1. **Conflicting Flags**:
 
-2. **Relevancy Scores**:  
-   - If your version of Crawl4AI or your scraping strategy includes an `img["score"]`, it’s typically a heuristic based on size, position, or content analysis. Evaluate carefully if you rely on it.
+- `exclude_external_links=True` but then also specifying `exclude_social_media_links=True` is typically fine, but understand that the first setting already discards _all_ external links. The second becomes somewhat redundant.
+- `exclude_external_images=True` but want to keep some external images? Currently no partial domain-based setting for images, so you might need a custom approach or hook logic.
 
-3. **Performance**:  
-   - Excluding certain domains or external images can speed up your crawl, especially for large, media-heavy pages.  
-   - If you want a “full” link map, do *not* exclude them. Instead, you can post-filter in your own code.
+2. **Relevancy Scores**:
 
-4. **Social Media Lists**:  
-   - `exclude_social_media_links=True` typically references an internal list of known social domains like Facebook, Twitter, LinkedIn, etc. If you need to add or remove from that list, look for library settings or a local config file (depending on your version).
+- If your version of Crawl4AI or your scraping strategy includes an `img["score"]`, it’s typically a heuristic based on size, position, or content analysis. Evaluate carefully if you rely on it.
+
+3. **Performance**:
+
+- Excluding certain domains or external images can speed up your crawl, especially for large, media-heavy pages.
+- If you want a “full” link map, do _not_ exclude them. Instead, you can post-filter in your own code.
+
+4. **Social Media Lists**:
+
+- `exclude_social_media_links=True` typically references an internal list of known social domains like Facebook, Twitter, LinkedIn, etc. If you need to add or remove from that list, look for library settings or a local config file (depending on your version).
 
 ---
 

@@ -277,20 +277,24 @@ Our apps are designed to make Crawl4AI more accessible and powerful. Whether you
 ## 🚀 Why Use These Apps?
 
 ### 🎯 **Accelerate Learning**
+
 Visual tools help you understand Crawl4AI's concepts faster than reading documentation alone.
 
 ### 💡 **Reduce Development Time**
+
 Generate working code instantly instead of writing everything from scratch.
 
 ### 🔍 **Improve Quality**
+
 Test and refine your approach before deploying to production.
 
 ### 🤝 **Community Driven**
+
 These tools are built based on user feedback. Have an idea? [Let us know](https://github.com/unclecode/crawl4ai/issues)!
 
 ## 📢 Stay Updated
 
-Want to know when new apps are released? 
+Want to know when new apps are released?
 
 - ⭐ [Star us on GitHub](https://github.com/unclecode/crawl4ai) to get notifications
 - 🐦 Follow [@unclecode](https://twitter.com/unclecode) for announcements
@@ -299,4 +303,4 @@ Want to know when new apps are released?
 ---
 
 !!! tip "Developer Resources"
-    Building your own tools with Crawl4AI? Check out our [API Reference](../api/async-webcrawler.md) and [Integration Guide](../advanced/advanced-features.md) for comprehensive documentation.
+Building your own tools with Crawl4AI? Check out our [API Reference](../api/async-webcrawler.md) and [Integration Guide](../advanced/advanced-features.md) for comprehensive documentation.

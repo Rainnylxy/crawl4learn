@@ -8,5 +8,4 @@ Below is a **sample** of how the dispatcher’s performance monitor might look i
 
 ![Crawl Dispatcher Performance Monitor](../assets/images/dispatcher.png)
 
-
 We can’t wait to bring you this streamlined, **scalable** approach to multi-URL crawling—**watch this space** for updates!

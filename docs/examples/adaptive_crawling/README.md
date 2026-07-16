@@ -5,35 +5,42 @@ This directory contains examples demonstrating various aspects of Crawl4AI's Ada
 ## Examples Overview
 
 ### 1. `basic_usage.py`
+
 - Simple introduction to adaptive crawling
 - Uses default statistical strategy
 - Shows how to get crawl statistics and relevant content
 
 ### 2. `embedding_strategy.py` ⭐ NEW
+
 - Demonstrates the embedding-based strategy for semantic understanding
 - Shows query expansion and irrelevance detection
 - Includes configuration for both local and API-based embeddings
 
 ### 3. `embedding_vs_statistical.py` ⭐ NEW
+
 - Direct comparison between statistical and embedding strategies
 - Helps you choose the right strategy for your use case
 - Shows performance and accuracy trade-offs
 
 ### 4. `embedding_configuration.py` ⭐ NEW
+
 - Advanced configuration options for embedding strategy
 - Parameter tuning guide for different scenarios
 - Examples for research, exploration, and quality-focused crawling
 
 ### 5. `advanced_configuration.py`
+
 - Shows various configuration options for both strategies
 - Demonstrates threshold tuning and performance optimization
 
 ### 6. `custom_strategies.py`
+
 - How to implement your own crawling strategy
 - Extends the base CrawlStrategy class
 - Advanced use case for specialized requirements
 
 ### 7. `export_import_kb.py`
+
 - Export crawled knowledge base to JSONL
 - Import and continue crawling from saved state
 - Useful for building persistent knowledge bases
@@ -61,12 +68,14 @@ python embedding_vs_statistical.py
 ## Strategy Selection Guide
 
 ### Use Statistical Strategy (Default) When:
+
 - Working with technical documentation
 - Queries contain specific terms or code
 - Speed is critical
 - No API access available
 
 ### Use Embedding Strategy When:
+
 - Queries are conceptual or ambiguous
 - Need semantic understanding beyond exact matches
 - Want to detect irrelevant content

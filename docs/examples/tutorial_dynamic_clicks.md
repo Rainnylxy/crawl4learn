@@ -48,6 +48,7 @@ async with AsyncWebCrawler(headless=True, verbose=True) as crawler:
 ```
 
 **Key Points:**
+
 - **`session_id`**: Keeps the same browser context open.
 - **`js_code`**: Executes JavaScript in the context of the already loaded page.
 - **`wait_for`**: Ensures the crawler waits until new content is fully loaded.
@@ -58,6 +59,7 @@ By repeating the `arun()` call multiple times and modifying the `js_code` (e.g.,
 ## Single-call Approach
 
 If the page allows it, you can run a single `arun()` call with a more elaborate JavaScript snippet that:
+
 - Iterates over all the modules or "Next" buttons
 - Clicks them one by one
 - Waits for content updates between each click
@@ -95,12 +97,13 @@ async with AsyncWebCrawler(headless=True, verbose=True) as crawler:
 ```
 
 **Key Points:**
+
 - All interactions (clicks and waits) happen before the extraction.
 - Ideal for pages where all steps can be done in a single pass.
 
 ## Choosing the Right Approach
 
-- **Step-by-Step (Session-based)**: 
+- **Step-by-Step (Session-based)**:
   - Good when you need fine-grained control or must dynamically check conditions before clicking the next page.
   - Useful if the page requires multiple conditions checked at runtime.
 
@@ -111,6 +114,7 @@ async with AsyncWebCrawler(headless=True, verbose=True) as crawler:
 ## Conclusion
 
 Crawl4AI makes it easy to handle dynamic content:
+
 - Use session IDs and multiple `arun()` calls for stepwise crawling.
 - Or pack all actions into one `arun()` call if the interactions are well-defined upfront.
 

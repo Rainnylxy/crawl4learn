@@ -2,8 +2,8 @@
 
 Crawl4AI's flexibility stems from two key classes:
 
-1. **`BrowserConfig`** – Dictates **how** the browser is launched and behaves (e.g., headless or visible, proxy, user agent).  
-2. **`CrawlerRunConfig`** – Dictates **how** each **crawl** operates (e.g., caching, extraction, timeouts, JavaScript code to run, etc.).  
+1. **`BrowserConfig`** – Dictates **how** the browser is launched and behaves (e.g., headless or visible, proxy, user agent).
+2. **`CrawlerRunConfig`** – Dictates **how** each **crawl** operates (e.g., caching, extraction, timeouts, JavaScript code to run, etc.).
 3. **`LLMConfig`** - Dictates **how** LLM providers are configured. (model, api token, base url, temperature etc.)
 
 In most examples, you create **one** `BrowserConfig` for the entire crawler session, then pass a **fresh** or re-used `CrawlerRunConfig` whenever you call `arun()`. This tutorial shows the most commonly used parameters. If you need advanced or rarely used fields, see the [Configuration Parameters](../api/parameters.md).
@@ -48,84 +48,88 @@ class BrowserConfig:
 
 ### Key Fields to Note
 
-1.⠀**`browser_type`**  
-   - Options: `"chromium"`, `"firefox"`, or `"webkit"`.  
-   - Defaults to `"chromium"`.  
-   - If you need a different engine, specify it here.
+1.⠀**`browser_type`**
 
-2.⠀**`headless`**  
-   - `True`: Runs the browser in headless mode (invisible browser).  
-   - `False`: Runs the browser in visible mode, which helps with debugging.
+- Options: `"chromium"`, `"firefox"`, or `"webkit"`.
+- Defaults to `"chromium"`.
+- If you need a different engine, specify it here.
 
-3.⠀**`browser_mode`**  
-   - Determines how the browser should be initialized:
-     - `"dedicated"` (default): Creates a new browser instance each time
-     - `"builtin"`: Uses the builtin CDP browser running in background
-     - `"custom"`: Uses explicit CDP settings provided in `cdp_url`
-     - `"docker"`: Runs browser in Docker container with isolation
+2.⠀**`headless`**
 
-4.⠀**`use_managed_browser`** & **`cdp_url`**  
-   - `use_managed_browser=True`: Launch browser using Chrome DevTools Protocol (CDP) for advanced control
-   - `cdp_url`: URL for CDP endpoint (e.g., `"ws://localhost:9222/devtools/browser/"`)
-   - Automatically set based on `browser_mode`
+- `True`: Runs the browser in headless mode (invisible browser).
+- `False`: Runs the browser in visible mode, which helps with debugging.
 
-5.⠀**`debugging_port`** & **`host`**  
-   - `debugging_port`: Port for browser debugging protocol (default: 9222)
-   - `host`: Host for browser connection (default: "localhost")
+3.⠀**`browser_mode`**
 
-6.⠀**`proxy_config`**  
-   - A `ProxyConfig` object or dictionary with fields like:  
+- Determines how the browser should be initialized:
+  - `"dedicated"` (default): Creates a new browser instance each time
+  - `"builtin"`: Uses the builtin CDP browser running in background
+  - `"custom"`: Uses explicit CDP settings provided in `cdp_url`
+  - `"docker"`: Runs browser in Docker container with isolation
+
+4.⠀**`use_managed_browser`** & **`cdp_url`**
+
+- `use_managed_browser=True`: Launch browser using Chrome DevTools Protocol (CDP) for advanced control
+- `cdp_url`: URL for CDP endpoint (e.g., `"ws://localhost:9222/devtools/browser/"`)
+- Automatically set based on `browser_mode`
+
+5.⠀**`debugging_port`** & **`host`**
+
+- `debugging_port`: Port for browser debugging protocol (default: 9222)
+- `host`: Host for browser connection (default: "localhost")
+
+6.⠀**`proxy_config`**
+
+- A `ProxyConfig` object or dictionary with fields like:
+
 ```json
 {
-    "server": "http://proxy.example.com:8080", 
-    "username": "...", 
-    "password": "..."
+  "server": "http://proxy.example.com:8080",
+  "username": "...",
+  "password": "..."
 }
 ```
-   - Leave as `None` if a proxy is not required.
+
+- Leave as `None` if a proxy is not required.
 
 7.⠀**`viewport_width` & `viewport_height`**
-   - The initial window size.
-   - Some sites behave differently with smaller or bigger viewports.
+
+- The initial window size.
+- Some sites behave differently with smaller or bigger viewports.
 
 8.⠀**`device_scale_factor`**
-   - Controls the device pixel ratio (DPR) for rendering. Default is `1.0`.
-   - Set to `2.0` for Retina-quality screenshots (e.g., a 1920×1080 viewport produces 3840×2160 images).
-   - Higher values increase screenshot size and rendering time proportionally.
 
-9.⠀**`verbose`**  
-   - If `True`, prints extra logs.  
-   - Handy for debugging.
+- Controls the device pixel ratio (DPR) for rendering. Default is `1.0`.
+- Set to `2.0` for Retina-quality screenshots (e.g., a 1920×1080 viewport produces 3840×2160 images).
+- Higher values increase screenshot size and rendering time proportionally.
 
-9.⠀**`use_persistent_context`**  
-   - If `True`, uses a **persistent** browser profile, storing cookies/local storage across runs.  
-   - Typically also set `user_data_dir` to point to a folder.
+9.⠀**`verbose`**
+
+- If `True`, prints extra logs.
+- Handy for debugging.
+
+9.⠀**`use_persistent_context`**
+
+- If `True`, uses a **persistent** browser profile, storing cookies/local storage across runs.
+- Typically also set `user_data_dir` to point to a folder.
 
 10.⠀**`cookies`** & **`headers`**  
-    - If you want to start with specific cookies or add universal HTTP headers to the browser context, set them here.  
-    - E.g. `cookies=[{"name": "session", "value": "abc123", "domain": "example.com"}]`.
+- If you want to start with specific cookies or add universal HTTP headers to the browser context, set them here.  
+- E.g. `cookies=[{"name": "session", "value": "abc123", "domain": "example.com"}]`.
 
 11.⠀**`user_agent`** & **`user_agent_mode`**  
-    - `user_agent`: Custom User-Agent string. If `None`, a default is used.  
-    - `user_agent_mode`: Set to `"random"` for randomization (helps fight bot detection).
+- `user_agent`: Custom User-Agent string. If `None`, a default is used.  
+- `user_agent_mode`: Set to `"random"` for randomization (helps fight bot detection).
 
-12.⠀**`text_mode`** & **`light_mode`**
-    - `text_mode=True` disables images, possibly speeding up text-only crawls.
-    - `light_mode=True` turns off certain background features for performance.
+12.⠀**`text_mode`** & **`light_mode`** - `text_mode=True` disables images, possibly speeding up text-only crawls. - `light_mode=True` turns off certain background features for performance.
 
-13.⠀**`avoid_ads`** & **`avoid_css`**
-    - `avoid_ads=True` blocks requests to common ad and tracker domains (Google Analytics, DoubleClick, Facebook, Hotjar, etc.) at the browser context level. Reduces network overhead and memory usage.
-    - `avoid_css=True` blocks loading of CSS files (`.css`, `.less`, `.scss`, `.sass`), useful when you only need text content and want faster, leaner crawls.
-    - Both default to `False` (opt-in). Can be combined with each other and with `text_mode`.
+13.⠀**`avoid_ads`** & **`avoid_css`** - `avoid_ads=True` blocks requests to common ad and tracker domains (Google Analytics, DoubleClick, Facebook, Hotjar, etc.) at the browser context level. Reduces network overhead and memory usage. - `avoid_css=True` blocks loading of CSS files (`.css`, `.less`, `.scss`, `.sass`), useful when you only need text content and want faster, leaner crawls. - Both default to `False` (opt-in). Can be combined with each other and with `text_mode`.
 
 14.⠀**`extra_args`**  
-    - Additional flags for the underlying browser.  
-    - E.g. `["--disable-extensions"]`.
+- Additional flags for the underlying browser.  
+- E.g. `["--disable-extensions"]`.
 
-15.⠀**`enable_stealth`**
-    - If `True`, enables stealth mode using playwright-stealth.
-    - Modifies browser fingerprints to avoid basic bot detection.
-    - Default is `False`. Recommended for sites with bot protection.
+15.⠀**`enable_stealth`** - If `True`, enables stealth mode using playwright-stealth. - Modifies browser fingerprints to avoid basic bot detection. - Default is `False`. Recommended for sites with bot protection.
 
 ### Helper Methods
 
@@ -172,12 +176,12 @@ cfg = BrowserConfig(cdp_url="ws://localhost:9222", cache_cdp_connection=False)
 
 **Available methods** (on both `BrowserConfig` and `CrawlerRunConfig`):
 
-| Method | Description |
-|--------|-------------|
-| `set_defaults(**kwargs)` | Set class-level defaults. Invalid parameter names raise `ValueError`. |
-| `get_defaults()` | Return a copy of the current class-level defaults. |
-| `reset_defaults()` | Clear all class-level defaults. |
-| `reset_defaults("param1", "param2")` | Clear only the named defaults. |
+| Method                               | Description                                                           |
+| ------------------------------------ | --------------------------------------------------------------------- |
+| `set_defaults(**kwargs)`             | Set class-level defaults. Invalid parameter names raise `ValueError`. |
+| `get_defaults()`                     | Return a copy of the current class-level defaults.                    |
+| `reset_defaults()`                   | Clear all class-level defaults.                                       |
+| `reset_defaults("param1", "param2")` | Clear only the named defaults.                                        |
 
 > **Note:** Class defaults are independent per class — `BrowserConfig.set_defaults()` does not affect `CrawlerRunConfig`, and vice versa. Defaults are stored in memory and apply for the lifetime of the process.
 
@@ -240,80 +244,77 @@ class CrawlerRunConfig:
 
 ### Key Fields to Note
 
-1.⠀**`word_count_threshold`**:  
-   - The minimum word count before a block is considered.  
-   - If your site has lots of short paragraphs or items, you can lower it.
+1.⠀**`word_count_threshold`**:
 
-2.⠀**`extraction_strategy`**:  
-   - Where you plug in JSON-based extraction (CSS, LLM, etc.).  
-   - If `None`, no structured extraction is done (only raw/cleaned HTML + markdown).
+- The minimum word count before a block is considered.
+- If your site has lots of short paragraphs or items, you can lower it.
 
-3.⠀**`chunking_strategy`**:  
-   - Strategy to chunk content before extraction.  
-   - Defaults to `RegexChunking()`. Can be customized for different chunking approaches.
+2.⠀**`extraction_strategy`**:
 
-4.⠀**`markdown_generator`**:  
-   - E.g., `DefaultMarkdownGenerator(...)`, controlling how HTML→Markdown conversion is done.  
-   - If `None`, a default approach is used.
+- Where you plug in JSON-based extraction (CSS, LLM, etc.).
+- If `None`, no structured extraction is done (only raw/cleaned HTML + markdown).
 
-5.⠀**`cache_mode`**:  
-   - Controls caching behavior (`ENABLED`, `BYPASS`, `DISABLED`, etc.).  
-   - Defaults to `CacheMode.BYPASS`.
+3.⠀**`chunking_strategy`**:
+
+- Strategy to chunk content before extraction.
+- Defaults to `RegexChunking()`. Can be customized for different chunking approaches.
+
+4.⠀**`markdown_generator`**:
+
+- E.g., `DefaultMarkdownGenerator(...)`, controlling how HTML→Markdown conversion is done.
+- If `None`, a default approach is used.
+
+5.⠀**`cache_mode`**:
+
+- Controls caching behavior (`ENABLED`, `BYPASS`, `DISABLED`, etc.).
+- Defaults to `CacheMode.BYPASS`.
 
 6.⠀**`js_code`**, **`js_code_before_wait`**, & **`c4a_script`**:
-   - `js_code`: JavaScript to run **after** `wait_for` completes — on the fully-loaded page.
-   - `js_code_before_wait`: JavaScript to run **before** `wait_for` — for triggering loading that `wait_for` then checks.
-   - `c4a_script`: C4A script that compiles to JavaScript.
-   - Great for "Load More" buttons or user interactions.
 
-7.⠀**`wait_for`**:  
-   - A CSS or JS expression to wait for before extracting content.  
-   - Common usage: `wait_for="css:.main-loaded"` or `wait_for="js:() => window.loaded === true"`.
+- `js_code`: JavaScript to run **after** `wait_for` completes — on the fully-loaded page.
+- `js_code_before_wait`: JavaScript to run **before** `wait_for` — for triggering loading that `wait_for` then checks.
+- `c4a_script`: C4A script that compiles to JavaScript.
+- Great for "Load More" buttons or user interactions.
+
+7.⠀**`wait_for`**:
+
+- A CSS or JS expression to wait for before extracting content.
+- Common usage: `wait_for="css:.main-loaded"` or `wait_for="js:() => window.loaded === true"`.
 
 8.⠀**`flatten_shadow_dom`**:
-   - If `True`, flattens Shadow DOM content into the light DOM before HTML capture.
-   - Essential for sites built with Web Components (Stencil, Lit, Shoelace, etc.).
-   - Also force-opens closed shadow roots. See [Flattening Shadow DOM](content-selection.md#31-flattening-shadow-dom).
+
+- If `True`, flattens Shadow DOM content into the light DOM before HTML capture.
+- Essential for sites built with Web Components (Stencil, Lit, Shoelace, etc.).
+- Also force-opens closed shadow roots. See [Flattening Shadow DOM](content-selection.md#31-flattening-shadow-dom).
 
 9.⠀**`screenshot`**, **`pdf`**, & **`capture_mhtml`**:
-   - If `True`, captures a screenshot, PDF, or MHTML snapshot after the page is fully loaded.
-   - The results go to `result.screenshot` (base64), `result.pdf` (bytes), or `result.mhtml` (string).
-   - Use `force_viewport_screenshot=True` to capture only the visible viewport instead of the full page. This is faster and produces smaller images when you don't need a full-page screenshot.
 
-9.⠀**Location Parameters**:  
-   - **`locale`**: Browser's locale (e.g., `"en-US"`, `"fr-FR"`) for language preferences
-   - **`timezone_id`**: Browser's timezone (e.g., `"America/New_York"`, `"Europe/Paris"`)
-   - **`geolocation`**: GPS coordinates via `GeolocationConfig(latitude=48.8566, longitude=2.3522)`
-   - See [Identity Based Crawling](../advanced/identity-based-crawling.md#7-locale-timezone-and-geolocation-control)
+- If `True`, captures a screenshot, PDF, or MHTML snapshot after the page is fully loaded.
+- The results go to `result.screenshot` (base64), `result.pdf` (bytes), or `result.mhtml` (string).
+- Use `force_viewport_screenshot=True` to capture only the visible viewport instead of the full page. This is faster and produces smaller images when you don't need a full-page screenshot.
 
-10.⠀**Proxy Configuration**:
-    - **`proxy_config`**: Single `ProxyConfig` or `list[ProxyConfig]` — proxies tried in order. Pass a list for automatic escalation.
-    - **`proxy_rotation_strategy`**: Strategy for rotating proxies during crawls
+9.⠀**Location Parameters**:
 
-11.⠀**Anti-Bot Retry & Fallback** (see [Anti-Bot & Fallback](../advanced/anti-bot-and-fallback.md)):
-    - **`max_retries`**: Number of retry rounds when blocking is detected (default: 0). Each round tries all proxies in `proxy_config`.
-    - **`fallback_fetch_function`**: Async function called as last resort — takes URL, returns raw HTML
+- **`locale`**: Browser's locale (e.g., `"en-US"`, `"fr-FR"`) for language preferences
+- **`timezone_id`**: Browser's timezone (e.g., `"America/New_York"`, `"Europe/Paris"`)
+- **`geolocation`**: GPS coordinates via `GeolocationConfig(latitude=48.8566, longitude=2.3522)`
+- See [Identity Based Crawling](../advanced/identity-based-crawling.md#7-locale-timezone-and-geolocation-control)
 
-12.⠀**Page Interaction Parameters**:
-    - **`scan_full_page`**: If `True`, scroll through the entire page to load all content
-    - **`wait_until`**: Condition to wait for when navigating (e.g., "domcontentloaded", "networkidle")
-    - **`page_timeout`**: Timeout in milliseconds for page operations (default: 60000)
-    - **`delay_before_return_html`**: Delay in seconds before retrieving final HTML.
+10.⠀**Proxy Configuration**: - **`proxy_config`**: Single `ProxyConfig` or `list[ProxyConfig]` — proxies tried in order. Pass a list for automatic escalation. - **`proxy_rotation_strategy`**: Strategy for rotating proxies during crawls
+
+11.⠀**Anti-Bot Retry & Fallback** (see [Anti-Bot & Fallback](../advanced/anti-bot-and-fallback.md)): - **`max_retries`**: Number of retry rounds when blocking is detected (default: 0). Each round tries all proxies in `proxy_config`. - **`fallback_fetch_function`**: Async function called as last resort — takes URL, returns raw HTML
+
+12.⠀**Page Interaction Parameters**: - **`scan_full_page`**: If `True`, scroll through the entire page to load all content - **`wait_until`**: Condition to wait for when navigating (e.g., "domcontentloaded", "networkidle") - **`page_timeout`**: Timeout in milliseconds for page operations (default: 60000) - **`delay_before_return_html`**: Delay in seconds before retrieving final HTML.
 
 13.⠀**`url_matcher`** & **`match_mode`**:  
-    - Enable URL-specific configurations when used with `arun_many()`.
-    - Set `url_matcher` to patterns (glob, function, or list) to match specific URLs.
-    - Use `match_mode` (OR/AND) to control how multiple patterns combine.
-    - See [URL-Specific Configurations](../api/arun_many.md#url-specific-configurations) for examples.
+- Enable URL-specific configurations when used with `arun_many()`. - Set `url_matcher` to patterns (glob, function, or list) to match specific URLs. - Use `match_mode` (OR/AND) to control how multiple patterns combine. - See [URL-Specific Configurations](../api/arun_many.md#url-specific-configurations) for examples.
 
 13.⠀**`verbose`**:  
-    - Logs additional runtime details.  
-    - Overlaps with the browser's verbosity if also set to `True` in `BrowserConfig`.
+- Logs additional runtime details.  
+- Overlaps with the browser's verbosity if also set to `True` in `BrowserConfig`.
 
 14.⠀**`stream`**:  
-    - If `True`, enables streaming mode for `arun_many()` to process URLs as they complete.
-    - Allows handling results incrementally instead of waiting for all URLs to finish.
-
+- If `True`, enables streaming mode for `arun_many()` to process URLs as they complete. - Allows handling results incrementally instead of waiting for all URLs to finish.
 
 ### Helper Methods
 
@@ -340,6 +341,7 @@ debug_config = base_config.clone(
 ```
 
 The `clone()` method:
+
 - Creates a new instance with all the same settings
 - Updates only the specified parameters
 - Leaves the original configuration unchanged
@@ -347,28 +349,29 @@ The `clone()` method:
 
 ---
 
-
 ## 3. LLMConfig Essentials
 
 ### Key fields to note
 
-1.⠀**`provider`**:  
-- Which LLM provider to use. 
-- Possible values are `"ollama/llama3","groq/llama3-70b-8192","groq/llama3-8b-8192", "openai/gpt-4o-mini" ,"openai/gpt-4o","openai/o1-mini","openai/o1-preview","openai/o3-mini","openai/o3-mini-high","anthropic/claude-3-haiku-20240307","anthropic/claude-3-opus-20240229","anthropic/claude-3-sonnet-20240229","anthropic/claude-3-5-sonnet-20240620","gemini/gemini-pro","gemini/gemini-1.5-pro","gemini/gemini-2.0-flash","gemini/gemini-2.0-flash-exp","gemini/gemini-2.0-flash-lite-preview-02-05","deepseek/deepseek-chat"`<br/>*(default: `"openai/gpt-4o-mini"`)*
+1.⠀**`provider`**:
+
+- Which LLM provider to use.
+- Possible values are `"ollama/llama3","groq/llama3-70b-8192","groq/llama3-8b-8192", "openai/gpt-4o-mini" ,"openai/gpt-4o","openai/o1-mini","openai/o1-preview","openai/o3-mini","openai/o3-mini-high","anthropic/claude-3-haiku-20240307","anthropic/claude-3-opus-20240229","anthropic/claude-3-sonnet-20240229","anthropic/claude-3-5-sonnet-20240620","gemini/gemini-pro","gemini/gemini-1.5-pro","gemini/gemini-2.0-flash","gemini/gemini-2.0-flash-exp","gemini/gemini-2.0-flash-lite-preview-02-05","deepseek/deepseek-chat"`<br/>_(default: `"openai/gpt-4o-mini"`)_
 
 2.⠀**`api_token`**:  
-    - Optional. When not provided explicitly, api_token will be read from environment variables based on provider. For example: If a gemini model is passed as provider then,`"GEMINI_API_KEY"` will be read from environment variables  
-    - API token of LLM provider <br/> eg: `api_token = "gsk_1ClHGGJ7Lpn4WGybR7vNWGdyb3FY7zXEw3SCiy0BAVM9lL8CQv"`
-    - Environment variable - use with prefix "env:" <br/> eg:`api_token = "env: GROQ_API_KEY"`            
+- Optional. When not provided explicitly, api_token will be read from environment variables based on provider. For example: If a gemini model is passed as provider then,`"GEMINI_API_KEY"` will be read from environment variables  
+- API token of LLM provider <br/> eg: `api_token = "gsk_1ClHGGJ7Lpn4WGybR7vNWGdyb3FY7zXEw3SCiy0BAVM9lL8CQv"` - Environment variable - use with prefix "env:" <br/> eg:`api_token = "env: GROQ_API_KEY"`
 
-3.⠀**`base_url`**:  
-   - If your provider has a custom endpoint
+3.⠀**`base_url`**:
 
-4.⠀**Retry/backoff controls** *(optional)*:  
-   - `backoff_base_delay` *(default `2` seconds)* – base delay inserted before the first retry when the provider returns a rate-limit response.  
-   - `backoff_max_attempts` *(default `3`)* – total number of attempts (initial call plus retries) before the request is surfaced as an error.  
-   - `backoff_exponential_factor` *(default `2`)* – growth rate for the retry delay (`delay = base_delay * factor^attempt`).  
-   - These values are forwarded to the shared `perform_completion_with_backoff` helper, ensuring every strategy that consumes your `LLMConfig` honors the same throttling policy.
+- If your provider has a custom endpoint
+
+4.⠀**Retry/backoff controls** _(optional)_:
+
+- `backoff_base_delay` _(default `2` seconds)_ – base delay inserted before the first retry when the provider returns a rate-limit response.
+- `backoff_max_attempts` _(default `3`)_ – total number of attempts (initial call plus retries) before the request is surfaced as an error.
+- `backoff_exponential_factor` _(default `2`)_ – growth rate for the retry delay (`delay = base_delay * factor^attempt`).
+- These values are forwarded to the shared `perform_completion_with_backoff` helper, ensuring every strategy that consumes your `LLMConfig` honors the same throttling policy.
 
 ```python
 llm_config = LLMConfig(
@@ -411,7 +414,7 @@ async def main():
     # 3) Example LLM content filtering
 
     gemini_config = LLMConfig(
-        provider="gemini/gemini-1.5-pro", 
+        provider="gemini/gemini-1.5-pro",
         api_token = "env:GEMINI_API_TOKEN"
     )
 
@@ -465,14 +468,14 @@ if __name__ == "__main__":
 
 For a **detailed list** of available parameters (including advanced ones), see:
 
-- [BrowserConfig, CrawlerRunConfig & LLMConfig Reference](../api/parameters.md)  
+- [BrowserConfig, CrawlerRunConfig & LLMConfig Reference](../api/parameters.md)
 
 You can explore topics like:
 
-- **Custom Hooks & Auth** (Inject JavaScript or handle login forms).  
-- **Session Management** (Re-use pages, preserve state across multiple calls).  
-- **Magic Mode** or **Identity-based Crawling** (Fight bot detection by simulating user behavior).  
-- **Advanced Caching** (Fine-tune read/write cache modes).  
+- **Custom Hooks & Auth** (Inject JavaScript or handle login forms).
+- **Session Management** (Re-use pages, preserve state across multiple calls).
+- **Magic Mode** or **Identity-based Crawling** (Fight bot detection by simulating user behavior).
+- **Advanced Caching** (Fine-tune read/write cache modes).
 
 ---
 
@@ -480,7 +483,7 @@ You can explore topics like:
 
 **BrowserConfig**, **CrawlerRunConfig** and **LLMConfig** give you straightforward ways to define:
 
-- **Which** browser to launch, how it should run, and any proxy or user agent needs.  
+- **Which** browser to launch, how it should run, and any proxy or user agent needs.
 - **How** each crawl should behave—caching, timeouts, JavaScript code, extraction strategies, etc.
 - **Which** LLM provider to use, api token, temperature and base url for custom endpoints
 

@@ -1,6 +1,6 @@
 # Crawl4AI v0.9.1: Bug Fixes & PruningContentFilter Whitelist
 
-*July 2026 - 3 min read*
+_July 2026 - 3 min read_
 
 ---
 

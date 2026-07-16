@@ -13,7 +13,9 @@
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/unclecode?style=flat&logo=GitHub-Sponsors&label=Sponsors&color=pink)](https://github.com/sponsors/unclecode)
 
 ---
+
 #### 🚀 Crawl4AI Cloud API — Closed Beta (Launching Soon)
+
 Reliable, large-scale web extraction, now built to be _**drastically more cost-effective**_ than any of the existing solutions.
 
 👉 **Apply [here](https://forms.gle/E9MyPaNXACnAMaqG7) for early access**  
@@ -59,7 +61,6 @@ In 2023, I needed web-to-Markdown. The “open source” option wanted an accoun
 I made it open source for **availability**, anyone can use it without a gate. Now I’m building the platform for **affordability**, anyone can run serious crawls without breaking the bank. If that resonates, join in, send feedback, or just crawl something amazing.
 </details>
 
-
 <details>
   <summary>Why developers pick Crawl4AI</summary>
 
@@ -68,12 +69,13 @@ I made it open source for **availability**, anyone can use it without a gate. No
 - **Full control**, sessions, proxies, cookies, user scripts, hooks
 - **Adaptive intelligence**, learns site patterns, explores only what matters
 - **Deploy anywhere**, zero keys, CLI and Docker, cloud friendly
+
 </details>
 
-
-## 🚀 Quick Start 
+## 🚀 Quick Start
 
 1. Install Crawl4AI:
+
 ```bash
 # Install the package
 pip install -U crawl4ai
@@ -89,11 +91,13 @@ crawl4ai-doctor
 ```
 
 If you encounter any browser-related issues, you can install them manually:
+
 ```bash
 python -m playwright install --with-deps chromium
 ```
 
 2. Run a simple web crawl with Python:
+
 ```python
 import asyncio
 from crawl4ai import *
@@ -110,6 +114,7 @@ if __name__ == "__main__":
 ```
 
 3. Or use the new command-line interface:
+
 ```bash
 # Basic crawl with markdown output
 crwl https://www.nbcnews.com/business -o markdown
@@ -128,7 +133,7 @@ crwl https://www.example.com/products -q "Extract all product prices"
 Crawl4AI is the #1 trending open-source web crawler on GitHub. Your support keeps it independent, innovative, and free for the community — while giving you direct access to premium benefits.
 
 <div align="">
-  
+
 [![Become a Sponsor](https://img.shields.io/badge/Become%20a%20Sponsor-pink?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/unclecode)  
 [![Current Sponsors](https://img.shields.io/github/sponsors/unclecode?style=for-the-badge&logo=github&label=Current%20Sponsors&color=green)](https://github.com/sponsors/unclecode)
 
@@ -136,19 +141,18 @@ Crawl4AI is the #1 trending open-source web crawler on GitHub. Your support keep
 
 ### 🤝 Sponsorship Tiers
 
-- **🌱 Believer ($5/mo)** — Join the movement for data democratization  
-- **🚀 Builder ($50/mo)** — Priority support & early access to features  
-- **💼 Growing Team ($500/mo)** — Bi-weekly syncs & optimization help  
+- **🌱 Believer ($5/mo)** — Join the movement for data democratization
+- **🚀 Builder ($50/mo)** — Priority support & early access to features
+- **💼 Growing Team ($500/mo)** — Bi-weekly syncs & optimization help
 - **🏢 Data Infrastructure Partner ($2000/mo)** — Full partnership with dedicated support  
-  *Custom arrangements available - see [SPONSORS.md](SPONSORS.md) for details & contact*
+  _Custom arrangements available - see [SPONSORS.md](SPONSORS.md) for details & contact_
 
 **Why sponsor?**  
 No rate-limited APIs. No lock-in. Build and own your data pipeline with direct guidance from the creator of Crawl4AI.
 
 [See All Tiers & Benefits →](https://github.com/sponsors/unclecode)
 
-
-## ✨ Features 
+## ✨ Features
 
 <details>
 <summary>📝 <strong>Markdown Generation</strong></summary>
@@ -157,7 +161,8 @@ No rate-limited APIs. No lock-in. Build and own your data pipeline with direct g
 - 🎯 **Fit Markdown**: Heuristic-based filtering to remove noise and irrelevant parts for AI-friendly processing.
 - 🔗 **Citations and References**: Converts page links into a numbered reference list with clean citations.
 - 🛠️ **Custom Strategies**: Users can create their own Markdown generation strategies tailored to specific needs.
-- 📚 **BM25 Algorithm**: Employs BM25-based filtering for extracting core information and removing irrelevant content. 
+- 📚 **BM25 Algorithm**: Employs BM25-based filtering for extracting core information and removing irrelevant content.
+
 </details>
 
 <details>
@@ -310,6 +315,7 @@ pip install -e ".[all]"             # Install all optional features
 ### New Docker Features
 
 The new Docker implementation includes:
+
 - **Real-time Monitoring Dashboard** with live system metrics and browser pool visibility
 - **Browser pooling** with page pre-warming for faster response times
 - **Interactive playground** to test and generate request code
@@ -343,7 +349,7 @@ response = requests.post(
 )
 if response.status_code == 200:
     print("Crawl job submitted successfully.")
-    
+
 if "results" in response.json():
     results = response.json()["results"]
     print("Crawl job completed. Results:")
@@ -376,7 +382,7 @@ from crawl4ai.markdown_generation_strategy import DefaultMarkdownGenerator
 
 async def main():
     browser_config = BrowserConfig(
-        headless=True,  
+        headless=True,
         verbose=True,
     )
     run_config = CrawlerRunConfig(
@@ -388,7 +394,7 @@ async def main():
         #     content_filter=BM25ContentFilter(user_query="WHEN_WE_FOCUS_BASED_ON_A_USER_QUERY", bm25_threshold=1.0)
         # ),
     )
-    
+
     async with AsyncWebCrawler(config=browser_config) as crawler:
         result = await crawler.arun(
             url="https://docs.micronaut.io/4.9.9/guide/",
@@ -457,9 +463,9 @@ async def main():
         js_code=["""(async () => {const tabs = document.querySelectorAll("section.charge-methodology .tabs-menu-3 > div");for(let tab of tabs) {tab.scrollIntoView();tab.click();await new Promise(r => setTimeout(r, 500));}})();"""],
         cache_mode=CacheMode.BYPASS
     )
-        
+
     async with AsyncWebCrawler(config=browser_config) as crawler:
-        
+
         result = await crawler.arun(
             url="https://www.kidocode.com/degrees/technology",
             config=run_config
@@ -497,17 +503,17 @@ async def main():
         word_count_threshold=1,
         extraction_strategy=LLMExtractionStrategy(
             # Here you can use any provider that Litellm library supports, for instance: ollama/qwen2
-            # provider="ollama/qwen2", api_token="no-token", 
-            llm_config = LLMConfig(provider="openai/gpt-4o", api_token=os.getenv('OPENAI_API_KEY')), 
+            # provider="ollama/qwen2", api_token="no-token",
+            llm_config = LLMConfig(provider="openai/gpt-4o", api_token=os.getenv('OPENAI_API_KEY')),
             schema=OpenAIModelFee.schema(),
             extraction_type="schema",
-            instruction="""From the crawled content, extract all mentioned model names along with their fees for input and output tokens. 
-            Do not miss any models in the entire content. One extracted model JSON format should look like this: 
+            instruction="""From the crawled content, extract all mentioned model names along with their fees for input and output tokens.
+            Do not miss any models in the entire content. One extracted model JSON format should look like this:
             {"model_name": "GPT-4", "input_fee": "US$10.00 / 1M tokens", "output_fee": "US$30.00 / 1M tokens"}."""
-        ),            
+        ),
         cache_mode=CacheMode.BYPASS,
     )
-    
+
     async with AsyncWebCrawler(config=browser_config) as crawler:
         result = await crawler.arun(
             url='https://openai.com/api/pricing/',
@@ -544,16 +550,16 @@ async def test_news_crawl():
     run_config = CrawlerRunConfig(
         cache_mode=CacheMode.BYPASS
     )
-    
+
     async with AsyncWebCrawler(config=browser_config) as crawler:
         url = "ADDRESS_OF_A_CHALLENGING_WEBSITE"
-        
+
         result = await crawler.arun(
             url,
             config=run_config,
             magic=True,
         )
-        
+
         print(f"Successfully crawled {url}")
         print(f"Content length: {len(result.markdown)}")
 ```
@@ -639,6 +645,7 @@ Our biggest release since v0.8.0. Anti-bot detection with proxy escalation, Shad
 - **🛡️ Anti-Bot Detection & Proxy Escalation**:
   - 3-tier detection: known vendors, generic block indicators, structural integrity checks
   - Automatic retry with proxy chain and fallback fetch function
+
   ```python
   from crawl4ai import CrawlerRunConfig
   from crawl4ai.async_configs import ProxyConfig
@@ -652,6 +659,7 @@ Our biggest release since v0.8.0. Anti-bot detection with proxy escalation, Shad
 
 - **🌑 Shadow DOM Flattening**:
   - Extract content hidden inside shadow DOM components
+
   ```python
   config = CrawlerRunConfig(flatten_shadow_dom=True)
   ```
@@ -683,6 +691,7 @@ This release introduces crash recovery for deep crawls, a new prefetch mode for 
   - `resume_state` parameter to continue from a saved checkpoint
   - JSON-serializable state for Redis/database storage
   - Works with BFS, DFS, and Best-First strategies
+
   ```python
   from crawl4ai.deep_crawling import BFSDeepCrawlStrategy
 
@@ -697,6 +706,7 @@ This release introduces crash recovery for deep crawls, a new prefetch mode for 
   - `prefetch=True` skips markdown, extraction, and media processing
   - 5-10x faster than full processing
   - Perfect for two-phase crawling: discover first, process selectively
+
   ```python
   config = CrawlerRunConfig(prefetch=True)
   result = await crawler.arun("https://example.com", config=config)
@@ -765,6 +775,7 @@ This release focuses on stability with 11 bug fixes addressing issues reported b
 <summary><strong>Version 0.7.7 Release Highlights - The Self-Hosting & Monitoring Update</strong></summary>
 
 - **📊 Real-time Monitoring Dashboard**: Interactive web UI with live system metrics and browser pool visibility
+
   ```python
   # Access the monitoring dashboard
   # Visit: http://localhost:11235/dashboard
@@ -778,6 +789,7 @@ This release focuses on stability with 11 bug fixes addressing issues reported b
   ```
 
 - **🔌 Comprehensive Monitor API**: Complete REST API for programmatic access to all monitoring data
+
   ```python
   import httpx
 
@@ -817,6 +829,7 @@ This release focuses on stability with 11 bug fixes addressing issues reported b
 
 - **🔧 Docker Hooks System**: Complete pipeline customization with user-provided Python functions at 8 key points
 - **✨ Function-Based Hooks API (NEW)**: Write hooks as regular Python functions with full IDE support:
+
   ```python
   from crawl4ai import hooks_to_string
   from crawl4ai.docker_client import Crawl4aiDockerClient
@@ -864,9 +877,10 @@ This release focuses on stability with 11 bug fixes addressing issues reported b
 <summary><strong>Version 0.7.4 Release Highlights - The Intelligent Table Extraction & Performance Update</strong></summary>
 
 - **🚀 LLMTableExtraction**: Revolutionary table extraction with intelligent chunking for massive tables:
+
   ```python
   from crawl4ai import LLMTableExtraction, LLMConfig
-  
+
   # Configure intelligent table extraction
   table_strategy = LLMTableExtraction(
       llm_config=LLMConfig(provider="openai/gpt-4.1-mini"),
@@ -875,10 +889,10 @@ This release focuses on stability with 11 bug fixes addressing issues reported b
       overlap_threshold=100,          # Maintain context between chunks
       extraction_type="structured"    # Get structured data output
   )
-  
+
   config = CrawlerRunConfig(table_extraction_strategy=table_strategy)
   result = await crawler.arun("https://complex-tables-site.com", config=config)
-  
+
   # Tables are automatically chunked, processed, and merged
   for table in result.tables:
       print(f"Extracted table: {len(table['data'])} rows")
@@ -898,9 +912,10 @@ This release focuses on stability with 11 bug fixes addressing issues reported b
 <summary><strong>Version 0.7.3 Release Highlights - The Multi-Config Intelligence Update</strong></summary>
 
 - **🕵️ Undetected Browser Support**: Bypass sophisticated bot detection systems:
+
   ```python
   from crawl4ai import AsyncWebCrawler, BrowserConfig
-  
+
   browser_config = BrowserConfig(
       browser_type="undetected",  # Use undetected Chrome
       headless=True,              # Can run headless with stealth
@@ -909,16 +924,17 @@ This release focuses on stability with 11 bug fixes addressing issues reported b
           "--disable-web-security"
       ]
   )
-  
+
   async with AsyncWebCrawler(config=browser_config) as crawler:
       result = await crawler.arun("https://protected-site.com")
   # Successfully bypass Cloudflare, Akamai, and custom bot detection
   ```
 
 - **🎨 Multi-URL Configuration**: Different strategies for different URL patterns in one batch:
+
 ```python
 from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
-  
+
   configs = [
       # Documentation sites - aggressive caching
       CrawlerRunConfig(
@@ -926,30 +942,31 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
           cache_mode=CacheMode.WRITE_ONLY,
           markdown_generator_options={"include_links": True}
       ),
-      
+
       # News/blog sites - fresh content
       CrawlerRunConfig(
           url_matcher=lambda url: 'blog' in url or 'news' in url,
           cache_mode=CacheMode.BYPASS
       ),
-      
+
       # Fallback for everything else
       CrawlerRunConfig()
   ]
-  
+
   results = await crawler.arun_many(urls, config=configs)
   # Each URL gets the perfect configuration automatically
-  ```
+```
 
 - **🧠 Memory Monitoring**: Track and optimize memory usage during crawling:
+
   ```python
   from crawl4ai.memory_utils import MemoryMonitor
-  
+
   monitor = MemoryMonitor()
   monitor.start_monitoring()
-  
+
   results = await crawler.arun_many(large_url_list)
-  
+
   report = monitor.get_report()
   print(f"Peak memory: {report['peak_mb']:.1f} MB")
   print(f"Efficiency: {report['efficiency']:.1f}%")
@@ -957,9 +974,10 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
   ```
 
 - **📊 Enhanced Table Extraction**: Direct DataFrame conversion from web tables:
+
   ```python
   result = await crawler.arun("https://site-with-tables.com")
-  
+
   # New way - direct table access
   if result.tables:
       import pandas as pd
@@ -979,6 +997,7 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
 <summary><strong>Version 0.7.0 Release Highlights - The Adaptive Intelligence Update</strong></summary>
 
 - **🧠 Adaptive Crawling**: Your crawler now learns and adapts to website patterns automatically:
+
   ```python
   config = AdaptiveConfig(
       confidence_threshold=0.7, # Min confidence to stop crawling
@@ -986,7 +1005,7 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
       max_pages=20, # Maximum number of pages to crawl
       strategy="statistical"
   )
-  
+
   async with AsyncWebCrawler() as crawler:
       adaptive_crawler = AdaptiveCrawler(crawler, config)
       state = await adaptive_crawler.digest(
@@ -997,6 +1016,7 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
   ```
 
 - **🌊 Virtual Scroll Support**: Complete content extraction from infinite scroll pages:
+
   ```python
   scroll_config = VirtualScrollConfig(
       container_selector="[data-testid='feed']",
@@ -1004,20 +1024,21 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
       scroll_by="container_height",
       wait_after_scroll=1.0
   )
-  
+
   result = await crawler.arun(url, config=CrawlerRunConfig(
       virtual_scroll_config=scroll_config
   ))
   ```
 
 - **🔗 Intelligent Link Analysis**: 3-layer scoring system for smart link prioritization:
+
   ```python
   link_config = LinkPreviewConfig(
       query="machine learning tutorials",
       score_threshold=0.3,
       concurrent_requests=10
   )
-  
+
   result = await crawler.arun(url, config=CrawlerRunConfig(
       link_preview_config=link_config,
       score_links=True
@@ -1026,6 +1047,7 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
   ```
 
 - **🎣 Async URL Seeder**: Discover thousands of URLs in seconds:
+
   ```python
   seeder = AsyncUrlSeeder(SeedingConfig(
       source="sitemap+cc",
@@ -1033,7 +1055,7 @@ from crawl4ai import CrawlerRunConfig, MatchMode, CacheMode
       query="python tutorials",
       score_threshold=0.4
   ))
-  
+
   urls = await seeder.discover("https://example.com")
   ```
 
@@ -1053,6 +1075,7 @@ Crawl4AI follows standard Python version numbering conventions (PEP 440) to help
 Our version numbers follow this pattern: `MAJOR.MINOR.PATCH` (e.g., 0.4.3)
 
 #### Pre-release Versions
+
 We use different suffixes to indicate development stages:
 
 - `dev` (0.4.3dev1): Development versions, unstable
@@ -1061,12 +1084,15 @@ We use different suffixes to indicate development stages:
 - `rc` (0.4.3): Release candidates, potential final version
 
 #### Installation
+
 - Regular installation (stable version):
+
   ```bash
   pip install -U crawl4ai
   ```
 
 - Install pre-release versions:
+
   ```bash
   pip install crawl4ai --pre
   ```
@@ -1077,7 +1103,9 @@ We use different suffixes to indicate development stages:
   ```
 
 #### Why Pre-releases?
+
 We use pre-releases to:
+
 - Test new features in real-world scenarios
 - Gather feedback before final releases
 - Ensure stability for production users
@@ -1087,7 +1115,7 @@ For production environments, we recommend using the stable version. For testing 
 
 </details>
 
-## 📖 Documentation & Roadmap 
+## 📖 Documentation & Roadmap
 
 > 🚨 **Documentation Update Alert**: We're undertaking a major documentation overhaul next week to reflect recent updates and improvements. Stay tuned for a more comprehensive and up-to-date guide!
 
@@ -1113,7 +1141,7 @@ To check our development plans and upcoming features, visit our [Roadmap](https:
 
 </details>
 
-## 🤝 Contributing 
+## 🤝 Contributing
 
 We welcome contributions from the open-source community. Check out our [contribution guidelines](https://github.com/unclecode/crawl4ai/blob/main/CONTRIBUTORS.md) for more information.
 
@@ -1126,45 +1154,65 @@ Here's the updated license section:
 This project is licensed under the Apache License 2.0, attribution is recommended via the badges below. See the [Apache 2.0 License](https://github.com/unclecode/crawl4ai/blob/main/LICENSE) file for details.
 
 ### Attribution Requirements
+
 When using Crawl4AI, you must include one of the following attribution methods:
 
 <details>
 <summary>📈 <strong>1. Badge Attribution (Recommended)</strong></summary>
 Add one of these badges to your README, documentation, or website:
 
-| Theme | Badge |
-|-------|-------|
-| **Disco Theme (Animated)** | <a href="https://github.com/unclecode/crawl4ai"><img src="./docs/assets/powered-by-disco.svg" alt="Powered by Crawl4AI" width="200"/></a> |
+| Theme                            | Badge                                                                                                                                     |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Disco Theme (Animated)**       | <a href="https://github.com/unclecode/crawl4ai"><img src="./docs/assets/powered-by-disco.svg" alt="Powered by Crawl4AI" width="200"/></a> |
 | **Night Theme (Dark with Neon)** | <a href="https://github.com/unclecode/crawl4ai"><img src="./docs/assets/powered-by-night.svg" alt="Powered by Crawl4AI" width="200"/></a> |
-| **Dark Theme (Classic)** | <a href="https://github.com/unclecode/crawl4ai"><img src="./docs/assets/powered-by-dark.svg" alt="Powered by Crawl4AI" width="200"/></a> |
-| **Light Theme (Classic)** | <a href="https://github.com/unclecode/crawl4ai"><img src="./docs/assets/powered-by-light.svg" alt="Powered by Crawl4AI" width="200"/></a> |
- 
+| **Dark Theme (Classic)**         | <a href="https://github.com/unclecode/crawl4ai"><img src="./docs/assets/powered-by-dark.svg" alt="Powered by Crawl4AI" width="200"/></a>  |
+| **Light Theme (Classic)**        | <a href="https://github.com/unclecode/crawl4ai"><img src="./docs/assets/powered-by-light.svg" alt="Powered by Crawl4AI" width="200"/></a> |
 
 HTML code for adding the badges:
+
 ```html
 <!-- Disco Theme (Animated) -->
 <a href="https://github.com/unclecode/crawl4ai">
-  <img src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-disco.svg" alt="Powered by Crawl4AI" width="200"/>
+  <img
+    src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-disco.svg"
+    alt="Powered by Crawl4AI"
+    width="200"
+  />
 </a>
 
 <!-- Night Theme (Dark with Neon) -->
 <a href="https://github.com/unclecode/crawl4ai">
-  <img src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-night.svg" alt="Powered by Crawl4AI" width="200"/>
+  <img
+    src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-night.svg"
+    alt="Powered by Crawl4AI"
+    width="200"
+  />
 </a>
 
 <!-- Dark Theme (Classic) -->
 <a href="https://github.com/unclecode/crawl4ai">
-  <img src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-dark.svg" alt="Powered by Crawl4AI" width="200"/>
+  <img
+    src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-dark.svg"
+    alt="Powered by Crawl4AI"
+    width="200"
+  />
 </a>
 
 <!-- Light Theme (Classic) -->
 <a href="https://github.com/unclecode/crawl4ai">
-  <img src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-light.svg" alt="Powered by Crawl4AI" width="200"/>
+  <img
+    src="https://raw.githubusercontent.com/unclecode/crawl4ai/main/docs/assets/powered-by-light.svg"
+    alt="Powered by Crawl4AI"
+    width="200"
+  />
 </a>
 
 <!-- Simple Shield Badge -->
 <a href="https://github.com/unclecode/crawl4ai">
-  <img src="https://img.shields.io/badge/Powered%20by-Crawl4AI-blue?style=flat-square" alt="Powered by Crawl4AI"/>
+  <img
+    src="https://img.shields.io/badge/Powered%20by-Crawl4AI-blue?style=flat-square"
+    alt="Powered by Crawl4AI"
+  />
 </a>
 ```
 
@@ -1195,12 +1243,13 @@ If you use Crawl4AI in your research or project, please cite:
 ```
 
 Text citation format:
+
 ```
-UncleCode. (2024). Crawl4AI: Open-source LLM Friendly Web Crawler & Scraper [Computer software]. 
+UncleCode. (2024). Crawl4AI: Open-source LLM Friendly Web Crawler & Scraper [Computer software].
 GitHub. https://github.com/unclecode/crawl4ai
 ```
 
-## 📧 Contact 
+## 📧 Contact
 
 For questions, suggestions, or feedback, feel free to reach out:
 
@@ -1212,25 +1261,25 @@ Happy Crawling! 🕸️🚀
 
 ## 🗾 Mission
 
-Our mission is to unlock the value of personal and enterprise data by transforming digital footprints into structured, tradeable assets. Crawl4AI empowers individuals and organizations with open-source tools to extract and structure data, fostering a shared data economy.  
+Our mission is to unlock the value of personal and enterprise data by transforming digital footprints into structured, tradeable assets. Crawl4AI empowers individuals and organizations with open-source tools to extract and structure data, fostering a shared data economy.
 
 We envision a future where AI is powered by real human knowledge, ensuring data creators directly benefit from their contributions. By democratizing data and enabling ethical sharing, we are laying the foundation for authentic AI advancement.
 
 <details>
 <summary>🔑 <strong>Key Opportunities</strong></summary>
- 
-- **Data Capitalization**: Transform digital footprints into measurable, valuable assets.  
-- **Authentic AI Data**: Provide AI systems with real human insights.  
-- **Shared Economy**: Create a fair data marketplace that benefits data creators.  
+
+- **Data Capitalization**: Transform digital footprints into measurable, valuable assets.
+- **Authentic AI Data**: Provide AI systems with real human insights.
+- **Shared Economy**: Create a fair data marketplace that benefits data creators.
 
 </details>
 
 <details>
 <summary>🚀 <strong>Development Pathway</strong></summary>
 
-1. **Open-Source Tools**: Community-driven platforms for transparent data extraction.  
-2. **Digital Asset Structuring**: Tools to organize and value digital knowledge.  
-3. **Ethical Data Marketplace**: A secure, fair platform for exchanging structured data.  
+1. **Open-Source Tools**: Community-driven platforms for transparent data extraction.
+2. **Digital Asset Structuring**: Tools to organize and value digital knowledge.
+3. **Ethical Data Marketplace**: A secure, fair platform for exchanging structured data.
 
 For more details, see our [full mission statement](./MISSION.md).
 </details>
@@ -1241,19 +1290,19 @@ For more details, see our [full mission statement](./MISSION.md).
 
 These companies provide core infrastructure and technology that power Crawl4AI’s capabilities — from web access and proxy networks to AI tooling and data pipelines.
 
-| Company | About |
-|------|------|
+| Company                                                                                                                                                                                                                                                                                                                                    | About                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | <a href="https://www.joinmassive.com/" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/sponsors/massive_light.svg"><source media="(prefers-color-scheme: light)" srcset="docs/assets/sponsors/massive.svg"><img alt="Massive" src="docs/assets/sponsors/massive.svg" height="40"/></picture></a> | Massive is a web access API backed by millions of volunteer devices in 195+ countries. AI agents, models, and data pipelines use it to reach any site on the internet, reliably, in real time, and at scale. |
 
 ### 🏢 Enterprise Sponsors
 
 Our enterprise sponsors support Crawl4AI and help scale it to power production-grade data pipelines.
 
-| Company | About | Sponsorship Tier |
-|------|------|----------------------------|
-| <a href="https://kipo.ai" target="_blank"><img src="https://docs.crawl4ai.com/uploads/sponsors/20251013045751_2d54f57f117c651e.png" alt="DataSync" height="40"/></a> | Helps engineers and buyers find, compare, and source electronic & industrial parts in seconds, with specs, pricing, lead times & alternatives.| 🥇 Gold |
-| <a href="https://www.kidocode.com/" target="_blank"><img src="https://docs.crawl4ai.com/uploads/sponsors/20251013045045_bb8dace3f0440d65.svg" alt="Kidocode" height="40"/></a> | Kidocode is a hybrid technology and entrepreneurship school for kids aged 5–18, offering both online and on-campus education. | 🥇 Gold |
-| <a href="https://www.alephnull.sg/" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/sponsors/aleph_null_light.svg"><source media="(prefers-color-scheme: light)" srcset="docs/assets/sponsors/aleph_null.svg"><img alt="Aleph null" src="docs/assets/sponsors/aleph_null.svg" height="40"/></picture></a> | Singapore-based  Aleph Null is Asia’s leading edtech hub, dedicated to student-centric, AI-driven education—empowering learners with the tools to thrive in a fast-changing world. | 🥇 Gold |
+| Company                                                                                                                                                                                                                                                                                                                                             | About                                                                                                                                                                             | Sponsorship Tier |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| <a href="https://kipo.ai" target="_blank"><img src="https://docs.crawl4ai.com/uploads/sponsors/20251013045751_2d54f57f117c651e.png" alt="DataSync" height="40"/></a>                                                                                                                                                                                | Helps engineers and buyers find, compare, and source electronic & industrial parts in seconds, with specs, pricing, lead times & alternatives.                                    | 🥇 Gold          |
+| <a href="https://www.kidocode.com/" target="_blank"><img src="https://docs.crawl4ai.com/uploads/sponsors/20251013045045_bb8dace3f0440d65.svg" alt="Kidocode" height="40"/></a>                                                                                                                                                                      | Kidocode is a hybrid technology and entrepreneurship school for kids aged 5–18, offering both online and on-campus education.                                                     | 🥇 Gold          |
+| <a href="https://www.alephnull.sg/" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/sponsors/aleph_null_light.svg"><source media="(prefers-color-scheme: light)" srcset="docs/assets/sponsors/aleph_null.svg"><img alt="Aleph null" src="docs/assets/sponsors/aleph_null.svg" height="40"/></picture></a> | Singapore-based Aleph Null is Asia’s leading edtech hub, dedicated to student-centric, AI-driven education—empowering learners with the tools to thrive in a fast-changing world. | 🥇 Gold          |
 
 ---
 
@@ -1264,8 +1313,6 @@ Interested in partnering with Crawl4AI?
 Whether you’re a proxy provider, AI infrastructure company, cloud platform, or an organization looking to support the Crawl4AI ecosystem, we’d love to hear from you.
 
 📩 Contact: hello@crawl4ai.com
-
-
 
 ### 🧑‍🤝 Individual Sponsors
 

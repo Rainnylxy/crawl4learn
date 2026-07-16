@@ -2,24 +2,24 @@
 
 /* Font Face Definitions */
 @font-face {
-  font-family: 'Dank Mono';
-  src: url('../assets/DankMono-Regular.woff2') format('woff2');
+  font-family: "Dank Mono";
+  src: url("../assets/DankMono-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Dank Mono';
-  src: url('../assets/DankMono-Bold.woff2') format('woff2');
+  font-family: "Dank Mono";
+  src: url("../assets/DankMono-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Dank Mono';
-  src: url('../assets/DankMono-Italic.woff2') format('woff2');
+  font-family: "Dank Mono";
+  src: url("../assets/DankMono-Italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -36,8 +36,10 @@
   --text-accent: #d5cec0;
   --border-color: #3f3f44;
   --code-bg: #070708;
-  --font-primary: 'Dank Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
-  --font-code: 'Dank Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  --font-primary:
+    "Dank Mono", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    monospace;
+  --font-code: "Dank Mono", "Monaco", "Menlo", "Consolas", monospace;
 }
 
 * {
@@ -169,14 +171,14 @@ body {
 }
 
 .terminal-header::before {
-  content: '';
+  content: "";
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
 .terminal-header::before {
-  content: '● ● ●';
+  content: "● ● ●";
   color: #ff5f57;
   font-size: 12px;
   letter-spacing: 8px;
@@ -525,20 +527,20 @@ code {
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
   .nav-links {
     gap: 1rem;
   }
-  
+
   .features-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .step {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .coming-soon-section h2 {
     font-size: 1.5rem;
   }
@@ -632,8 +634,13 @@ code {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* Tool Details Panel */
@@ -751,8 +758,13 @@ code {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .action-icon {
@@ -835,7 +847,9 @@ code {
   width: 100%;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
 }
 
 .code-example.active {
@@ -877,17 +891,17 @@ code {
   .tools-container {
     grid-template-columns: 1fr;
   }
-  
+
   .tools-panel {
     flex-direction: row;
     overflow-x: auto;
     padding-bottom: 0.5rem;
   }
-  
+
   .tool-selector {
     min-width: 250px;
   }
-  
+
   .code-tabs {
     flex-wrap: wrap;
   }
@@ -1023,16 +1037,16 @@ code {
   .script-features-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .workflow-step {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .action-types {
     grid-template-columns: 1fr;
   }
-  
+
   .coming-soon-section h2 {
     font-size: 1.5rem;
   }
@@ -1067,7 +1081,11 @@ code {
 }
 
 .cloud-banner {
-  background: linear-gradient(135deg, rgba(15, 187, 170, 0.05) 0%, rgba(243, 128, 245, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(15, 187, 170, 0.05) 0%,
+    rgba(243, 128, 245, 0.05) 100%
+  );
   border: 1px solid rgba(15, 187, 170, 0.3);
   border-radius: 12px;
   padding: 1.5rem 2rem;
@@ -1082,9 +1100,10 @@ code {
   left: 0;
   width: 200%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(15, 187, 170, 0.1) 25%, 
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(15, 187, 170, 0.1) 25%,
     transparent 50%,
     rgba(15, 187, 170, 0.1) 75%,
     transparent 100%
@@ -1093,8 +1112,12 @@ code {
 }
 
 @keyframes cloud-shimmer {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .cloud-banner-content {
@@ -1105,7 +1128,6 @@ code {
   position: relative;
   z-index: 1;
 }
-
 
 .cloud-banner-text {
   flex: 1;
@@ -1153,15 +1175,15 @@ code {
     text-align: center;
     gap: 1rem;
   }
-  
+
   .cloud-banner-text {
     text-align: center;
   }
-  
+
   .cloud-banner-icon {
     font-size: 2rem;
   }
-  
+
   .cloud-banner-text h3 {
     font-size: 1.25rem;
   }
@@ -1190,19 +1212,31 @@ code {
   left: -50%;
   width: 200%;
   height: 450%;
-  background: radial-gradient(circle, rgba(15, 187, 170, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(15, 187, 170, 0.1) 0%,
+    transparent 70%
+  );
   animation: rotate 20s linear infinite;
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .cloud-announcement h2 {
@@ -1259,7 +1293,6 @@ code {
   text-transform: none;
   letter-spacing: -0.01em;
 }
-
 
 .cloud-cta-button:hover {
   transform: translateY(-2px);
@@ -1433,13 +1466,27 @@ code {
   font-family: var(--font-code);
 }
 
-.crawl-log .log-init { color: #0fbbaa; }
-.crawl-log .log-fetch { color: #4169e1; }
-.crawl-log .log-scrape { color: #f380f5; }
-.crawl-log .log-extract { color: #ffbd2e; }
-.crawl-log .log-complete { color: #0fbbaa; }
-.crawl-log .log-success { color: #0fbbaa; }
-.crawl-log .log-time { color: #666; }
+.crawl-log .log-init {
+  color: #0fbbaa;
+}
+.crawl-log .log-fetch {
+  color: #4169e1;
+}
+.crawl-log .log-scrape {
+  color: #f380f5;
+}
+.crawl-log .log-extract {
+  color: #ffbd2e;
+}
+.crawl-log .log-complete {
+  color: #0fbbaa;
+}
+.crawl-log .log-success {
+  color: #0fbbaa;
+}
+.crawl-log .log-time {
+  color: #666;
+}
 
 .extracted-preview {
   background: var(--bg-tertiary);
@@ -1500,8 +1547,13 @@ code {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 .success-message h3 {
@@ -1539,12 +1591,12 @@ code {
   .cloud-announcement h2 {
     font-size: 2rem;
   }
-  
+
   .cloud-features-preview {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .signup-content {
     padding: 2rem;
   }

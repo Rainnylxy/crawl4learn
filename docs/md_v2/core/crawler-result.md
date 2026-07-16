@@ -1,6 +1,6 @@
 # Crawl Result and Output
 
-When you call `arun()` on a page, Crawl4AI returns a **`CrawlResult`** object containing everything you might need—raw HTML, a cleaned version, optional screenshots or PDFs, structured extraction results, and more. This document explains those fields and how they map to different output types.  
+When you call `arun()` on a page, Crawl4AI returns a **`CrawlResult`** object containing everything you might need—raw HTML, a cleaned version, optional screenshots or PDFs, structured extraction results, and more. This document explains those fields and how they map to different output types.
 
 ---
 
@@ -50,34 +50,34 @@ class CrawlResult(BaseModel):
 
 ### Table: Key Fields in `CrawlResult`
 
-| Field (Name & Type)                       | Description                                                                                         |
-|-------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| **url (`str`)**                           | The final or actual URL crawled (in case of redirects).                                             |
-| **html (`str`)**                          | Original, unmodified page HTML. Good for debugging or custom processing.                            |
-| **fit_html (`Optional[str]`)**            | Preprocessed HTML optimized for extraction and content filtering.                                    |
-| **success (`bool`)**                      | `True` if the crawl completed without major errors, else `False`.                                   |
-| **cleaned_html (`Optional[str]`)**        | Sanitized HTML with scripts/styles removed; can exclude tags if configured via `excluded_tags` etc. |
-| **media (`Dict[str, List[Dict]]`)**       | Extracted media info (images, audio, etc.), each with attributes like `src`, `alt`, `score`, etc.   |
-| **links (`Dict[str, List[Dict]]`)**       | Extracted link data, split by `internal` and `external`. Each link usually has `href`, `text`, etc. |
-| **downloaded_files (`Optional[List[str]]`)** | If `accept_downloads=True` in `BrowserConfig`, this lists the filepaths of saved downloads.         |
-| **js_execution_result (`Optional[Dict[str, Any]]`)** | Results from JavaScript execution during crawling. |
-| **screenshot (`Optional[str]`)**          | Screenshot of the page (base64-encoded) if `screenshot=True`.                                       |
-| **pdf (`Optional[bytes]`)**               | PDF of the page if `pdf=True`.                                                                      |
-| **mhtml (`Optional[str]`)**               | MHTML snapshot of the page if `capture_mhtml=True`. Contains the full page with all resources.      |
+| Field (Name & Type)                                        | Description                                                                                                                                                                                |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **url (`str`)**                                            | The final or actual URL crawled (in case of redirects).                                                                                                                                    |
+| **html (`str`)**                                           | Original, unmodified page HTML. Good for debugging or custom processing.                                                                                                                   |
+| **fit_html (`Optional[str]`)**                             | Preprocessed HTML optimized for extraction and content filtering.                                                                                                                          |
+| **success (`bool`)**                                       | `True` if the crawl completed without major errors, else `False`.                                                                                                                          |
+| **cleaned_html (`Optional[str]`)**                         | Sanitized HTML with scripts/styles removed; can exclude tags if configured via `excluded_tags` etc.                                                                                        |
+| **media (`Dict[str, List[Dict]]`)**                        | Extracted media info (images, audio, etc.), each with attributes like `src`, `alt`, `score`, etc.                                                                                          |
+| **links (`Dict[str, List[Dict]]`)**                        | Extracted link data, split by `internal` and `external`. Each link usually has `href`, `text`, etc.                                                                                        |
+| **downloaded_files (`Optional[List[str]]`)**               | If `accept_downloads=True` in `BrowserConfig`, this lists the filepaths of saved downloads.                                                                                                |
+| **js_execution_result (`Optional[Dict[str, Any]]`)**       | Results from JavaScript execution during crawling.                                                                                                                                         |
+| **screenshot (`Optional[str]`)**                           | Screenshot of the page (base64-encoded) if `screenshot=True`.                                                                                                                              |
+| **pdf (`Optional[bytes]`)**                                | PDF of the page if `pdf=True`.                                                                                                                                                             |
+| **mhtml (`Optional[str]`)**                                | MHTML snapshot of the page if `capture_mhtml=True`. Contains the full page with all resources.                                                                                             |
 | **markdown (`Optional[str or MarkdownGenerationResult]`)** | It holds a `MarkdownGenerationResult`. Over time, this will be consolidated into `markdown`. The generator can provide raw markdown, citations, references, and optionally `fit_markdown`. |
-| **extracted_content (`Optional[str]`)**   | The output of a structured extraction (CSS/LLM-based) stored as JSON string or other text.          |
-| **metadata (`Optional[dict]`)**           | Additional info about the crawl or extracted data.                                                  |
-| **error_message (`Optional[str]`)**       | If `success=False`, contains a short description of what went wrong.                                |
-| **session_id (`Optional[str]`)**          | The ID of the session used for multi-page or persistent crawling.                                   |
-| **response_headers (`Optional[dict]`)**   | HTTP response headers, if captured.                                                                 |
-| **status_code (`Optional[int]`)**         | HTTP status code (e.g., 200 for OK).                                                                |
-| **ssl_certificate (`Optional[SSLCertificate]`)** | SSL certificate info if `fetch_ssl_certificate=True`.                                               |
-| **dispatch_result (`Optional[DispatchResult]`)** | Additional concurrency and resource usage information when crawling URLs in parallel.               |
-| **redirected_url (`Optional[str]`)**      | The URL after any redirects (different from `url` which is the final URL).                          |
-| **redirected_status_code (`Optional[int]`)** | HTTP status code of the final redirect destination (e.g., 200). `None` for non-HTTP requests (raw HTML, local files). |
-| **network_requests (`Optional[List[Dict[str, Any]]]`)** | List of network requests, responses, and failures captured during the crawl if `capture_network_requests=True`. |
-| **console_messages (`Optional[List[Dict[str, Any]]]`)** | List of browser console messages captured during the crawl if `capture_console_messages=True`.       |
-| **tables (`List[Dict]`)**                 | Table data extracted from HTML tables with structure `[{headers, rows, caption, summary}]`.           |
+| **extracted_content (`Optional[str]`)**                    | The output of a structured extraction (CSS/LLM-based) stored as JSON string or other text.                                                                                                 |
+| **metadata (`Optional[dict]`)**                            | Additional info about the crawl or extracted data.                                                                                                                                         |
+| **error_message (`Optional[str]`)**                        | If `success=False`, contains a short description of what went wrong.                                                                                                                       |
+| **session_id (`Optional[str]`)**                           | The ID of the session used for multi-page or persistent crawling.                                                                                                                          |
+| **response_headers (`Optional[dict]`)**                    | HTTP response headers, if captured.                                                                                                                                                        |
+| **status_code (`Optional[int]`)**                          | HTTP status code (e.g., 200 for OK).                                                                                                                                                       |
+| **ssl_certificate (`Optional[SSLCertificate]`)**           | SSL certificate info if `fetch_ssl_certificate=True`.                                                                                                                                      |
+| **dispatch_result (`Optional[DispatchResult]`)**           | Additional concurrency and resource usage information when crawling URLs in parallel.                                                                                                      |
+| **redirected_url (`Optional[str]`)**                       | The URL after any redirects (different from `url` which is the final URL).                                                                                                                 |
+| **redirected_status_code (`Optional[int]`)**               | HTTP status code of the final redirect destination (e.g., 200). `None` for non-HTTP requests (raw HTML, local files).                                                                      |
+| **network_requests (`Optional[List[Dict[str, Any]]]`)**    | List of network requests, responses, and failures captured during the crawl if `capture_network_requests=True`.                                                                            |
+| **console_messages (`Optional[List[Dict[str, Any]]]`)**    | List of browser console messages captured during the crawl if `capture_console_messages=True`.                                                                                             |
+| **tables (`List[Dict]`)**                                  | Table data extracted from HTML tables with structure `[{headers, rows, caption, summary}]`.                                                                                                |
 
 ---
 
@@ -109,18 +109,18 @@ print(result.cleaned_html)  # Freed of forms, header, footer, data-* attributes
 
 ### 3.1 `markdown`
 
-- **`markdown`**: The current location for detailed markdown output, returning a **`MarkdownGenerationResult`** object.  
+- **`markdown`**: The current location for detailed markdown output, returning a **`MarkdownGenerationResult`** object.
 - **`markdown_v2`**: Removed in v0.5. Accessing it now raises `AttributeError`; use `markdown`.
 
 **`MarkdownGenerationResult`** Fields:
 
-| Field                   | Description                                                                    |
-|-------------------------|--------------------------------------------------------------------------------|
-| **raw_markdown**        | The basic HTML→Markdown conversion.                                            |
-| **markdown_with_citations** | Markdown including inline citations that reference links at the end.        |
-| **references_markdown** | The references/citations themselves (if `citations=True`).                      |
-| **fit_markdown**        | The filtered/“fit” markdown if a content filter was used.                       |
-| **fit_html**            | The filtered HTML that generated `fit_markdown`.                                |
+| Field                       | Description                                                          |
+| --------------------------- | -------------------------------------------------------------------- |
+| **raw_markdown**            | The basic HTML→Markdown conversion.                                  |
+| **markdown_with_citations** | Markdown including inline citations that reference links at the end. |
+| **references_markdown**     | The references/citations themselves (if `citations=True`).           |
+| **fit_markdown**            | The filtered/“fit” markdown if a content filter was used.            |
+| **fit_html**                | The filtered HTML that generated `fit_markdown`.                     |
 
 ### 3.2 Basic Example with a Markdown Generator
 
@@ -184,7 +184,8 @@ if __name__ == "__main__":
 ```
 
 Here:
-- `url="raw://..."` passes the HTML content directly, no network requests.  
+
+- `url="raw://..."` passes the HTML content directly, no network requests.
 - The **CSS** extraction strategy populates `result.extracted_content` with the JSON array `[{"title": "...", "link": "..."}]`.
 
 ---
@@ -222,6 +223,7 @@ The `tables` field contains structured data extracted from HTML tables found on 
 Tables that score above the threshold (default: 7) are extracted and stored in result.tables.
 
 ### Accessing Table data:
+
 ```python
 import asyncio
 from crawl4ai import AsyncWebCrawler, CrawlerRunConfig
@@ -263,11 +265,11 @@ config = CrawlerRunConfig(
 )
 ```
 
-Each extracted table contains: 
+Each extracted table contains:
 
-- `headers`: Column header names 
+- `headers`: Column header names
 - `rows`: List of rows, each containing cell values
-- `caption`: Table caption text (if available) 
+- `caption`: Table caption text (if available)
 - `summary`: Table summary attribute (if specified)
 
 ### Table Extraction Tips
@@ -277,7 +279,6 @@ Each extracted table contains:
 - If you're missing tables, try adjusting the `table_score_threshold` to a lower value (default is 7).
 
 The table detection algorithm scores tables based on features like consistent columns, presence of headers, text density, and more. Tables scoring above the threshold are considered data tables worth extracting.
-
 
 ### 5.4 `screenshot`, `pdf`, and `mhtml`
 
@@ -330,14 +331,13 @@ else:
 
 **Deprecation**: Since v0.5 `markdown_v2`, `fit_markdown`, and `fit_html` are removed from `CrawlResult`. Use `result.markdown` for markdown output. It holds `MarkdownGenerationResult`, including `fit_html` and `fit_markdown`.
 
-
 ---
 
 ## 7. Next Steps
 
-- **Markdown Generation**: Dive deeper into how to configure `DefaultMarkdownGenerator` and various filters.  
+- **Markdown Generation**: Dive deeper into how to configure `DefaultMarkdownGenerator` and various filters.
 - **Content Filtering**: Learn how to use `BM25ContentFilter` and `PruningContentFilter`.
-- **Session & Hooks**: If you want to manipulate the page or preserve state across multiple `arun()` calls, see the hooking or session docs.  
+- **Session & Hooks**: If you want to manipulate the page or preserve state across multiple `arun()` calls, see the hooking or session docs.
 - **LLM Extraction**: For complex or unstructured content requiring AI-driven parsing, check the LLM-based strategies doc.
 
 **Enjoy** exploring all that `CrawlResult` offers—whether you need raw HTML, sanitized output, markdown, or fully structured data, Crawl4AI has you covered!

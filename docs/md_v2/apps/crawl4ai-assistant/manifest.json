@@ -3,14 +3,8 @@
   "name": "Crawl4AI Assistant",
   "version": "1.3.0",
   "description": "Visual schema and script builder for Crawl4AI - Build extraction schemas and automation scripts by clicking and recording actions",
-  "permissions": [
-    "activeTab",
-    "storage",
-    "downloads"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "permissions": ["activeTab", "storage", "downloads"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {

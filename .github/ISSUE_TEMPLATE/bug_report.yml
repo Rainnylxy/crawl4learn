@@ -1,7 +1,7 @@
 name: Bug Report
 description: Report a bug with the Crawl4AI.
 title: "[Bug]: "
-labels: ["🐞 Bug","🩺 Needs Triage"]
+labels: ["🐞 Bug", "🩺 Needs Triage"]
 body:
   - type: input
     id: crawl4ai_version
@@ -49,9 +49,9 @@ body:
       placeholder: |
         - URL(s): 
         - Settings used: 
-        - Input data (if applicable): 
+        - Input data (if applicable):
       render: bash
-  
+
   - type: textarea
     id: steps_to_reproduce
     attributes:
@@ -62,7 +62,7 @@ body:
         2. Click on...
         3. Observe the issue...
       render: bash
-  
+
   - type: textarea
     id: code_snippets
     attributes:
@@ -75,8 +75,8 @@ body:
   - type: markdown
     attributes:
       value: |
-          ## Supporting Information
-          Please provide the following details to help us understand and resolve your issue. This will assist us in reproducing and diagnosing the problem
+        ## Supporting Information
+        Please provide the following details to help us understand and resolve your issue. This will assist us in reproducing and diagnosing the problem
 
   - type: input
     id: os

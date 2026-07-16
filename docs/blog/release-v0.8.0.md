@@ -25,6 +25,7 @@
 **Who is affected**: Users of the Docker API who use the `hooks` parameter in `/crawl` requests.
 
 **Migration**:
+
 ```bash
 # To re-enable hooks (only if you trust all API users):
 export CRAWL4AI_HOOKS_ENABLED=true
@@ -39,6 +40,7 @@ export CRAWL4AI_HOOKS_ENABLED=true
 **Who is affected**: Users who were reading local files via the Docker API.
 
 **Migration**: Use the Python library directly for local file processing:
+
 ```python
 # Instead of API call with file:// URL, use library:
 from crawl4ai import AsyncWebCrawler
@@ -59,6 +61,7 @@ async with AsyncWebCrawler() as crawler:
 **Details**: The `__import__` builtin was available in hook code, allowing attackers to import `os`, `subprocess`, etc. and execute arbitrary commands.
 
 **Fix**:
+
 1. Removed `__import__` from allowed builtins
 2. Hooks disabled by default (`CRAWL4AI_HOOKS_ENABLED=false`)
 
@@ -198,6 +201,7 @@ Various fixes to cache validation and persistence.
 ### From v0.7.x to v0.8.0
 
 1. **Update the package**:
+
    ```bash
    pip install --upgrade crawl4ai
    ```
@@ -208,6 +212,7 @@ Various fixes to cache validation and persistence.
    - `file://` URLs no longer work on API (use library directly)
 
 3. **Review security settings**:
+
    ```yaml
    # config.yml - recommended for production
    security:
@@ -240,4 +245,4 @@ Special thanks to **Neo by ProjectDiscovery** for responsible security disclosur
 
 ---
 
-*For questions or issues, please open a [GitHub Issue](https://github.com/unclecode/crawl4ai/issues).*
+_For questions or issues, please open a [GitHub Issue](https://github.com/unclecode/crawl4ai/issues)._

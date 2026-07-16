@@ -31,7 +31,7 @@ if __name__ == "__main__":
 ```
 
 !!! note "Why request-level?"
-    `CrawlerRunConfig.proxy_config` keeps each request self-contained, so swapping proxies or rotation strategies is just a matter of building a new run configuration.
+`CrawlerRunConfig.proxy_config` keeps each request self-contained, so swapping proxies or rotation strategies is just a matter of building a new run configuration.
 
 ## Supported Proxy Formats
 
@@ -115,6 +115,7 @@ if proxies:
 Crawl4AI supports automatic proxy rotation to distribute requests across multiple proxy servers. Rotation is applied per request using a rotation strategy on `CrawlerRunConfig`.
 
 ### Proxy Rotation (recommended)
+
 ```python
 import asyncio
 import re
@@ -172,6 +173,7 @@ if __name__ == "__main__":
 Combine proxy usage with SSL certificate inspection for enhanced security analysis. SSL certificate fetching is configured per request via `CrawlerRunConfig`.
 
 ### Per-Request SSL Certificate Analysis
+
 ```python
 import asyncio
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
@@ -217,6 +219,7 @@ if __name__ == "__main__":
 ## Security Best Practices
 
 ### 1. Proxy Rotation for Anonymity
+
 ```python
 from crawl4ai import CrawlerRunConfig, ProxyConfig
 from crawl4ai.proxy_strategy import RoundRobinProxyStrategy
@@ -233,6 +236,7 @@ static_run_config = run_config
 ```
 
 ### 2. SSL Certificate Verification
+
 ```python
 from crawl4ai import CrawlerRunConfig
 
@@ -242,6 +246,7 @@ run_config = CrawlerRunConfig(fetch_ssl_certificate=True)
 ```
 
 ### 3. Environment Variable Security
+
 ```bash
 # Use environment variables for sensitive proxy credentials
 # Avoid hardcoding usernames/passwords in code
@@ -249,6 +254,7 @@ export PROXIES="ip1:port1:user1:pass1,ip2:port2:user2:pass2"
 ```
 
 ### 4. SOCKS5 for Enhanced Security
+
 ```python
 from crawl4ai import CrawlerRunConfig
 
@@ -259,7 +265,7 @@ run_config = CrawlerRunConfig(proxy_config="socks5://proxy.example.com:1080")
 ## Migration from Deprecated `proxy` Parameter
 
 - "Deprecation Notice"
-    The legacy `proxy` argument on `BrowserConfig` is deprecated. Configure proxies through `CrawlerRunConfig.proxy_config` so each request fully describes its network settings.
+  The legacy `proxy` argument on `BrowserConfig` is deprecated. Configure proxies through `CrawlerRunConfig.proxy_config` so each request fully describes its network settings.
 
 ```python
 # Old (deprecated) approach
@@ -272,6 +278,7 @@ run_config = CrawlerRunConfig(proxy_config="http://proxy.example.com:8080")
 ```
 
 ### Safe Logging of Proxies
+
 ```python
 from crawl4ai import ProxyConfig
 
@@ -286,22 +293,22 @@ def safe_proxy_repr(proxy: ProxyConfig):
 ### Common Issues
 
 - "Proxy connection failed"
-    - Verify the proxy server is reachable from your network.
-    - Double-check authentication credentials.
-    - Ensure the protocol matches (`http`, `https`, or `socks5`).
+  - Verify the proxy server is reachable from your network.
+  - Double-check authentication credentials.
+  - Ensure the protocol matches (`http`, `https`, or `socks5`).
 
 - "SSL certificate errors"
-    - Some proxies break SSL inspection; switch proxies if you see repeated failures.
-    - Consider temporarily disabling certificate fetching to isolate the issue.
+  - Some proxies break SSL inspection; switch proxies if you see repeated failures.
+  - Consider temporarily disabling certificate fetching to isolate the issue.
 
 - "Environment variables not loading"
-    - Confirm `PROXIES` (or your custom env var) is set before running the script.
-    - Check formatting: `ip:port:user:pass,ip:port:user:pass`.
+  - Confirm `PROXIES` (or your custom env var) is set before running the script.
+  - Check formatting: `ip:port:user:pass,ip:port:user:pass`.
 
 - "Proxy rotation not working"
-    - Ensure `ProxyConfig.from_env()` actually loaded entries (`len(proxies) > 0`).
-    - Attach `proxy_rotation_strategy` to `CrawlerRunConfig`.
-    - Validate the proxy definitions you pass into the strategy.
+  - Ensure `ProxyConfig.from_env()` actually loaded entries (`len(proxies) > 0`).
+  - Attach `proxy_rotation_strategy` to `CrawlerRunConfig`.
+  - Validate the proxy definitions you pass into the strategy.
 
 ## See Also
 

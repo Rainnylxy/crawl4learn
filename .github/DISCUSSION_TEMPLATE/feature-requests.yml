@@ -52,8 +52,9 @@ body:
     id: proposed_approach
     attributes:
       label: Proposed approach
-      description: Share any ideas you have for how this feature could be implemented. Point out any challenges your foresee
-       and the success metrics for this feature
+      description:
+        Share any ideas you have for how this feature could be implemented. Point out any challenges your foresee
+        and the success metrics for this feature
       placeholder: "e.g., Implement a breadth first traversal algorithm for scraper"
     validations:
       required: false

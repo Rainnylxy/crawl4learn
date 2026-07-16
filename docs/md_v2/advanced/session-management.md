@@ -68,7 +68,7 @@ async def crawl_dynamic_content():
         const firstCommit = commits[0].textContent.trim();
         return firstCommit !== window.lastCommit;
     }"""
-    
+
     schema = {
         "name": "Commit Extractor",
         "baseSelector": "li[data-testid='commit-row-item']",
@@ -82,13 +82,13 @@ async def crawl_dynamic_content():
         ],
     }
     extraction_strategy = JsonCssExtractionStrategy(schema, verbose=True)
-    
-    
+
+
     browser_config = BrowserConfig(
         verbose=True,
         headless=False,
     )
-        
+
     async with AsyncWebCrawler(config=browser_config) as crawler:
         for page in range(3):
             crawler_config = CrawlerRunConfig(
@@ -101,12 +101,12 @@ async def crawl_dynamic_content():
                 cache_mode=CacheMode.BYPASS,
                 capture_console_messages=True,
             )
-            
+
             result = await crawler.arun(url=url, config=crawler_config)
-            
+
             if result.console_messages:
                 print(f"Page {page + 1} console messages:", result.console_messages)
-            
+
             if result.extracted_content:
                 # print(f"Page {page + 1} result:", result.extracted_content)
                 commits = json.loads(result.extracted_content)
@@ -144,7 +144,7 @@ async def basic_session_crawl():
                 css_selector=".content-item",
                 cache_mode=CacheMode.BYPASS
             )
-            
+
             result = await crawler.arun(config=config)
             print(f"Page {page + 1}: Found {result.extracted_content.count('.content-item')} items")
 
@@ -154,6 +154,7 @@ asyncio.run(basic_session_crawl())
 ```
 
 This example shows:
+
 1. Reusing the same `session_id` across multiple requests.
 2. Executing JavaScript to load more content dynamically.
 3. Properly closing the session to free resources.

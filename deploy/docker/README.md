@@ -1,6 +1,7 @@
 # Crawl4AI Docker Guide 🐳
 
 ## Table of Contents
+
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
   - [Option 1: Using Pre-built Docker Hub Images (Recommended)](#option-1-using-pre-built-docker-hub-images-recommended)
@@ -41,6 +42,7 @@
 ## Prerequisites
 
 Before we dive in, make sure you have:
+
 - Docker installed and running (version 20.10.0 or higher), including `docker compose` (usually bundled with Docker Desktop).
 - `git` for cloning the repository.
 - At least 4GB of RAM available for the container (more recommended for heavy use).
@@ -90,29 +92,31 @@ ANTHROPIC_API_KEY=your-anthropic-key
 # GEMINI_API_TOKEN=your-gemini-token
 EOL
 ```
+
 > 🔑 **Note**: Keep your API keys secure! Never commit `.llm.env` to version control.
 
 #### 3. Run the Container
 
-*   **Basic run:**
-    ```bash
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai \
-      --shm-size=1g \
-      unclecode/crawl4ai:0.8.6
-    ```
+- **Basic run:**
 
-*   **With LLM support:**
-    ```bash
-    # Make sure .llm.env is in the current directory
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai \
-      --env-file .llm.env \
-      --shm-size=1g \
-      unclecode/crawl4ai:0.8.6
-    ```
+  ```bash
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai \
+    --shm-size=1g \
+    unclecode/crawl4ai:0.8.6
+  ```
+
+- **With LLM support:**
+  ```bash
+  # Make sure .llm.env is in the current directory
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai \
+    --env-file .llm.env \
+    --shm-size=1g \
+    unclecode/crawl4ai:0.8.6
+  ```
 
 > The server will be available at `http://localhost:11235`. Visit `/playground` to access the interactive testing interface.
 
@@ -124,12 +128,12 @@ docker stop crawl4ai && docker rm crawl4ai
 
 #### Docker Hub Versioning Explained
 
-*   **Image Name:** `unclecode/crawl4ai`
-*   **Tag Format:** `LIBRARY_VERSION[-SUFFIX]` (e.g., `0.7.0-r1`)
-    *   `LIBRARY_VERSION`: The semantic version of the core `crawl4ai` Python library
-    *   `SUFFIX`: Optional tag for release candidates (``) and revisions (`r1`)
-*   **`latest` Tag:** Points to the most recent stable version
-*   **Multi-Architecture Support:** All images support both `linux/amd64` and `linux/arm64` architectures through a single tag
+- **Image Name:** `unclecode/crawl4ai`
+- **Tag Format:** `LIBRARY_VERSION[-SUFFIX]` (e.g., `0.7.0-r1`)
+  - `LIBRARY_VERSION`: The semantic version of the core `crawl4ai` Python library
+  - `SUFFIX`: Optional tag for release candidates (``) and revisions (`r1`)
+- **`latest` Tag:** Points to the most recent stable version
+- **Multi-Architecture Support:** All images support both `linux/amd64` and `linux/arm64` architectures through a single tag
 
 ### Option 2: Using Docker Compose
 
@@ -158,6 +162,7 @@ cp deploy/docker/.llm.env.example .llm.env
 The Docker setup now supports flexible LLM provider configuration through three methods:
 
 1. **Environment Variable** (Highest Priority): Set `LLM_PROVIDER` to override the default
+
    ```bash
    export LLM_PROVIDER="anthropic/claude-3-opus"
    # Or in your .llm.env file:
@@ -165,6 +170,7 @@ The Docker setup now supports flexible LLM provider configuration through three 
    ```
 
 2. **API Request Parameter**: Specify provider per request
+
    ```json
    {
      "url": "https://example.com",
@@ -180,28 +186,30 @@ The system automatically selects the appropriate API key based on the provider.
 
 The `docker-compose.yml` file in the project root provides a simplified approach that automatically handles architecture detection using buildx.
 
-*   **Run Pre-built Image from Docker Hub:**
-    ```bash
-    # Pulls and runs the release candidate from Docker Hub
-    # Automatically selects the correct architecture
-    IMAGE=unclecode/crawl4ai:0.8.6 docker compose up -d
-    ```
+- **Run Pre-built Image from Docker Hub:**
 
-*   **Build and Run Locally:**
-    ```bash
-    # Builds the image locally using Dockerfile and runs it
-    # Automatically uses the correct architecture for your machine
-    docker compose up --build -d
-    ```
+  ```bash
+  # Pulls and runs the release candidate from Docker Hub
+  # Automatically selects the correct architecture
+  IMAGE=unclecode/crawl4ai:0.8.6 docker compose up -d
+  ```
 
-*   **Customize the Build:**
-    ```bash
-    # Build with all features (includes torch and transformers)
-    INSTALL_TYPE=all docker compose up --build -d
-    
-    # Build with GPU support (for AMD64 platforms)
-    ENABLE_GPU=true docker compose up --build -d
-    ```
+- **Build and Run Locally:**
+
+  ```bash
+  # Builds the image locally using Dockerfile and runs it
+  # Automatically uses the correct architecture for your machine
+  docker compose up --build -d
+  ```
+
+- **Customize the Build:**
+  ```bash
+  # Build with all features (includes torch and transformers)
+  INSTALL_TYPE=all docker compose up --build -d
+
+  # Build with GPU support (for AMD64 platforms)
+  ENABLE_GPU=true docker compose up --build -d
+  ```
 
 > The server will be available at `http://localhost:11235`.
 
@@ -241,25 +249,26 @@ docker buildx build \
 
 #### 3. Run the Container
 
-*   **Basic run (no LLM support):**
-    ```bash
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai-standalone \
-      --shm-size=1g \
-      crawl4ai-local:latest
-    ```
+- **Basic run (no LLM support):**
 
-*   **With LLM support:**
-    ```bash
-    # Make sure .llm.env is in the current directory (project root)
-    docker run -d \
-      -p 11235:11235 \
-      --name crawl4ai-standalone \
-      --env-file .llm.env \
-      --shm-size=1g \
-      crawl4ai-local:latest
-    ```
+  ```bash
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai-standalone \
+    --shm-size=1g \
+    crawl4ai-local:latest
+  ```
+
+- **With LLM support:**
+  ```bash
+  # Make sure .llm.env is in the current directory (project root)
+  docker run -d \
+    -p 11235:11235 \
+    --name crawl4ai-standalone \
+    --env-file .llm.env \
+    --shm-size=1g \
+    crawl4ai-local:latest
+  ```
 
 > The server will be available at `http://localhost:11235`.
 
@@ -419,27 +428,27 @@ docker buildx build \
 
 ### Build Arguments Explained
 
-| Argument     | Description                              | Default   | Options                            |
-| :----------- | :--------------------------------------- | :-------- | :--------------------------------- |
-| INSTALL_TYPE | Feature set                              | `default` | `default`, `all`, `torch`, `transformer` |
-| ENABLE_GPU   | GPU support (CUDA for AMD64)           | `false`   | `true`, `false`                    |
-| APP_HOME     | Install path inside container (advanced) | `/app`    | any valid path                   |
-| USE_LOCAL    | Install library from local source        | `true`    | `true`, `false`                    |
-| GITHUB_REPO  | Git repo to clone if USE_LOCAL=false   | *(see Dockerfile)* | any git URL                  |
-| GITHUB_BRANCH| Git branch to clone if USE_LOCAL=false   | `main`    | any branch name                  |
+| Argument      | Description                              | Default            | Options                                  |
+| :------------ | :--------------------------------------- | :----------------- | :--------------------------------------- |
+| INSTALL_TYPE  | Feature set                              | `default`          | `default`, `all`, `torch`, `transformer` |
+| ENABLE_GPU    | GPU support (CUDA for AMD64)             | `false`            | `true`, `false`                          |
+| APP_HOME      | Install path inside container (advanced) | `/app`             | any valid path                           |
+| USE_LOCAL     | Install library from local source        | `true`             | `true`, `false`                          |
+| GITHUB_REPO   | Git repo to clone if USE_LOCAL=false     | _(see Dockerfile)_ | any git URL                              |
+| GITHUB_BRANCH | Git branch to clone if USE_LOCAL=false   | `main`             | any branch name                          |
 
-*(Note: PYTHON_VERSION is fixed by the `FROM` instruction in the Dockerfile)*
+_(Note: PYTHON_VERSION is fixed by the `FROM` instruction in the Dockerfile)_
 
 ### Build Best Practices
 
 1.  **Choose the Right Install Type**
-    *   `default`: Basic installation, smallest image size. Suitable for most standard web scraping and markdown generation.
-    *   `all`: Full features including `torch` and `transformers` for advanced extraction strategies (e.g., CosineStrategy, certain LLM filters). Significantly larger image. Ensure you need these extras.
+    - `default`: Basic installation, smallest image size. Suitable for most standard web scraping and markdown generation.
+    - `all`: Full features including `torch` and `transformers` for advanced extraction strategies (e.g., CosineStrategy, certain LLM filters). Significantly larger image. Ensure you need these extras.
 2.  **Platform Considerations**
-    *   Use `buildx` for building multi-architecture images, especially for pushing to registries.
-    *   Use `docker compose` profiles (`local-amd64`, `local-arm64`) for easy platform-specific local builds.
+    - Use `buildx` for building multi-architecture images, especially for pushing to registries.
+    - Use `docker compose` profiles (`local-amd64`, `local-arm64`) for easy platform-specific local builds.
 3.  **Performance Optimization**
-    *   The image automatically includes platform-specific optimizations (OpenMP for AMD64, OpenBLAS for ARM64).
+    - The image automatically includes platform-specific optimizations (OpenMP for AMD64, OpenBLAS for ARM64).
 
 ---
 
@@ -511,47 +520,48 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-*(SDK parameters like timeout, verify_ssl etc. remain the same)*
+_(SDK parameters like timeout, verify_ssl etc. remain the same)_
 
 ### Second Approach: Direct API Calls
 
 Crucially, when sending configurations directly via JSON, they **must** follow the `{"type": "ClassName", "params": {...}}` structure for any non-primitive value (like config objects or strategies). Dictionaries must be wrapped as `{"type": "dict", "value": {...}}`.
 
-*(Keep the detailed explanation of Configuration Structure, Basic Pattern, Simple vs Complex, Strategy Pattern, Complex Nested Example, Quick Grammar Overview, Important Rules, Pro Tip)*
+_(Keep the detailed explanation of Configuration Structure, Basic Pattern, Simple vs Complex, Strategy Pattern, Complex Nested Example, Quick Grammar Overview, Important Rules, Pro Tip)_
 
-#### More Examples *(Ensure Schema example uses type/value wrapper)*
+#### More Examples _(Ensure Schema example uses type/value wrapper)_
 
 **Advanced Crawler Configuration**
-*(Keep example, ensure cache_mode uses valid enum value like "bypass")*
+_(Keep example, ensure cache_mode uses valid enum value like "bypass")_
 
 **Extraction Strategy**
+
 ```json
 {
-    "crawler_config": {
-        "type": "CrawlerRunConfig",
+  "crawler_config": {
+    "type": "CrawlerRunConfig",
+    "params": {
+      "extraction_strategy": {
+        "type": "JsonCssExtractionStrategy",
         "params": {
-            "extraction_strategy": {
-                "type": "JsonCssExtractionStrategy",
-                "params": {
-                    "schema": {
-                        "type": "dict",
-                        "value": {
-                           "baseSelector": "article.post",
-                           "fields": [
-                               {"name": "title", "selector": "h1", "type": "text"},
-                               {"name": "content", "selector": ".content", "type": "html"}
-                           ]
-                         }
-                    }
-                }
+          "schema": {
+            "type": "dict",
+            "value": {
+              "baseSelector": "article.post",
+              "fields": [
+                { "name": "title", "selector": "h1", "type": "text" },
+                { "name": "content", "selector": ".content", "type": "html" }
+              ]
             }
+          }
         }
+      }
     }
+  }
 }
 ```
 
-**LLM Extraction Strategy** *(Keep example, ensure schema uses type/value wrapper)*
-*(Keep Deep Crawler Example)*
+**LLM Extraction Strategy** _(Keep example, ensure schema uses type/value wrapper)_
+_(Keep Deep Crawler Example)_
 
 ### REST API Examples
 
@@ -684,6 +694,7 @@ curl -X POST http://localhost:11235/crawl/job \
 ```
 
 **Your webhook receives:**
+
 ```json
 {
   "task_id": "crawl_a1b2c3d4",
@@ -695,6 +706,7 @@ curl -X POST http://localhost:11235/crawl/job \
 ```
 
 Then fetch the results:
+
 ```bash
 curl http://localhost:11235/crawl/job/crawl_a1b2c3d4
 ```
@@ -716,6 +728,7 @@ curl -X POST http://localhost:11235/crawl/job \
 ```
 
 **Your webhook receives the complete data:**
+
 ```json
 {
   "task_id": "crawl_a1b2c3d4",
@@ -810,6 +823,7 @@ curl -X POST http://localhost:11235/llm/job \
 ```
 
 **Your webhook receives:**
+
 ```json
 {
   "task_id": "llm_1234567890",
@@ -828,6 +842,7 @@ curl -X POST http://localhost:11235/llm/job \
 ```
 
 **Key Differences for LLM Jobs:**
+
 - Task type is `"llm_extraction"` instead of `"crawl"`
 - Extracted data is in `data.extracted_content`
 - Single URL only (not an array)
@@ -846,13 +861,14 @@ Keep an eye on your crawler with these endpoints:
 - `/schema` - Full API schema
 
 Example health check:
+
 ```bash
 curl http://localhost:11235/health
 ```
 
 ---
 
-*(Deployment Scenarios and Complete Examples sections remain the same, maybe update links if examples moved)*
+_(Deployment Scenarios and Complete Examples sections remain the same, maybe update links if examples moved)_
 
 ---
 
@@ -878,7 +894,7 @@ app:
 
 # Default LLM Configuration
 llm:
-  provider: "openai/gpt-4o-mini"  # Can be overridden by LLM_PROVIDER env var
+  provider: "openai/gpt-4o-mini" # Can be overridden by LLM_PROVIDER env var
   # api_key: sk-...  # If you pass the API key directly (not recommended)
 
 # Redis Configuration (Used by internal Redis server managed by supervisord)
@@ -894,7 +910,7 @@ rate_limiting:
   enabled: True
   default_limit: "1000/minute"
   trusted_proxies: []
-  storage_uri: "memory://"  # Use "redis://localhost:6379" if you need persistent/shared limits
+  storage_uri: "memory://" # Use "redis://localhost:6379" if you need persistent/shared limits
 
 # Security Configuration
 security:
@@ -914,7 +930,7 @@ crawler:
   rate_limiter:
     base_delay: [1.0, 2.0] # Min/max delay between requests in seconds for dispatcher
   timeouts:
-    stream_init: 30.0  # Timeout for stream initialization
+    stream_init: 30.0 # Timeout for stream initialization
     batch_process: 300.0 # Timeout for non-streaming /crawl processing
 
 # Logging Configuration
@@ -931,9 +947,9 @@ observability:
     endpoint: "/health"
 ```
 
-*(JWT Authentication section remains the same, just note the default port is now 11235 for requests)*
+_(JWT Authentication section remains the same, just note the default port is now 11235 for requests)_
 
-*(Configuration Tips and Best Practices remain the same)*
+_(Configuration Tips and Best Practices remain the same)_
 
 ### Customizing Your Configuration
 
@@ -949,33 +965,34 @@ You can override the default `config.yml`.
 1.  Create your custom configuration file, e.g., `my-custom-config.yml` locally. Ensure it contains all necessary sections.
 2.  Mount it when running the container:
 
-    *   **Using `docker run`:**
-        ```bash
-        # Assumes my-custom-config.yml is in the current directory
-        docker run -d -p 11235:11235 \
-          --name crawl4ai-custom-config \
-          --env-file .llm.env \
-          --shm-size=1g \
-          -v $(pwd)/my-custom-config.yml:/app/config.yml \
-          unclecode/crawl4ai:latest # Or your specific tag
-        ```
+    - **Using `docker run`:**
 
-    *   **Using `docker-compose.yml`:** Add a `volumes` section to the service definition:
-        ```yaml
-        services:
-          crawl4ai-hub-amd64: # Or your chosen service
-            image: unclecode/crawl4ai:latest
-            profiles: ["hub-amd64"]
-            <<: *base-config
-            volumes:
-              # Mount local custom config over the default one in the container
-              - ./my-custom-config.yml:/app/config.yml
-              # Keep the shared memory volume from base-config
-              - /dev/shm:/dev/shm
-        ```
-        *(Note: Ensure `my-custom-config.yml` is in the same directory as `docker-compose.yml`)*
+      ```bash
+      # Assumes my-custom-config.yml is in the current directory
+      docker run -d -p 11235:11235 \
+        --name crawl4ai-custom-config \
+        --env-file .llm.env \
+        --shm-size=1g \
+        -v $(pwd)/my-custom-config.yml:/app/config.yml \
+        unclecode/crawl4ai:latest # Or your specific tag
+      ```
 
-> 💡 When mounting, your custom file *completely replaces* the default one. Ensure it's a valid and complete configuration.
+    - **Using `docker-compose.yml`:** Add a `volumes` section to the service definition:
+      ```yaml
+      services:
+        crawl4ai-hub-amd64: # Or your chosen service
+          image: unclecode/crawl4ai:latest
+          profiles: ["hub-amd64"]
+          <<: *base-config
+          volumes:
+            # Mount local custom config over the default one in the container
+            - ./my-custom-config.yml:/app/config.yml
+            # Keep the shared memory volume from base-config
+            - /dev/shm:/dev/shm
+      ```
+      _(Note: Ensure `my-custom-config.yml` is in the same directory as `docker-compose.yml`)_
+
+> 💡 When mounting, your custom file _completely replaces_ the default one. Ensure it's a valid and complete configuration.
 
 ### Configuration Recommendations
 
@@ -1012,6 +1029,7 @@ We're here to help you succeed with Crawl4AI! Here's how to get support:
 ## Summary
 
 In this guide, we've covered everything you need to get started with Crawl4AI's Docker deployment:
+
 - Building and running the Docker container
 - Configuring the environment
 - Using the interactive playground for testing

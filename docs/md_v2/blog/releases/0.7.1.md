@@ -1,6 +1,6 @@
 # 🛠️ Crawl4AI v0.7.1: Minor Cleanup Update
 
-*July 17, 2025 • 2 min read*
+_July 17, 2025 • 2 min read_
 
 ---
 
@@ -38,6 +38,7 @@ No breaking changes - upgrade directly from v0.7.0.
 
 ---
 
-Questions? Issues? 
+Questions? Issues?
+
 - GitHub: [github.com/unclecode/crawl4ai](https://github.com/unclecode/crawl4ai)
 - Discord: [discord.gg/crawl4ai](https://discord.gg/jP8KfhDhyN)

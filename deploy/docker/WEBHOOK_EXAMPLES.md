@@ -15,14 +15,14 @@ You can configure default webhook settings in `config.yml`:
 ```yaml
 webhooks:
   enabled: true
-  default_url: null  # Optional: default webhook URL for all jobs
-  data_in_payload: false  # Optional: default behavior for including data
+  default_url: null # Optional: default webhook URL for all jobs
+  data_in_payload: false # Optional: default behavior for including data
   retry:
     max_attempts: 5
-    initial_delay_ms: 1000  # 1s, 2s, 4s, 8s, 16s exponential backoff
+    initial_delay_ms: 1000 # 1s, 2s, 4s, 8s, 16s exponential backoff
     max_delay_ms: 32000
-    timeout_ms: 30000  # 30s timeout per webhook call
-  headers:  # Optional: default headers to include
+    timeout_ms: 30000 # 30s timeout per webhook call
+  headers: # Optional: default headers to include
     User-Agent: "Crawl4AI-Webhook/1.0"
 ```
 
@@ -33,6 +33,7 @@ webhooks:
 Send a webhook notification without including the crawl data in the payload.
 
 **Request:**
+
 ```bash
 curl -X POST http://localhost:11235/crawl/job \
   -H "Content-Type: application/json" \
@@ -46,6 +47,7 @@ curl -X POST http://localhost:11235/crawl/job \
 ```
 
 **Response:**
+
 ```json
 {
   "task_id": "crawl_a1b2c3d4"
@@ -53,6 +55,7 @@ curl -X POST http://localhost:11235/crawl/job \
 ```
 
 **Webhook Payload Received:**
+
 ```json
 {
   "task_id": "crawl_a1b2c3d4",
@@ -64,6 +67,7 @@ curl -X POST http://localhost:11235/crawl/job \
 ```
 
 Your webhook handler should then fetch the results:
+
 ```bash
 curl http://localhost:11235/crawl/job/crawl_a1b2c3d4
 ```
@@ -73,6 +77,7 @@ curl http://localhost:11235/crawl/job/crawl_a1b2c3d4
 Include the full crawl results in the webhook payload.
 
 **Request:**
+
 ```bash
 curl -X POST http://localhost:11235/crawl/job \
   -H "Content-Type: application/json" \
@@ -86,6 +91,7 @@ curl -X POST http://localhost:11235/crawl/job \
 ```
 
 **Webhook Payload Received:**
+
 ```json
 {
   "task_id": "crawl_a1b2c3d4",
@@ -107,6 +113,7 @@ curl -X POST http://localhost:11235/crawl/job \
 Include custom headers for authentication or identification.
 
 **Request:**
+
 ```bash
 curl -X POST http://localhost:11235/crawl/job \
   -H "Content-Type: application/json" \
@@ -130,6 +137,7 @@ The webhook will be sent with these additional headers plus the default headers 
 When a crawl job fails, a webhook is sent with error details.
 
 **Webhook Payload on Failure:**
+
 ```json
 {
   "task_id": "crawl_a1b2c3d4",
@@ -146,6 +154,7 @@ When a crawl job fails, a webhook is sent with error details.
 If you set a `default_url` in config.yml, jobs without webhook_config will use it:
 
 **config.yml:**
+
 ```yaml
 webhooks:
   enabled: true
@@ -154,6 +163,7 @@ webhooks:
 ```
 
 **Request (no webhook_config needed):**
+
 ```bash
 curl -X POST http://localhost:11235/crawl/job \
   -H "Content-Type: application/json" \
@@ -169,6 +179,7 @@ The webhook will be sent to the default URL configured in config.yml.
 Use webhooks with the LLM extraction endpoint for asynchronous processing.
 
 **Request:**
+
 ```bash
 curl -X POST http://localhost:11235/llm/job \
   -H "Content-Type: application/json" \
@@ -186,6 +197,7 @@ curl -X POST http://localhost:11235/llm/job \
 ```
 
 **Response:**
+
 ```json
 {
   "task_id": "llm_1698765432_12345"
@@ -193,6 +205,7 @@ curl -X POST http://localhost:11235/llm/job \
 ```
 
 **Webhook Payload Received:**
+
 ```json
 {
   "task_id": "llm_1698765432_12345",
@@ -317,10 +330,10 @@ interface LLMJobRequest {
 }
 
 async function createCrawlJob(request: CrawlJobRequest) {
-  const response = await fetch('http://localhost:11235/crawl/job', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(request)
+  const response = await fetch("http://localhost:11235/crawl/job", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
   });
 
   const { task_id } = await response.json();
@@ -328,10 +341,10 @@ async function createCrawlJob(request: CrawlJobRequest) {
 }
 
 async function createLLMJob(request: LLMJobRequest) {
-  const response = await fetch('http://localhost:11235/llm/job', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(request)
+  const response = await fetch("http://localhost:11235/llm/job", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
   });
 
   const { task_id } = await response.json();
@@ -340,39 +353,41 @@ async function createLLMJob(request: LLMJobRequest) {
 
 // Usage - Crawl Job
 const crawlTaskId = await createCrawlJob({
-  urls: ['https://example.com'],
+  urls: ["https://example.com"],
   webhook_config: {
-    webhook_url: 'https://myapp.com/webhooks/crawl-complete',
+    webhook_url: "https://myapp.com/webhooks/crawl-complete",
     webhook_data_in_payload: false,
     webhook_headers: {
-      'X-Webhook-Secret': 'my-secret'
-    }
-  }
+      "X-Webhook-Secret": "my-secret",
+    },
+  },
 });
 
 // Usage - LLM Extraction Job
 const llmTaskId = await createLLMJob({
-  url: 'https://example.com/article',
-  q: 'Extract the main points from this article',
-  provider: 'openai/gpt-4o-mini',
+  url: "https://example.com/article",
+  q: "Extract the main points from this article",
+  provider: "openai/gpt-4o-mini",
   webhook_config: {
-    webhook_url: 'https://myapp.com/webhooks/llm-complete',
+    webhook_url: "https://myapp.com/webhooks/llm-complete",
     webhook_data_in_payload: true,
     webhook_headers: {
-      'X-Webhook-Secret': 'my-secret'
-    }
-  }
+      "X-Webhook-Secret": "my-secret",
+    },
+  },
 });
 ```
 
 ## Monitoring and Debugging
 
 Webhook delivery attempts are logged at INFO level:
+
 - Successful deliveries
 - Retry attempts with delays
 - Final failures after max attempts
 
 Check the application logs for webhook delivery status:
+
 ```bash
 docker logs crawl4ai-container | grep -i webhook
 ```

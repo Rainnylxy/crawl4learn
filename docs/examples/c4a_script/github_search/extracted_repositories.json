@@ -54,13 +54,7 @@
     "description": "Web crawling tool that integrates with AI assistants via the MCP",
     "primary_language": "Python",
     "star_count": "10",
-    "topics": [
-      {},
-      {},
-      {},
-      {},
-      {}
-    ],
+    "topics": [{}, {}, {}, {}, {}],
     "last_updated": "on 16 Mar"
   },
   {
@@ -70,13 +64,7 @@
     "description": "AI web scraper built withCrawl4AIfor extracting structured leads data from websites.",
     "primary_language": "Python",
     "star_count": "30",
-    "topics": [
-      {},
-      {},
-      {},
-      {},
-      {}
-    ],
+    "topics": [{}, {}, {}, {}, {}],
     "last_updated": "on 13 Feb"
   },
   {

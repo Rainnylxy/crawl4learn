@@ -1,6 +1,6 @@
 # Crawl4AI v0.7.8: Stability & Bug Fix Release
 
-*December 2025*
+_December 2025_
 
 ---
 
@@ -324,4 +324,4 @@ Issues fixed: #1642, #1638, #1629, #1621, #1412, #1269, #1268, #1181, #1178, #11
 
 **Happy crawling!**
 
-*- unclecode*
+_- unclecode_

@@ -7,6 +7,7 @@ C4A-Script is a powerful, human-readable domain-specific language (DSL) designed
 ### Why C4A-Script?
 
 **Simple Syntax, Powerful Results**
+
 ```c4a
 # Navigate and interact in plain English
 GO https://example.com
@@ -19,8 +20,9 @@ CLICK `button[type="submit"]`
 C4A-Script comes with a built-in Blockly visual editor, allowing you to create scripts by dragging and dropping blocks - no coding experience required!
 
 **Perfect for:**
+
 - **UI Testing**: Automate user interaction flows
-- **Demo Creation**: Build interactive product demonstrations  
+- **Demo Creation**: Build interactive product demonstrations
 - **Data Entry**: Automate form filling and submissions
 - **Testing Workflows**: Validate complex user journeys
 - **Training**: Teach web automation without code complexity
@@ -59,6 +61,7 @@ Want to learn by doing? We've got you covered:
 ### Running the Tutorial Locally
 
 The tutorial includes a Flask-based web interface with:
+
 - **Live Code Editor** with syntax highlighting
 - **Visual Blockly Editor** for drag-and-drop programming
 - **Recording Mode** to capture your actions and generate scripts
@@ -136,62 +139,69 @@ TYPE $password
 ## Command Categories
 
 ### 🧭 Navigation Commands
+
 Move around the web like a user would:
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `GO` | Navigate to URL | `GO https://example.com` |
-| `RELOAD` | Refresh current page | `RELOAD` |
-| `BACK` | Go back in history | `BACK` |
-| `FORWARD` | Go forward in history | `FORWARD` |
+| Command   | Purpose               | Example                  |
+| --------- | --------------------- | ------------------------ |
+| `GO`      | Navigate to URL       | `GO https://example.com` |
+| `RELOAD`  | Refresh current page  | `RELOAD`                 |
+| `BACK`    | Go back in history    | `BACK`                   |
+| `FORWARD` | Go forward in history | `FORWARD`                |
 
 ### ⏱️ Wait Commands
+
 Ensure elements are ready before interacting:
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `WAIT` | Wait for time/element/text | `WAIT 3` or `WAIT \`#element\` 10` |
+| Command | Purpose                    | Example                            |
+| ------- | -------------------------- | ---------------------------------- |
+| `WAIT`  | Wait for time/element/text | `WAIT 3` or `WAIT \`#element\` 10` |
 
 ### 🖱️ Mouse Commands
+
 Click, drag, and move like a human:
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `CLICK` | Click element or coordinates | `CLICK \`button\`` or `CLICK 100 200` |
-| `DOUBLE_CLICK` | Double-click element | `DOUBLE_CLICK \`.item\`` |
-| `RIGHT_CLICK` | Right-click element | `RIGHT_CLICK \`#menu\`` |
-| `SCROLL` | Scroll in direction | `SCROLL DOWN 500` |
-| `DRAG` | Drag from point to point | `DRAG 100 100 500 300` |
+| Command        | Purpose                      | Example                             |
+| -------------- | ---------------------------- | ----------------------------------- |
+| `CLICK`        | Click element or coordinates | `CLICK \`button\``or`CLICK 100 200` |
+| `DOUBLE_CLICK` | Double-click element         | `DOUBLE_CLICK \`.item\``            |
+| `RIGHT_CLICK`  | Right-click element          | `RIGHT_CLICK \`#menu\``             |
+| `SCROLL`       | Scroll in direction          | `SCROLL DOWN 500`                   |
+| `DRAG`         | Drag from point to point     | `DRAG 100 100 500 300`              |
 
-### ⌨️ Keyboard Commands  
+### ⌨️ Keyboard Commands
+
 Type text and press keys naturally:
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `TYPE` | Type text or variable | `TYPE "Hello"` or `TYPE $username` |
-| `PRESS` | Press special keys | `PRESS Tab` or `PRESS Enter` |
-| `CLEAR` | Clear input field | `CLEAR \`#search\`` |
-| `SET` | Set input value directly | `SET \`#email\` "user@example.com"` |
+| Command | Purpose                  | Example                             |
+| ------- | ------------------------ | ----------------------------------- |
+| `TYPE`  | Type text or variable    | `TYPE "Hello"` or `TYPE $username`  |
+| `PRESS` | Press special keys       | `PRESS Tab` or `PRESS Enter`        |
+| `CLEAR` | Clear input field        | `CLEAR \`#search\``                 |
+| `SET`   | Set input value directly | `SET \`#email\` "user@example.com"` |
 
 ### 🔀 Control Flow
+
 Add logic and repetition to your scripts:
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `IF` | Conditional execution | `IF (EXISTS \`#popup\`) THEN CLICK \`#close\`` |
-| `REPEAT` | Loop commands | `REPEAT (SCROLL DOWN 300, 5)` |
+| Command  | Purpose               | Example                                        |
+| -------- | --------------------- | ---------------------------------------------- |
+| `IF`     | Conditional execution | `IF (EXISTS \`#popup\`) THEN CLICK \`#close\`` |
+| `REPEAT` | Loop commands         | `REPEAT (SCROLL DOWN 300, 5)`                  |
 
 ### 💾 Variables & Advanced
+
 Store data and execute custom code:
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `SETVAR` | Create variable | `SETVAR email = "test@example.com"` |
-| `EVAL` | Execute JavaScript | `EVAL \`console.log('Hello')\`` |
+| Command  | Purpose            | Example                             |
+| -------- | ------------------ | ----------------------------------- |
+| `SETVAR` | Create variable    | `SETVAR email = "test@example.com"` |
+| `EVAL`   | Execute JavaScript | `EVAL \`console.log('Hello')\``     |
 
 ## Real-World Examples
 
 ### Example 1: Login Flow
+
 ```c4a
 # Complete login automation
 GO https://myapp.com/login
@@ -213,6 +223,7 @@ WAIT `.dashboard` 10
 ```
 
 ### Example 2: E-commerce Shopping
+
 ```c4a
 # Shopping automation with variables
 SETVAR product = "laptop"
@@ -237,6 +248,7 @@ CLICK `.product-item:first-child`
 ```
 
 ### Example 3: Form Automation with Conditions
+
 ```c4a
 # Smart form filling with error handling
 GO https://forms.example.com
@@ -264,11 +276,12 @@ WAIT `.success-message` 10
 C4A-Script includes a powerful visual programming interface built on Google Blockly. Perfect for:
 
 - **Non-programmers** who want to create automation
-- **Rapid prototyping** of automation workflows  
+- **Rapid prototyping** of automation workflows
 - **Educational environments** for teaching automation concepts
 - **Collaborative development** where visual representation helps communication
 
 ### Features:
+
 - **Drag & Drop Interface**: Build scripts by connecting blocks
 - **Real-time Sync**: Changes in visual mode instantly update the text script
 - **Smart Block Types**: Blocks are categorized by function (Navigation, Actions, etc.)
@@ -280,6 +293,7 @@ Try the visual editor in our [live demo](https://docs.crawl4ai.com/c4a-script/de
 ## Advanced Features
 
 ### Recording Mode
+
 The tutorial interface includes a recording feature that watches your browser interactions and automatically generates C4A-Script commands:
 
 1. Click "Record" in the tutorial interface
@@ -288,6 +302,7 @@ The tutorial interface includes a recording feature that watches your browser in
 4. Edit and refine the generated script
 
 ### Error Handling and Debugging
+
 C4A-Script provides clear error messages and debugging information:
 
 ```c4a
@@ -303,6 +318,7 @@ EVAL `console.log("Current page title:", document.title)`
 ```
 
 ### Integration with Crawl4AI
+
 C4A-Script integrates seamlessly with Crawl4AI's web crawling capabilities:
 
 ```python
@@ -328,6 +344,7 @@ async with AsyncWebCrawler() as crawler:
 ## Best Practices
 
 ### 1. Always Wait for Elements
+
 ```c4a
 # Bad: Clicking immediately
 CLICK `#button`
@@ -338,6 +355,7 @@ CLICK `#button`
 ```
 
 ### 2. Use Descriptive Comments
+
 ```c4a
 # Login to user account
 GO https://myapp.com/login
@@ -354,6 +372,7 @@ WAIT `.dashboard` 10
 ```
 
 ### 3. Handle Variable Conditions
+
 ```c4a
 # Handle different page states
 IF (EXISTS `.cookie-banner`) THEN CLICK `.accept-cookies`
@@ -364,6 +383,7 @@ CLICK `#main-action`
 ```
 
 ### 4. Use Variables for Reusability
+
 ```c4a
 # Define once, use everywhere
 SETVAR base_url = "https://myapp.com"
@@ -376,7 +396,7 @@ SET `#email` $test_email
 ## Getting Help
 
 - **📖 [Complete Examples](/examples/c4a_script/)** - Real-world automation scripts
-- **🎮 [Interactive Tutorial](/examples/c4a_script/tutorial/)** - Hands-on learning environment  
+- **🎮 [Interactive Tutorial](/examples/c4a_script/tutorial/)** - Hands-on learning environment
 - **📋 [API Reference](/api/c4a-script-reference/)** - Detailed command documentation
 - **🌐 [Live Demo](https://docs.crawl4ai.com/c4a-script/demo)** - Try it in your browser
 
@@ -390,4 +410,4 @@ Ready to dive deeper? Check out:
 
 C4A-Script makes web automation accessible to everyone. Whether you're a developer automating tests, a designer creating interactive demos, or a business user streamlining repetitive tasks, C4A-Script has the tools you need.
 
-*Start automating today - your future self will thank you!* 🚀
+_Start automating today - your future self will thank you!_ 🚀

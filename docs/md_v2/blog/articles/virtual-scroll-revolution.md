@@ -1,8 +1,8 @@
 # Solving the Virtual Scroll Puzzle: How Crawl4AI Captures What Others Miss
 
-*Published on June 29, 2025 • 10 min read*
+_Published on June 29, 2025 • 10 min read_
 
-*By [unclecode](https://x.com/unclecode) • Follow me on [X/Twitter](https://x.com/unclecode) for more web scraping insights*
+_By [unclecode](https://x.com/unclecode) • Follow me on [X/Twitter](https://x.com/unclecode) for more web scraping insights_
 
 ---
 
@@ -10,7 +10,7 @@
 
 You know that feeling when you're scrolling through Twitter, and suddenly realize you can't scroll back to that brilliant tweet from an hour ago? It's not your browser being quirky—it's virtual scrolling at work. And if this frustrates you as a user, imagine being a web scraper trying to capture all those tweets.
 
-Here's the dirty secret of modern web development: **most of the content you see doesn't actually exist**. 
+Here's the dirty secret of modern web development: **most of the content you see doesn't actually exist**.
 
 Let me explain. Open Twitter right now and scroll for a bit. Now inspect the DOM. You'll find maybe 20-30 tweet elements, yet you just scrolled past hundreds. Where did they go? They were never really there—just temporary ghosts passing through a revolving door of DOM elements.
 
@@ -29,7 +29,7 @@ Traditional Infinite Scroll:         Virtual Scroll:
 │ Item 10     │                     │ Item 14     │
 │ Item 11 NEW │                     │ Item 15     │
 │ Item 12 NEW │                     └─────────────┘
-└─────────────┘                     
+└─────────────┘
 DOM: 12 items & growing             DOM: Always ~5 items
 ```
 
@@ -42,12 +42,14 @@ When I first encountered this with Crawl4AI, I thought it was a bug. My scraper 
 It took me embarrassingly long to realize: **the website was gaslighting my scraper**.
 
 Virtual scroll is deceptively simple:
+
 1. Keep only visible items in DOM (usually 10-30 elements)
 2. As user scrolls down, remove top items, add bottom items
 3. As user scrolls up, remove bottom items, add top items
 4. Maintain the illusion of a continuous list
 
 For users, it's seamless. For scrapers, it's a nightmare. Traditional approaches fail because:
+
 - `document.scrollingElement.scrollHeight` lies to you
 - Waiting for new elements is futile—they replace, not append
 - Screenshots only capture the current viewport
@@ -58,21 +60,27 @@ For users, it's seamless. For scrapers, it's a nightmare. Traditional approaches
 After much experimentation (and several cups of coffee), I realized we needed to think differently. Instead of fighting virtual scroll, we needed to understand it. This led to identifying three distinct scrolling behaviors:
 
 ### State 1: No Change (The Stubborn Page)
+
 ```javascript
 scroll() → same content → continue trying
 ```
+
 The page doesn't react to scrolling. Either we've hit the end, or it's not a scrollable container.
 
 ### State 2: Appending (The Traditional Friend)
+
 ```javascript
 scroll() → old content + new content → all good!
 ```
+
 Classic infinite scroll. New content appends to existing content. Our traditional tools work fine here.
 
 ### State 3: Replacing (The Trickster)
+
 ```javascript
 scroll() → completely different content → capture everything!
 ```
+
 Virtual scroll detected! Content is being replaced. This is where our new magic happens.
 
 ## Introducing VirtualScrollConfig
@@ -119,6 +127,7 @@ When Crawl4AI encounters a virtual scroll container, it:
 8. **Merges** all chunks intelligently
 
 The merging is crucial. We can't just concatenate HTML—we'd get duplicates. Instead, we:
+
 - Parse each chunk into elements
 - Create fingerprints using normalized text
 - Keep only unique elements
@@ -138,7 +147,7 @@ async def capture_twitter_thread():
         scroll_by="container_height",
         wait_after_scroll=1.0  # Twitter needs time to load
     )
-    
+
     config = CrawlerRunConfig(
         virtual_scroll_config=virtual_config,
         # Also extract structured data
@@ -160,17 +169,17 @@ async def capture_twitter_thread():
             }
         )
     )
-    
+
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun(
             url="https://twitter.com/elonmusk/status/...",
             config=config
         )
-        
+
         # Parse the extracted tweets
         import json
         tweets = json.loads(result.extracted_content)
-        
+
         print(f"Captured {len(tweets)} tweets from the thread")
         for tweet in tweets[:5]:
             print(f"@{tweet['author']}: {tweet['content'][:100]}...")
@@ -180,18 +189,19 @@ async def capture_twitter_thread():
 
 During testing, we achieved remarkable results:
 
-| Site | Without Virtual Scroll | With Virtual Scroll | Improvement |
-|------|------------------------|---------------------|-------------|
-| Twitter Timeline | 10 tweets | 490 tweets | **49x** |
-| Instagram Grid | 12 posts | 999 posts | **83x** |
-| LinkedIn Feed | 5 posts | 200 posts | **40x** |
-| Reddit Comments | 25 comments | 500 comments | **20x** |
+| Site             | Without Virtual Scroll | With Virtual Scroll | Improvement |
+| ---------------- | ---------------------- | ------------------- | ----------- |
+| Twitter Timeline | 10 tweets              | 490 tweets          | **49x**     |
+| Instagram Grid   | 12 posts               | 999 posts           | **83x**     |
+| LinkedIn Feed    | 5 posts                | 200 posts           | **40x**     |
+| Reddit Comments  | 25 comments            | 500 comments        | **20x**     |
 
 The best part? It's automatic. If the page doesn't use virtual scroll, Crawl4AI handles it normally. No configuration changes needed.
 
 ## When to Use Virtual Scroll
 
 Use `VirtualScrollConfig` when:
+
 - ✅ Scrolling seems to "eat" previous content
 - ✅ DOM element count stays suspiciously constant
 - ✅ You're scraping Twitter, Instagram, LinkedIn, Reddit
@@ -199,6 +209,7 @@ Use `VirtualScrollConfig` when:
 - ✅ Traditional scrolling captures only a fraction of content
 
 Don't use it when:
+
 - ❌ Content accumulates normally (use `scan_full_page` instead)
 - ❌ Page has no scrollable containers
 - ❌ You only need the initially visible content
@@ -260,28 +271,26 @@ For the curious, here's how our deduplication works:
 ```javascript
 // Simplified version of our deduplication logic
 function createFingerprint(element) {
-    const text = element.innerText
-        .toLowerCase()
-        .replace(/[\s\W]/g, '');  // Remove spaces and symbols
-    return text;
+  const text = element.innerText.toLowerCase().replace(/[\s\W]/g, ""); // Remove spaces and symbols
+  return text;
 }
 
 function mergeChunks(chunks) {
-    const seen = new Set();
-    const unique = [];
-    
-    for (const chunk of chunks) {
-        const elements = parseHTML(chunk);
-        for (const element of elements) {
-            const fingerprint = createFingerprint(element);
-            if (!seen.has(fingerprint)) {
-                seen.add(fingerprint);
-                unique.push(element);
-            }
-        }
+  const seen = new Set();
+  const unique = [];
+
+  for (const chunk of chunks) {
+    const elements = parseHTML(chunk);
+    for (const element of elements) {
+      const fingerprint = createFingerprint(element);
+      if (!seen.has(fingerprint)) {
+        seen.add(fingerprint);
+        unique.push(element);
+      }
     }
-    
-    return unique;
+  }
+
+  return unique;
 }
 ```
 
@@ -292,6 +301,7 @@ Simple, but effective. We normalize text to catch duplicates even with slight HT
 Virtual scroll support in Crawl4AI represents a paradigm shift. We're no longer limited to what's immediately visible or what traditional scrolling reveals. We can now capture the full content of virtually any modern website.
 
 This opens new possibilities:
+
 - **Complete social media analysis**: Every tweet, every comment, every reaction
 - **Comprehensive data extraction**: Full tables, complete lists, entire feeds
 - **Historical research**: Capture entire timelines, not just recent posts
@@ -314,20 +324,20 @@ async def main():
         scroll_by="container_height",
         wait_after_scroll=0.5
     )
-    
+
     # Set up the crawler
     config = CrawlerRunConfig(
         virtual_scroll_config=virtual_config,
         verbose=True  # See what's happening
     )
-    
+
     # Crawl and capture everything
     async with AsyncWebCrawler() as crawler:
         result = await crawler.arun(
             url="https://example.com/feed",  # Your target URL
             config=config
         )
-        
+
         print(f"Captured {len(result.html)} characters of content")
         print(f"Found {result.html.count('article')} articles")  # Adjust selector
 
@@ -352,4 +362,4 @@ Welcome to the future of web scraping. Welcome to a world where virtual scroll i
 - 🚀 [Get Started with Crawl4AI](https://docs.crawl4ai.com/core/quickstart) - Full installation and setup guide
 - 🤝 [Join our Community](https://github.com/unclecode/crawl4ai) - Share your experiences and get help
 
-*Have you encountered virtual scroll challenges? How did you solve them? Share your story in our [GitHub discussions](https://github.com/unclecode/crawl4ai/discussions)!*
+_Have you encountered virtual scroll challenges? How did you solve them? Share your story in our [GitHub discussions](https://github.com/unclecode/crawl4ai/discussions)!_

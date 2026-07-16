@@ -11,17 +11,16 @@ Crawl4AI’s **hooks** let you customize the crawler at specific points in the p
 7. **`before_retrieve_html`** – Just before the crawler retrieves final HTML.  
 8. **`before_return_html`** – Right before returning the HTML content.
 
-**Important**: Avoid heavy tasks in `on_browser_created` since you don’t yet have a page context. If you need to *log in*, do so in **`on_page_context_created`**.
+**Important**: Avoid heavy tasks in `on_browser_created` since you don’t yet have a page context. If you need to _log in_, do so in **`on_page_context_created`**.
 
 > note "Important Hook Usage Warning"
-    **Avoid Misusing Hooks**: Do not manipulate page objects in the wrong hook or at the wrong time, as it can crash the pipeline or produce incorrect results. A common mistake is attempting to handle authentication prematurely—such as creating or closing pages in `on_browser_created`. 
+> **Avoid Misusing Hooks**: Do not manipulate page objects in the wrong hook or at the wrong time, as it can crash the pipeline or produce incorrect results. A common mistake is attempting to handle authentication prematurely—such as creating or closing pages in `on_browser_created`.
 
->   **Use the Right Hook for Auth**: If you need to log in or set tokens, use `on_page_context_created`. This ensures you have a valid page/context to work with, without disrupting the main crawling flow.
+> **Use the Right Hook for Auth**: If you need to log in or set tokens, use `on_page_context_created`. This ensures you have a valid page/context to work with, without disrupting the main crawling flow.
 
->    **Identity-Based Crawling**: For robust auth, consider identity-based crawling (or passing a session ID) to preserve state. Run your initial login steps in a separate, well-defined process, then feed that session to your main crawl—rather than shoehorning complex authentication into early hooks. Check out [Identity-Based Crawling](../advanced/identity-based-crawling.md) for more details.
+> **Identity-Based Crawling**: For robust auth, consider identity-based crawling (or passing a session ID) to preserve state. Run your initial login steps in a separate, well-defined process, then feed that session to your main crawl—rather than shoehorning complex authentication into early hooks. Check out [Identity-Based Crawling](../advanced/identity-based-crawling.md) for more details.
 
->    **Be Cautious**: Overwriting or removing elements in the wrong hook can compromise the final crawl. Keep hooks focused on smaller tasks (like route filters, custom headers), and let your main logic (crawling, data extraction) proceed normally.
-
+> **Be Cautious**: Overwriting or removing elements in the wrong hook can compromise the final crawl. Keep hooks focused on smaller tasks (like route filters, custom headers), and let your main logic (crawling, data extraction) proceed normally.
 
 Below is an example demonstration.
 
@@ -67,7 +66,7 @@ async def main():
     async def on_page_context_created(page: Page, context: BrowserContext, **kwargs):
         # Called right after a new page + context are created (ideal for auth or route config).
         print("[HOOK] on_page_context_created - Setting up page & context.")
-        
+
         # Example 1: Route filtering (e.g., block images)
         async def route_filter(route):
             if route.request.resource_type == "image":
@@ -104,7 +103,7 @@ async def main():
         return page
 
     async def after_goto(
-        page: Page, context: BrowserContext, 
+        page: Page, context: BrowserContext,
         url: str, response, **kwargs
     ):
         # Called after navigation completes.
@@ -118,7 +117,7 @@ async def main():
         return page
 
     async def on_user_agent_updated(
-        page: Page, context: BrowserContext, 
+        page: Page, context: BrowserContext,
         user_agent: str, **kwargs
     ):
         # Called whenever the user agent updates.
@@ -172,7 +171,7 @@ async def main():
     # 4) Run the crawler on an example page
     url = "https://example.com"
     result = await crawler.arun(url, config=crawler_run_config)
-    
+
     if result.success:
         print("\nCrawled URL:", result.url)
         print("HTML length:", len(result.html))
@@ -189,31 +188,39 @@ if __name__ == "__main__":
 
 ## Hook Lifecycle Summary
 
-1. **`on_browser_created`**:  
-   - Browser is up, but **no** pages or contexts yet.  
-   - Light setup only—don’t try to open or close pages here (that belongs in `on_page_context_created`).
+1. **`on_browser_created`**:
 
-2. **`on_page_context_created`**:  
-   - Perfect for advanced **auth** or route blocking.  
-   - You have a **page** + **context** ready but haven’t navigated to the target URL yet.
+- Browser is up, but **no** pages or contexts yet.
+- Light setup only—don’t try to open or close pages here (that belongs in `on_page_context_created`).
 
-3. **`before_goto`**:  
-   - Right before navigation. Typically used for setting **custom headers** or logging the target URL.
+2. **`on_page_context_created`**:
 
-4. **`after_goto`**:  
-   - After page navigation is done. Good place for verifying content or waiting on essential elements. 
+- Perfect for advanced **auth** or route blocking.
+- You have a **page** + **context** ready but haven’t navigated to the target URL yet.
 
-5. **`on_user_agent_updated`**:  
-   - Whenever the user agent changes (for stealth or different UA modes).
+3. **`before_goto`**:
 
-6. **`on_execution_started`**:  
-   - If you set `js_code` or run custom scripts, this runs once your JS is about to start.
+- Right before navigation. Typically used for setting **custom headers** or logging the target URL.
 
-7. **`before_retrieve_html`**:  
-   - Just before the final HTML snapshot is taken. Often you do a final scroll or lazy-load triggers here.
+4. **`after_goto`**:
 
-8. **`before_return_html`**:  
-   - The last hook before returning HTML to the `CrawlResult`. Good for logging HTML length or minor modifications.
+- After page navigation is done. Good place for verifying content or waiting on essential elements.
+
+5. **`on_user_agent_updated`**:
+
+- Whenever the user agent changes (for stealth or different UA modes).
+
+6. **`on_execution_started`**:
+
+- If you set `js_code` or run custom scripts, this runs once your JS is about to start.
+
+7. **`before_retrieve_html`**:
+
+- Just before the final HTML snapshot is taken. Often you do a final scroll or lazy-load triggers here.
+
+8. **`before_return_html`**:
+
+- The last hook before returning HTML to the `CrawlResult`. Good for logging HTML length or minor modifications.
 
 ---
 
@@ -231,9 +238,9 @@ This ensures the newly created context is under your control **before** `arun()`
 
 ## Additional Considerations
 
-- **Session Management**: If you want multiple `arun()` calls to reuse a single session, pass `session_id=` in your `CrawlerRunConfig`. Hooks remain the same.  
-- **Performance**: Hooks can slow down crawling if they do heavy tasks. Keep them concise.  
-- **Error Handling**: If a hook fails, the overall crawl might fail. Catch exceptions or handle them gracefully.  
+- **Session Management**: If you want multiple `arun()` calls to reuse a single session, pass `session_id=` in your `CrawlerRunConfig`. Hooks remain the same.
+- **Performance**: Hooks can slow down crawling if they do heavy tasks. Keep them concise.
+- **Error Handling**: If a hook fails, the overall crawl might fail. Catch exceptions or handle them gracefully.
 - **Concurrency**: If you run `arun_many()`, each URL triggers these hooks in parallel. Ensure your hooks are thread/async-safe.
 
 ---
@@ -248,7 +255,7 @@ Hooks provide **fine-grained** control over:
 - **Final HTML** retrieval
 
 Follow the recommended usage:
-- **Login** or advanced tasks in `on_page_context_created`  
-- **Custom headers** or logs in `before_goto` / `after_goto`  
-- **Scrolling** or final checks in `before_retrieve_html` / `before_return_html`
 
+- **Login** or advanced tasks in `on_page_context_created`
+- **Custom headers** or logs in `before_goto` / `after_goto`
+- **Scrolling** or final checks in `before_retrieve_html` / `before_return_html`

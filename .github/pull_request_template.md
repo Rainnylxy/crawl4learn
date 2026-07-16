@@ -1,12 +1,15 @@
 ## Summary
+
 Please include a summary of the change and/or which issues are fixed.
 
 eg: `Fixes #123` (Tag GitHub issue numbers in this format, so it automatically links the issues with your PR)
 
 ## List of files changed and why
+
 eg: quickstart.py - To update the example as per new changes
 
 ## How Has This Been Tested?
+
 Please describe the tests that you ran to verify your changes.
 
 ## Checklist:

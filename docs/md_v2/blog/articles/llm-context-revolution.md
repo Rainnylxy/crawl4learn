@@ -1,6 +1,6 @@
 # The LLM Context Protocol: Why Your AI Assistant Needs Memory, Reasoning, and Examples
 
-*Published on January 24, 2025 • 8 min read*
+_Published on January 24, 2025 • 8 min read_
 
 ---
 
@@ -8,35 +8,38 @@
 
 Picture this: You hand someone a dictionary and ask them to write poetry. They know every word, its spelling, its definition—but do they know how words dance together? How certain combinations evoke emotion while others fall flat? This is exactly what we're doing when we throw API documentation at our AI assistants and expect magic.
 
-I've spent countless hours watching my AI coding assistant struggle with my own library, Crawl4AI. Despite feeding it comprehensive documentation, it would generate code that was *technically* correct but practically useless. Like a tourist speaking from a phrasebook—grammatically sound, culturally tone-deaf.
+I've spent countless hours watching my AI coding assistant struggle with my own library, Crawl4AI. Despite feeding it comprehensive documentation, it would generate code that was _technically_ correct but practically useless. Like a tourist speaking from a phrasebook—grammatically sound, culturally tone-deaf.
 
 ## Enter the Three-Dimensional Context Protocol
 
-What if, instead of dumping information, we provided *wisdom*? Not just the "what," but the "how" and "why"? This led me to develop what I call the **LLM Context Protocol**—a structured approach that mirrors how humans actually master libraries.
+What if, instead of dumping information, we provided _wisdom_? Not just the "what," but the "how" and "why"? This led me to develop what I call the **LLM Context Protocol**—a structured approach that mirrors how humans actually master libraries.
 
-Think of it as HTTP for AI context. Just as HTTP doesn't dictate your website's content but provides a reliable structure for communication, this protocol doesn't prescribe *how* you write your documentation—it provides a framework for *what* your AI needs to truly understand your code.
+Think of it as HTTP for AI context. Just as HTTP doesn't dictate your website's content but provides a reliable structure for communication, this protocol doesn't prescribe _how_ you write your documentation—it provides a framework for _what_ your AI needs to truly understand your code.
 
 ### The Three Pillars of Library Wisdom
 
 <div style="background-color: #1a1a1c; border: 1px solid #3f3f44; padding: 20px; margin: 20px 0;">
 
 #### 🧠 **Memory: The Foundation**
+
 ```markdown
 # AsyncWebCrawler.arun() - Memory Context
 
 ## Signature
+
 async def arun(
-    url: str,
-    config: CrawlerConfig = None,
-    session_id: str = None,
-    **kwargs
+url: str,
+config: CrawlerConfig = None,
+session_id: str = None,
+**kwargs
 ) -> CrawlResult
 
 ## Parameters
+
 - url: Target URL to crawl
 - config: Optional configuration object
 - session_id: Optional session identifier for caching
-...
+  ...
 ```
 
 This is your API reference—the facts, the parameters, the return types. It's the easiest part to generate and, ironically, the least useful in isolation. It's like memorizing a dictionary without understanding grammar.
@@ -46,12 +49,13 @@ This is your API reference—the facts, the parameters, the return types. It's t
 <div style="background-color: #1a1a1c; border: 1px solid #3f3f44; padding: 20px; margin: 20px 0;">
 
 #### 🎯 **Reasoning: The Soul**
+
 ```markdown
 # AsyncWebCrawler Design Philosophy - Reasoning Context
 
 ## Why Async-First Architecture?
 
-Crawl4AI uses AsyncWebCrawler as its primary interface because modern web 
+Crawl4AI uses AsyncWebCrawler as its primary interface because modern web
 scraping demands concurrency. Here's the thinking:
 
 1. **Network I/O is slow**: Waiting synchronously wastes 90% of execution time
@@ -61,26 +65,29 @@ scraping demands concurrency. Here's the thinking:
 ## When to Use Session Management
 
 Session management isn't just about performance—it's about appearing human:
+
 - Use sessions when crawling multiple pages from the same domain
 - Reuse browser contexts to maintain cookies and local storage
 - But don't overdo it: too long sessions look suspicious
 
 ## The Cache Strategy Decision Tree
+
 if static_content and infrequent_updates:
-    use_cache_mode('read_write')
+use_cache_mode('read_write')
 elif dynamic_content and real_time_needed:
-    use_cache_mode('bypass')
+use_cache_mode('bypass')
 else:
-    use_cache_mode('read_only')  # Safe default
+use_cache_mode('read_only') # Safe default
 ```
 
-This is where the library creator's philosophy lives. It's not just *what* the library does, but *why* it does it that way. This is the hardest part to write because it requires genuine understanding—and it's a red flag when a library lacks it.
+This is where the library creator's philosophy lives. It's not just _what_ the library does, but _why_ it does it that way. This is the hardest part to write because it requires genuine understanding—and it's a red flag when a library lacks it.
 
 </div>
 
 <div style="background-color: #1a1a1c; border: 1px solid #3f3f44; padding: 20px; margin: 20px 0;">
 
 #### 💻 **Examples: The Practice**
+
 ```python
 # Crawling with JavaScript execution
 result = await crawler.arun(
@@ -125,6 +132,7 @@ It reflects your taste, your architectural decisions, your opinions about how th
 </div>
 
 Think about it: When you learn a new library, what are you really after? You want mastery. And mastery comes from understanding:
+
 - **Memory** tells you what's possible
 - **Reasoning** tells you what's sensible
 - **Examples** show you what's practical
@@ -172,7 +180,7 @@ And wisdom, not information, is what makes great developers—human or artificia
 
 ---
 
-*Want to see this in action? Check out the [Crawl4AI LLM Context Builder](/core/llmtxt/) and experience the difference structured context makes.*
+_Want to see this in action? Check out the [Crawl4AI LLM Context Builder](/core/llmtxt/) and experience the difference structured context makes._
 
 <style>
 /* Custom styles for this article */

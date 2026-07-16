@@ -11,6 +11,7 @@ Think of it like research: when you're looking for information, you don't read e
 ### The Problem It Solves
 
 When crawling websites for specific information, you face two challenges:
+
 1. **Under-crawling**: Stopping too early and missing crucial information
 2. **Over-crawling**: Wasting resources by crawling irrelevant pages
 
@@ -21,7 +22,7 @@ Adaptive Crawling solves both by using a three-layer scoring system that determi
 The AdaptiveCrawler uses three metrics to measure information sufficiency:
 
 - **Coverage**: How well your collected pages cover the query terms
-- **Consistency**: Whether the information is coherent across pages  
+- **Consistency**: Whether the information is coherent across pages
 - **Saturation**: Detecting when new pages aren't adding new information
 
 When these metrics indicate sufficient information has been gathered, crawling stops automatically.
@@ -37,16 +38,16 @@ async def main():
     async with AsyncWebCrawler() as crawler:
         # Create an adaptive crawler (config is optional)
         adaptive = AdaptiveCrawler(crawler)
-        
+
         # Start crawling with a query
         result = await adaptive.digest(
             start_url="https://docs.python.org/3/",
             query="async context managers"
         )
-        
+
         # View statistics
         adaptive.print_stats()
-        
+
         # Get the most relevant content
         relevant_pages = adaptive.get_relevant_content(top_k=5)
         for page in relevant_pages:
@@ -140,6 +141,7 @@ config = AdaptiveConfig(
 ```
 
 > **Note:** The embedding strategy makes two types of API calls that need different model types:
+>
 > - **Embedding calls** (text → vector) require an embedding model like `text-embedding-3-small`
 > - **Query expansion** (chat completion) requires a chat model like `gpt-4o-mini`
 >
@@ -147,14 +149,14 @@ config = AdaptiveConfig(
 
 ### Strategy Comparison
 
-| Feature | Statistical | Embedding |
-|---------|------------|-----------|
-| **Speed** | Very fast | Moderate (API calls) |
-| **Cost** | Free | Depends on provider |
-| **Accuracy** | Good for exact terms | Excellent for concepts |
-| **Dependencies** | None | Embedding model/API |
-| **Query Understanding** | Literal | Semantic |
-| **Best Use Case** | Technical docs, specific terms | Research, broad topics |
+| Feature                 | Statistical                    | Embedding              |
+| ----------------------- | ------------------------------ | ---------------------- |
+| **Speed**               | Very fast                      | Moderate (API calls)   |
+| **Cost**                | Free                           | Depends on provider    |
+| **Accuracy**            | Good for exact terms           | Excellent for concepts |
+| **Dependencies**        | None                           | Embedding model/API    |
+| **Query Understanding** | Literal                        | Semantic               |
+| **Best Use Case**       | Technical docs, specific terms | Research, broad topics |
 
 ### Embedding Strategy Configuration
 
@@ -171,19 +173,19 @@ config = AdaptiveConfig(
 
     # Query expansion
     n_query_variations=10,  # Number of query variations to generate
-    
+
     # Coverage parameters
     embedding_coverage_radius=0.2,  # Distance threshold for coverage
     embedding_k_exp=3.0,  # Exponential decay factor (higher = stricter)
-    
+
     # Stopping criteria
     embedding_min_relative_improvement=0.1,  # Min improvement to continue
     embedding_validation_min_score=0.3,  # Min validation score
     embedding_min_confidence_threshold=0.1,  # Below this = irrelevant
-    
+
     # Link selection
     embedding_overlap_threshold=0.85,  # Similarity for deduplication
-    
+
     # Display confidence mapping
     embedding_quality_min_confidence=0.7,  # Min displayed confidence
     embedding_quality_max_confidence=0.95  # Max displayed confidence
@@ -209,12 +211,14 @@ if result.metrics.get('is_irrelevant', False):
 ## When to Use Adaptive Crawling
 
 ### Perfect For:
+
 - **Research Tasks**: Finding comprehensive information about a topic
 - **Question Answering**: Gathering sufficient context to answer specific queries
 - **Knowledge Base Building**: Creating focused datasets for AI/ML applications
 - **Competitive Intelligence**: Collecting complete information about specific products/features
 
 ### Not Recommended For:
+
 - **Full Site Archiving**: When you need every page regardless of content
 - **Structured Data Extraction**: When targeting specific, known page patterns
 - **Real-time Monitoring**: When you need continuous updates
@@ -224,6 +228,7 @@ if result.metrics.get('is_irrelevant', False):
 ### Confidence Score
 
 The confidence score (0-1) indicates how sufficient the gathered information is:
+
 - **0.0-0.3**: Insufficient information, needs more crawling
 - **0.3-0.6**: Partial information, may answer basic queries
 - **0.6-0.7**: Good coverage, can answer most queries
@@ -237,6 +242,7 @@ adaptive.print_stats(detailed=True)   # Detailed metrics
 ```
 
 The summary shows:
+
 - Pages crawled vs. confidence achieved
 - Coverage, consistency, and saturation scores
 - Crawling efficiency metrics
@@ -280,21 +286,25 @@ await new_adaptive.import_knowledge_base("knowledge_base.jsonl")
 ## Best Practices
 
 ### 1. Query Formulation
+
 - Use specific, descriptive queries
 - Include key terms you expect to find
 - Avoid overly broad queries
 
 ### 2. Threshold Tuning
+
 - Start with default (0.7) for general use
 - Lower to 0.5-0.6 for exploratory crawling
 - Raise to 0.8+ for exhaustive coverage
 
 ### 3. Performance Optimization
+
 - Use appropriate `max_pages` limits
 - Adjust `top_k_links` based on site structure
 - Enable caching for repeat crawls
 
 ### 4. Link Selection
+
 - The crawler prioritizes links based on:
   - Relevance to query
   - Expected information gain
@@ -324,7 +334,7 @@ for doc in adaptive.get_relevant_content(top_k=3):
 # Build a focused knowledge base about machine learning
 queries = [
     "supervised learning algorithms",
-    "neural network architectures", 
+    "neural network architectures",
     "model evaluation metrics"
 ]
 
@@ -333,7 +343,7 @@ for query in queries:
         start_url="https://scikit-learn.org/stable/",
         query=query
     )
-    
+
 # Export combined knowledge base
 adaptive.export_knowledge_base("ml_knowledge.jsonl")
 ```

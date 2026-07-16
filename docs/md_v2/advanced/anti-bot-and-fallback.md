@@ -19,11 +19,11 @@ When all attempts fail and blocking is still detected, the result is returned wi
 
 All anti-bot retry options live on `CrawlerRunConfig`:
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `proxy_config` | `ProxyConfig`, `list[ProxyConfig]`, or `None` | `None` | Single proxy or ordered list of proxies to try. Each retry round iterates through the full list. Use `"direct"` or `ProxyConfig.DIRECT` in a list to explicitly try without a proxy. |
-| `max_retries` | `int` | `0` | Number of retry rounds when blocking is detected. `0` = no retries. |
-| `fallback_fetch_function` | `async (str) -> str` | `None` | Async function called as last resort. Takes URL, returns raw HTML. |
+| Parameter                 | Type                                          | Default | Description                                                                                                                                                                          |
+| ------------------------- | --------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `proxy_config`            | `ProxyConfig`, `list[ProxyConfig]`, or `None` | `None`  | Single proxy or ordered list of proxies to try. Each retry round iterates through the full list. Use `"direct"` or `ProxyConfig.DIRECT` in a list to explicitly try without a proxy. |
+| `max_retries`             | `int`                                         | `0`     | Number of retry rounds when blocking is detected. `0` = no retries.                                                                                                                  |
+| `fallback_fetch_function` | `async (str) -> str`                          | `None`  | Async function called as last resort. Takes URL, returns raw HTML.                                                                                                                   |
 
 ## Escalation Chain
 
@@ -236,15 +236,15 @@ async with AsyncWebCrawler(config=browser_config) as crawler:
 
 **What happens step by step:**
 
-| Round | Attempt | What runs |
-|---|---|---|
-| 1 | 1 | Datacenter proxy — blocked |
-| 1 | 2 | Residential proxy — blocked |
-| 2 | 1 | Datacenter proxy — blocked |
-| 2 | 2 | Residential proxy — blocked |
-| 3 | 1 | Datacenter proxy — blocked |
-| 3 | 2 | Residential proxy — blocked |
-| - | - | `external_fetch(url)` called — returns HTML |
+| Round | Attempt | What runs                                   |
+| ----- | ------- | ------------------------------------------- |
+| 1     | 1       | Datacenter proxy — blocked                  |
+| 1     | 2       | Residential proxy — blocked                 |
+| 2     | 1       | Datacenter proxy — blocked                  |
+| 2     | 2       | Residential proxy — blocked                 |
+| 3     | 1       | Datacenter proxy — blocked                  |
+| 3     | 2       | Residential proxy — blocked                 |
+| -     | -       | `external_fetch(url)` called — returns HTML |
 
 That's up to 6 browser attempts + 1 function call before giving up.
 

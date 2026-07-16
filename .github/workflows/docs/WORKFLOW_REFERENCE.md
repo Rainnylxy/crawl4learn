@@ -3,6 +3,7 @@
 ## Quick Commands
 
 ### Standard Release
+
 ```bash
 # 1. Update version
 vim crawl4ai/__version__.py  # Set to "1.2.3"
@@ -20,12 +21,14 @@ git push origin v1.2.3
 ```
 
 ### Docker Rebuild Only
+
 ```bash
 git tag docker-rebuild-v1.2.3
 git push origin docker-rebuild-v1.2.3
 ```
 
 ### Delete Tag (Undo Release)
+
 ```bash
 # Local
 git tag -d v1.2.3
@@ -42,78 +45,84 @@ gh release delete v1.2.3
 ## Workflow Triggers
 
 ### release.yml
-| Event | Pattern | Example |
-|-------|---------|---------|
-| Tag push | `v*` | `v1.2.3` |
+
+| Event    | Pattern   | Example       |
+| -------- | --------- | ------------- |
+| Tag push | `v*`      | `v1.2.3`      |
 | Excludes | `test-v*` | `test-v1.2.3` |
 
 ### docker-release.yml
-| Event | Pattern | Example |
-|-------|---------|---------|
-| Release published | `release.published` | Automatic |
-| Tag push | `docker-rebuild-v*` | `docker-rebuild-v1.2.3` |
+
+| Event             | Pattern             | Example                 |
+| ----------------- | ------------------- | ----------------------- |
+| Release published | `release.published` | Automatic               |
+| Tag push          | `docker-rebuild-v*` | `docker-rebuild-v1.2.3` |
 
 ---
 
 ## Environment Variables
 
 ### release.yml
-| Variable | Source | Example |
-|----------|--------|---------|
-| `VERSION` | Git tag | `1.2.3` |
-| `TWINE_USERNAME` | Static | `__token__` |
-| `TWINE_PASSWORD` | Secret | `pypi-Ag...` |
-| `GITHUB_TOKEN` | Auto | `ghp_...` |
+
+| Variable         | Source  | Example      |
+| ---------------- | ------- | ------------ |
+| `VERSION`        | Git tag | `1.2.3`      |
+| `TWINE_USERNAME` | Static  | `__token__`  |
+| `TWINE_PASSWORD` | Secret  | `pypi-Ag...` |
+| `GITHUB_TOKEN`   | Auto    | `ghp_...`    |
 
 ### docker-release.yml
-| Variable | Source | Example |
-|----------|--------|---------|
-| `VERSION` | Release/Tag | `1.2.3` |
-| `MAJOR` | Computed | `1` |
-| `MINOR` | Computed | `1.2` |
-| `DOCKER_USERNAME` | Secret | `unclecode` |
-| `DOCKER_TOKEN` | Secret | `dckr_pat_...` |
+
+| Variable          | Source      | Example        |
+| ----------------- | ----------- | -------------- |
+| `VERSION`         | Release/Tag | `1.2.3`        |
+| `MAJOR`           | Computed    | `1`            |
+| `MINOR`           | Computed    | `1.2`          |
+| `DOCKER_USERNAME` | Secret      | `unclecode`    |
+| `DOCKER_TOKEN`    | Secret      | `dckr_pat_...` |
 
 ---
 
 ## Docker Tags Generated
 
-| Version | Tags Created |
-|---------|-------------|
-| v1.0.0 | `1.0.0`, `1.0`, `1`, `latest` |
-| v1.1.0 | `1.1.0`, `1.1`, `1`, `latest` |
-| v1.2.3 | `1.2.3`, `1.2`, `1`, `latest` |
-| v2.0.0 | `2.0.0`, `2.0`, `2`, `latest` |
+| Version | Tags Created                  |
+| ------- | ----------------------------- |
+| v1.0.0  | `1.0.0`, `1.0`, `1`, `latest` |
+| v1.1.0  | `1.1.0`, `1.1`, `1`, `latest` |
+| v1.2.3  | `1.2.3`, `1.2`, `1`, `latest` |
+| v2.0.0  | `2.0.0`, `2.0`, `2`, `latest` |
 
 ---
 
 ## Workflow Outputs
 
 ### release.yml
-| Output | Location | Time |
-|--------|----------|------|
-| PyPI Package | https://pypi.org/project/crawl4ai/ | ~2-3 min |
-| GitHub Release | Repository → Releases | ~2-3 min |
-| Workflow Summary | Actions → Run → Summary | Immediate |
+
+| Output           | Location                           | Time      |
+| ---------------- | ---------------------------------- | --------- |
+| PyPI Package     | https://pypi.org/project/crawl4ai/ | ~2-3 min  |
+| GitHub Release   | Repository → Releases              | ~2-3 min  |
+| Workflow Summary | Actions → Run → Summary            | Immediate |
 
 ### docker-release.yml
-| Output | Location | Time |
-|--------|----------|------|
-| Docker Images | https://hub.docker.com/r/unclecode/crawl4ai | ~1-15 min |
-| Workflow Summary | Actions → Run → Summary | Immediate |
+
+| Output           | Location                                    | Time      |
+| ---------------- | ------------------------------------------- | --------- |
+| Docker Images    | https://hub.docker.com/r/unclecode/crawl4ai | ~1-15 min |
+| Workflow Summary | Actions → Run → Summary                     | Immediate |
 
 ---
 
 ## Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| Version mismatch | Update `crawl4ai/__version__.py` to match tag |
-| PyPI 403 Forbidden | Check `PYPI_TOKEN` secret |
-| PyPI 400 File exists | Version already published, increment version |
-| Docker auth failed | Regenerate `DOCKER_TOKEN` |
-| Docker build timeout | Check Dockerfile, review build logs |
-| Cache not working | First build on branch always cold |
+| Issue                | Solution                                      |
+| -------------------- | --------------------------------------------- |
+| Version mismatch     | Update `crawl4ai/__version__.py` to match tag |
+| PyPI 403 Forbidden   | Check `PYPI_TOKEN` secret                     |
+| PyPI 400 File exists | Version already published, increment version  |
+| Docker auth failed   | Regenerate `DOCKER_TOKEN`                     |
+| Docker build timeout | Check Dockerfile, review build logs           |
+| Cache not working    | First build on branch always cold             |
 
 ---
 
@@ -129,6 +138,7 @@ gh release delete v1.2.3
 ## Workflow Dependencies
 
 ### release.yml Dependencies
+
 ```yaml
 Python: 3.12
 Actions:
@@ -141,6 +151,7 @@ PyPI Packages:
 ```
 
 ### docker-release.yml Dependencies
+
 ```yaml
 Actions:
   - actions/checkout@v4
@@ -157,35 +168,39 @@ Docker:
 ## Cache Information
 
 ### Type
+
 - GitHub Actions Cache (`type=gha`)
 
 ### Storage
+
 - **Limit**: 10GB per repository
 - **Retention**: 7 days for unused entries
 - **Cleanup**: Automatic LRU eviction
 
 ### Performance
-| Scenario | Cache Hit | Build Time |
-|----------|-----------|------------|
-| First build | 0% | 10-15 min |
-| Code change only | 85% | 1-2 min |
-| Dependency update | 60% | 3-5 min |
-| No changes | 100% | 30-60 sec |
+
+| Scenario          | Cache Hit | Build Time |
+| ----------------- | --------- | ---------- |
+| First build       | 0%        | 10-15 min  |
+| Code change only  | 85%       | 1-2 min    |
+| Dependency update | 60%       | 3-5 min    |
+| No changes        | 100%      | 30-60 sec  |
 
 ---
 
 ## Build Platforms
 
-| Platform | Architecture | Devices |
-|----------|--------------|---------|
-| linux/amd64 | x86_64 | Intel/AMD servers, AWS EC2, GCP |
-| linux/arm64 | aarch64 | Apple Silicon, AWS Graviton, Raspberry Pi |
+| Platform    | Architecture | Devices                                   |
+| ----------- | ------------ | ----------------------------------------- |
+| linux/amd64 | x86_64       | Intel/AMD servers, AWS EC2, GCP           |
+| linux/arm64 | aarch64      | Apple Silicon, AWS Graviton, Raspberry Pi |
 
 ---
 
 ## Version Validation
 
 ### Pre-Tag Checklist
+
 ```bash
 # Check current version
 python -c "from crawl4ai.__version__ import __version__; print(__version__)"
@@ -195,6 +210,7 @@ python -c "from crawl4ai.__version__ import __version__; print(__version__)"
 ```
 
 ### Post-Release Verification
+
 ```bash
 # PyPI
 pip install crawl4ai==1.2.3
@@ -209,18 +225,19 @@ docker run unclecode/crawl4ai:1.2.3 python -c "import crawl4ai; print(crawl4ai._
 
 ## Monitoring URLs
 
-| Service | URL |
-|---------|-----|
-| GitHub Actions | `https://github.com/{owner}/{repo}/actions` |
-| PyPI Project | `https://pypi.org/project/crawl4ai/` |
-| Docker Hub | `https://hub.docker.com/r/unclecode/crawl4ai` |
-| GitHub Releases | `https://github.com/{owner}/{repo}/releases` |
+| Service         | URL                                           |
+| --------------- | --------------------------------------------- |
+| GitHub Actions  | `https://github.com/{owner}/{repo}/actions`   |
+| PyPI Project    | `https://pypi.org/project/crawl4ai/`          |
+| Docker Hub      | `https://hub.docker.com/r/unclecode/crawl4ai` |
+| GitHub Releases | `https://github.com/{owner}/{repo}/releases`  |
 
 ---
 
 ## Rollback Strategy
 
 ### PyPI (Cannot Delete)
+
 ```bash
 # Increment patch version
 git tag v1.2.4
@@ -228,6 +245,7 @@ git push origin v1.2.4
 ```
 
 ### Docker (Can Overwrite)
+
 ```bash
 # Rebuild with fix
 git tag docker-rebuild-v1.2.3
@@ -235,6 +253,7 @@ git push origin docker-rebuild-v1.2.3
 ```
 
 ### GitHub Release
+
 ```bash
 # Delete release
 gh release delete v1.2.3
@@ -282,6 +301,7 @@ Critical path (PyPI + GitHub): ~8 minutes
 ## Contact
 
 For workflow issues:
+
 1. Check Actions tab for logs
 2. Review this reference
 3. See [README.md](./README.md) for detailed docs

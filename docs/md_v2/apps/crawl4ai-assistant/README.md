@@ -64,7 +64,7 @@ EXTRACTION_QUERY = """..."""
 # 3. Functions to generate and test the schema
 async def generate_schema():
     # Generates the extraction schema using LLM
-    
+
 async def test_extraction():
     # Tests the schema on the actual website
 ```
@@ -98,16 +98,19 @@ To use it:
 ## 🐛 Troubleshooting
 
 ### Extension doesn't load
+
 - Make sure you're in Developer Mode
 - Check the console for any errors
 - Ensure all files are in the correct directories
 
 ### Can't select elements
+
 - Some websites may block extensions
 - Try refreshing the page
 - Make sure you clicked "Schema Builder" first
 
 ### Generated code doesn't work
+
 - Ensure you have Crawl4AI installed
 - Check that you have an LLM API key configured
 - Make sure the website structure hasn't changed

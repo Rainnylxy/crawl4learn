@@ -4,12 +4,12 @@ Here's a breakdown of the proposed changes across the relevant files:
 
 **1. Configuration (`crawl4ai/async_configs.py`)**
 
-*   **Goal:** Add flags to `CrawlerRunConfig` to enable/disable capturing.
-*   **Changes:**
-    *   Add two new boolean attributes to `CrawlerRunConfig`:
-        *   `capture_network_requests: bool = False`
-        *   `capture_console_messages: bool = False`
-    *   Update `__init__`, `from_kwargs`, `to_dict`, and implicitly `clone`/`dump`/`load` to include these new attributes.
+- **Goal:** Add flags to `CrawlerRunConfig` to enable/disable capturing.
+- **Changes:**
+  - Add two new boolean attributes to `CrawlerRunConfig`:
+    - `capture_network_requests: bool = False`
+    - `capture_console_messages: bool = False`
+  - Update `__init__`, `from_kwargs`, `to_dict`, and implicitly `clone`/`dump`/`load` to include these new attributes.
 
 ```python
 # ==== File: crawl4ai/async_configs.py ====
@@ -77,10 +77,10 @@ class CrawlerRunConfig():
 
 **2. Data Models (`crawl4ai/models.py`)**
 
-*   **Goal:** Add fields to store the captured data in the response/result objects.
-*   **Changes:**
-    *   Add `network_requests: Optional[List[Dict[str, Any]]] = None` and `console_messages: Optional[List[Dict[str, Any]]] = None` to `AsyncCrawlResponse`.
-    *   Add the same fields to `CrawlResult`.
+- **Goal:** Add fields to store the captured data in the response/result objects.
+- **Changes:**
+  - Add `network_requests: Optional[List[Dict[str, Any]]] = None` and `console_messages: Optional[List[Dict[str, Any]]] = None` to `AsyncCrawlResponse`.
+  - Add the same fields to `CrawlResult`.
 
 ```python
 # ==== File: crawl4ai/models.py ====
@@ -144,12 +144,12 @@ class CrawlResult(BaseModel):
 
 **3. Crawler Strategy (`crawl4ai/async_crawler_strategy.py`)**
 
-*   **Goal:** Implement the actual capturing logic within `AsyncPlaywrightCrawlerStrategy._crawl_web`.
-*   **Changes:**
-    *   Inside `_crawl_web`, initialize empty lists `captured_requests = []` and `captured_console = []`.
-    *   Conditionally attach Playwright event listeners (`page.on(...)`) based on the `config.capture_network_requests` and `config.capture_console_messages` flags.
-    *   Define handler functions for these listeners to extract relevant data and append it to the respective lists. Include timestamps.
-    *   Pass the captured lists to the `AsyncCrawlResponse` constructor at the end of the method.
+- **Goal:** Implement the actual capturing logic within `AsyncPlaywrightCrawlerStrategy._crawl_web`.
+- **Changes:**
+  - Inside `_crawl_web`, initialize empty lists `captured_requests = []` and `captured_console = []`.
+  - Conditionally attach Playwright event listeners (`page.on(...)`) based on the `config.capture_network_requests` and `config.capture_console_messages` flags.
+  - Define handler functions for these listeners to extract relevant data and append it to the respective lists. Include timestamps.
+  - Pass the captured lists to the `AsyncCrawlResponse` constructor at the end of the method.
 
 ```python
 # ==== File: crawl4ai/async_crawler_strategy.py ====
@@ -378,9 +378,9 @@ class AsyncPlaywrightCrawlerStrategy(AsyncCrawlerStrategy):
 
 **4. Core Crawler (`crawl4ai/async_webcrawler.py`)**
 
-*   **Goal:** Ensure the captured data from `AsyncCrawlResponse` is transferred to the final `CrawlResult`.
-*   **Changes:**
-    *   In `arun`, when processing a non-cached result (inside the `if not cached_result or not html:` block), after receiving `async_response` and calling `aprocess_html` to get `crawl_result`, copy the `network_requests` and `console_messages` from `async_response` to `crawl_result`.
+- **Goal:** Ensure the captured data from `AsyncCrawlResponse` is transferred to the final `CrawlResult`.
+- **Changes:**
+  - In `arun`, when processing a non-cached result (inside the `if not cached_result or not html:` block), after receiving `async_response` and calling `aprocess_html` to get `crawl_result`, copy the `network_requests` and `console_messages` from `async_response` to `crawl_result`.
 
 ```python
 # ==== File: crawl4ai/async_webcrawler.py ====

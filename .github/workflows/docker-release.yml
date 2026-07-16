@@ -4,7 +4,7 @@ on:
     types: [published]
   push:
     tags:
-      - 'docker-rebuild-v*'  # Allow manual Docker rebuilds via tags
+      - "docker-rebuild-v*" # Allow manual Docker rebuilds via tags
 
 jobs:
   docker:

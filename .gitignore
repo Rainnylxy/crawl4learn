@@ -4,6 +4,7 @@
 # Database files
 *.db
 
+CLAUDE.md
 # Environment files
 .env
 .env.local

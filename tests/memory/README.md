@@ -9,7 +9,8 @@ This directory contains tools for stress testing Crawl4AI's `arun_many` method a
 # (Assumes run_all.sh is updated to call run_benchmark.py)
 ./run_all.sh
 ```
-*Note: `run_all.sh` might need to be updated if it directly called the old script.*
+
+_Note: `run_all.sh` might need to be updated if it directly called the old script._
 
 ## Overview
 
@@ -23,10 +24,10 @@ The stress testing system works by:
 
 ## Available Tools
 
--   `test_stress_sdk.py` - Main stress testing script utilizing `arun_many` and dispatchers.
--   `benchmark_report.py` - Report generator for comparing test results (assumes compatibility with `test_stress_sdk.py` outputs).
--   `run_benchmark.py` - Python script with predefined test configurations that orchestrates tests using `test_stress_sdk.py`.
--   `run_all.sh` - Simple wrapper script (may need updating).
+- `test_stress_sdk.py` - Main stress testing script utilizing `arun_many` and dispatchers.
+- `benchmark_report.py` - Report generator for comparing test results (assumes compatibility with `test_stress_sdk.py` outputs).
+- `run_benchmark.py` - Python script with predefined test configurations that orchestrates tests using `test_stress_sdk.py`.
+- `run_all.sh` - Simple wrapper script (may need updating).
 
 ## Usage Guide
 
@@ -65,32 +66,32 @@ python run_benchmark.py medium --clean
 
 #### `run_benchmark.py` Parameters
 
-| Parameter            | Default         | Description                                                                 |
-| -------------------- | --------------- | --------------------------------------------------------------------------- |
-| `config`             | *required*      | Test configuration: `quick`, `small`, `medium`, `large`, `extreme`, `custom`|
-| `--urls`             | config-specific | Number of URLs (required for `custom`)                                      |
-| `--max-sessions`     | config-specific | Max concurrent sessions managed by dispatcher (required for `custom`)         |
-| `--chunk-size`       | config-specific | URLs per batch for non-stream logging (required for `custom`)               |
-| `--stream`           | False           | Enable streaming results (disables batch logging)                           |
-| `--monitor-mode`     | DETAILED        | `DETAILED` or `AGGREGATED` display for the live monitor                     |
-| `--use-rate-limiter` | False           | Enable basic rate limiter in the dispatcher                                 |
-| `--port`             | 8000            | HTTP server port                                                            |
-| `--no-report`        | False           | Skip generating comparison report via `benchmark_report.py`                 |
-| `--clean`            | False           | Clean up reports and site files before running                              |
-| `--keep-server-alive`| False           | Keep local HTTP server running after test                                   |
-| `--use-existing-site`| False           | Use existing site on specified port (no local server start/site gen)        |
-| `--skip-generation`  | False           | Use existing site files but start local server                              |
-| `--keep-site`        | False           | Keep generated site files after test                                        |
+| Parameter             | Default         | Description                                                                  |
+| --------------------- | --------------- | ---------------------------------------------------------------------------- |
+| `config`              | _required_      | Test configuration: `quick`, `small`, `medium`, `large`, `extreme`, `custom` |
+| `--urls`              | config-specific | Number of URLs (required for `custom`)                                       |
+| `--max-sessions`      | config-specific | Max concurrent sessions managed by dispatcher (required for `custom`)        |
+| `--chunk-size`        | config-specific | URLs per batch for non-stream logging (required for `custom`)                |
+| `--stream`            | False           | Enable streaming results (disables batch logging)                            |
+| `--monitor-mode`      | DETAILED        | `DETAILED` or `AGGREGATED` display for the live monitor                      |
+| `--use-rate-limiter`  | False           | Enable basic rate limiter in the dispatcher                                  |
+| `--port`              | 8000            | HTTP server port                                                             |
+| `--no-report`         | False           | Skip generating comparison report via `benchmark_report.py`                  |
+| `--clean`             | False           | Clean up reports and site files before running                               |
+| `--keep-server-alive` | False           | Keep local HTTP server running after test                                    |
+| `--use-existing-site` | False           | Use existing site on specified port (no local server start/site gen)         |
+| `--skip-generation`   | False           | Use existing site files but start local server                               |
+| `--keep-site`         | False           | Keep generated site files after test                                         |
 
 #### Predefined Configurations
 
-| Configuration | URLs   | Max Sessions | Chunk Size | Description                      |
-| ------------- | ------ | ------------ | ---------- | -------------------------------- |
-| `quick`       | 50     | 4            | 10         | Quick test for basic validation  |
-| `small`       | 100    | 8            | 20         | Small test for routine checks    |
-| `medium`      | 500    | 16           | 50         | Medium test for thorough checks  |
-| `large`       | 1000   | 32           | 100        | Large test for stress testing    |
-| `extreme`     | 2000   | 64           | 200        | Extreme test for limit testing   |
+| Configuration | URLs | Max Sessions | Chunk Size | Description                     |
+| ------------- | ---- | ------------ | ---------- | ------------------------------- |
+| `quick`       | 50   | 4            | 10         | Quick test for basic validation |
+| `small`       | 100  | 8            | 20         | Small test for routine checks   |
+| `medium`      | 500  | 16           | 50         | Medium test for thorough checks |
+| `large`       | 1000 | 32           | 100        | Large test for stress testing   |
+| `extreme`     | 2000 | 64           | 200        | Extreme test for limit testing  |
 
 ### Direct Usage of `test_stress_sdk.py`
 
@@ -115,23 +116,23 @@ python test_stress_sdk.py --report-path custom_reports --urls 100 --max-sessions
 
 #### `test_stress_sdk.py` Parameters
 
-| Parameter            | Default    | Description                                                          |
-| -------------------- | ---------- | -------------------------------------------------------------------- |
-| `--urls`             | 100        | Number of URLs to test                                               |
-| `--max-sessions`     | 16         | Maximum concurrent crawling sessions managed by the dispatcher       |
-| `--chunk-size`       | 10         | Number of URLs per batch (relevant for non-stream logging)           |
-| `--stream`           | False      | Enable streaming results (disables batch logging)                    |
-| `--monitor-mode`     | DETAILED   | `DETAILED` or `AGGREGATED` display for the live `CrawlerMonitor`     |
-| `--use-rate-limiter` | False      | Enable a basic `RateLimiter` within the dispatcher                   |
-| `--site-path`        | "test_site"| Path to store/use the generated test site                            |
-| `--port`             | 8000       | Port for the local HTTP server                                       |
-| `--report-path`      | "reports"  | Path to save test result summary (JSON) and memory samples (CSV)   |
-| `--skip-generation`  | False      | Use existing test site files but still start local server            |
-| `--use-existing-site`| False      | Use existing site on specified port (no local server/site gen)     |
-| `--keep-server-alive`| False      | Keep local HTTP server running after test completion                 |
-| `--keep-site`        | False      | Keep the generated test site files after test completion             |
-| `--clean-reports`    | False      | Clean up report directory before running                             |
-| `--clean-site`       | False      | Clean up site directory before/after running (see script logic)    |
+| Parameter             | Default     | Description                                                      |
+| --------------------- | ----------- | ---------------------------------------------------------------- |
+| `--urls`              | 100         | Number of URLs to test                                           |
+| `--max-sessions`      | 16          | Maximum concurrent crawling sessions managed by the dispatcher   |
+| `--chunk-size`        | 10          | Number of URLs per batch (relevant for non-stream logging)       |
+| `--stream`            | False       | Enable streaming results (disables batch logging)                |
+| `--monitor-mode`      | DETAILED    | `DETAILED` or `AGGREGATED` display for the live `CrawlerMonitor` |
+| `--use-rate-limiter`  | False       | Enable a basic `RateLimiter` within the dispatcher               |
+| `--site-path`         | "test_site" | Path to store/use the generated test site                        |
+| `--port`              | 8000        | Port for the local HTTP server                                   |
+| `--report-path`       | "reports"   | Path to save test result summary (JSON) and memory samples (CSV) |
+| `--skip-generation`   | False       | Use existing test site files but still start local server        |
+| `--use-existing-site` | False       | Use existing site on specified port (no local server/site gen)   |
+| `--keep-server-alive` | False       | Keep local HTTP server running after test completion             |
+| `--keep-site`         | False       | Keep the generated test site files after test completion         |
+| `--clean-reports`     | False       | Clean up report directory before running                         |
+| `--clean-site`        | False       | Clean up site directory before/after running (see script logic)  |
 
 ### Generating Reports Only
 
@@ -150,12 +151,12 @@ python benchmark_report.py --reports-dir alternate_results
 
 #### `benchmark_report.py` Parameters (Assumed)
 
-| Parameter       | Default              | Description                                                 |
-| --------------- | -------------------- | ----------------------------------------------------------- |
-| `--reports-dir` | "reports"            | Directory containing `test_stress_sdk.py` result files      |
-| `--output-dir`  | "benchmark_reports"  | Directory to save generated HTML reports and charts         |
-| `--limit`       | None (all results)   | Limit comparison to N most recent test results              |
-| `--output-file` | Auto-generated       | Custom output filename for the HTML report                  |
+| Parameter       | Default             | Description                                            |
+| --------------- | ------------------- | ------------------------------------------------------ |
+| `--reports-dir` | "reports"           | Directory containing `test_stress_sdk.py` result files |
+| `--output-dir`  | "benchmark_reports" | Directory to save generated HTML reports and charts    |
+| `--limit`       | None (all results)  | Limit comparison to N most recent test results         |
+| `--output-file` | Auto-generated      | Custom output filename for the HTML report             |
 
 ## Understanding the Test Output
 
@@ -163,12 +164,12 @@ python benchmark_report.py --reports-dir alternate_results
 
 When running `test_stress_sdk.py`, the `CrawlerMonitor` provides a live view of the crawling process managed by the dispatcher.
 
--   **DETAILED Mode (Default):** Shows individual task status (Queued, Active, Completed, Failed), timings, memory usage per task (if `psutil` is available), overall queue statistics, and memory pressure status (if `psutil` available).
--   **AGGREGATED Mode:** Shows summary counts (Queued, Active, Completed, Failed), overall progress percentage, estimated time remaining, average URLs/sec, and memory pressure status.
+- **DETAILED Mode (Default):** Shows individual task status (Queued, Active, Completed, Failed), timings, memory usage per task (if `psutil` is available), overall queue statistics, and memory pressure status (if `psutil` available).
+- **AGGREGATED Mode:** Shows summary counts (Queued, Active, Completed, Failed), overall progress percentage, estimated time remaining, average URLs/sec, and memory pressure status.
 
 ### Batch Log Output (Non-Streaming Mode Only)
 
-If running `test_stress_sdk.py` **without** the `--stream` flag, you will *also* see per-batch summary lines printed to the console *after* the monitor display, once each chunk of URLs finishes processing:
+If running `test_stress_sdk.py` **without** the `--stream` flag, you will _also_ see per-batch summary lines printed to the console _after_ the monitor display, once each chunk of URLs finishes processing:
 
 ```
  Batch | Progress | Start Mem | End Mem   | URLs/sec | Success/Fail | Time (s) | Status
@@ -179,13 +180,14 @@ If running `test_stress_sdk.py` **without** the `--stream` flag, you will *also*
 ```
 
 This display provides chunk-specific metrics:
--   **Batch**: The batch number being reported.
--   **Progress**: Overall percentage of total URLs processed *after* this batch.
--   **Start Mem / End Mem**: Memory usage before and after processing this batch (if tracked).
--   **URLs/sec**: Processing speed *for this specific batch*.
--   **Success/Fail**: Number of successful and failed URLs *in this batch*.
--   **Time (s)**: Wall-clock time taken to process *this batch*.
--   **Status**: Color-coded status for the batch outcome.
+
+- **Batch**: The batch number being reported.
+- **Progress**: Overall percentage of total URLs processed _after_ this batch.
+- **Start Mem / End Mem**: Memory usage before and after processing this batch (if tracked).
+- **URLs/sec**: Processing speed _for this specific batch_.
+- **Success/Fail**: Number of successful and failed URLs _in this batch_.
+- **Time (s)**: Wall-clock time taken to process _this batch_.
+- **Status**: Color-coded status for the batch outcome.
 
 ### Summary Output
 
@@ -207,6 +209,7 @@ Results summary saved to reports/test_summary_20250418_103015.json
 
 (This section remains the same, assuming `benchmark_report.py` generates these)
 The benchmark report contains several sections:
+
 1.  **Summary**: Overview of the latest test results and trends
 2.  **Performance Comparison**: Charts showing throughput across tests
 3.  **Memory Usage**: Detailed memory usage graphs for each test
@@ -222,19 +225,21 @@ Memory growth is the key metric for detecting leaks...
 
 (This section remains conceptually the same, though "URLs per Worker" is less relevant - focus on overall URLs/sec)
 Key performance indicators include:
--   **URLs per Second**: Higher is better (throughput)
--   **Success Rate**: Should be 100% in normal conditions
--   **Total Processing Time**: Lower is better
--   **Dispatcher Efficiency**: Observe queue lengths and wait times in the monitor (Detailed mode)
+
+- **URLs per Second**: Higher is better (throughput)
+- **Success Rate**: Should be 100% in normal conditions
+- **Total Processing Time**: Lower is better
+- **Dispatcher Efficiency**: Observe queue lengths and wait times in the monitor (Detailed mode)
 
 ### Raw Data Files
 
 Raw data is saved in the `--report-path` directory (default `./reports/`):
 
--   **JSON files** (`test_summary_*.json`): Contains the final summary for each test run.
--   **CSV files** (`memory_samples_*.csv`): Contains time-series memory samples taken during the test run.
+- **JSON files** (`test_summary_*.json`): Contains the final summary for each test run.
+- **CSV files** (`memory_samples_*.csv`): Contains time-series memory samples taken during the test run.
 
 Example of reading raw data:
+
 ```python
 import json
 import pandas as pd
@@ -295,6 +300,7 @@ python run_benchmark.py medium --clean
 
 (This section remains conceptually the same, just update script names)
 These tests can be integrated into CI/CD pipelines:
+
 ```bash
 # Example CI script
 python run_benchmark.py medium --no-report # Run test without interactive report gen
@@ -308,8 +314,8 @@ exit 0
 
 ## Troubleshooting
 
--   **HTTP Server Port Conflict**: Use `--port` with `run_benchmark.py` or `test_stress_sdk.py`.
--   **Memory Tracking Issues**: The `SimpleMemoryTracker` uses platform commands (`ps`, `/proc`, `tasklist`). Ensure these are available and the script has permission. If it consistently fails, memory reporting will be limited.
--   **Visualization Missing**: Related to `benchmark_report.py` and its dependencies.
--   **Site Generation Issues**: Check permissions for creating `./test_site/`. Use `--skip-generation` if you want to manage the site manually.
--   **Testing Against External Site**: Ensure the external site is running and use `--use-existing-site --port <correct_port>`.
+- **HTTP Server Port Conflict**: Use `--port` with `run_benchmark.py` or `test_stress_sdk.py`.
+- **Memory Tracking Issues**: The `SimpleMemoryTracker` uses platform commands (`ps`, `/proc`, `tasklist`). Ensure these are available and the script has permission. If it consistently fails, memory reporting will be limited.
+- **Visualization Missing**: Related to `benchmark_report.py` and its dependencies.
+- **Site Generation Issues**: Check permissions for creating `./test_site/`. Use `--skip-generation` if you want to manage the site manually.
+- **Testing Against External Site**: Ensure the external site is running and use `--use-existing-site --port <correct_port>`.

@@ -1,6 +1,6 @@
 # Crawl4AI v0.8.8: Docker Server Security Patch
 
-*June 2026 - 3 min read*
+_June 2026 - 3 min read_
 
 ---
 

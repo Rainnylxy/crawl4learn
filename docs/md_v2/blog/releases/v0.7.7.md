@@ -1,6 +1,6 @@
 # 🚀 Crawl4AI v0.7.7: The Self-Hosting & Monitoring Update
 
-*November 14, 2025 • 10 min read*
+_November 14, 2025 • 10 min read_
 
 ---
 
@@ -188,6 +188,7 @@ asyncio.run(monitor_realtime())
 ```
 
 **Expected Real-World Impact:**
+
 - **Custom Dashboards**: Build tailored monitoring UIs for your team
 - **Real-time Alerting**: Trigger alerts instantly when metrics exceed thresholds
 - **Integration**: Feed live data into monitoring tools like Grafana
@@ -251,6 +252,7 @@ asyncio.run(demonstrate_browser_pool())
 - **❄️ Cold Pool**: On-demand browsers for variant configs, cleaned up when idle
 
 **Expected Real-World Impact:**
+
 - **Memory Efficiency**: 10x reduction in memory usage vs creating browsers per request
 - **Performance**: Instant access to frequently-used configurations
 - **Automatic Optimization**: Pool adapts to your usage patterns
@@ -504,18 +506,21 @@ async with AsyncWebCrawler() as crawler:
 ## 📊 Expected Real-World Impact
 
 ### For DevOps & Infrastructure Teams
+
 - **Full Visibility**: Know exactly what's happening inside your crawling infrastructure
 - **Proactive Monitoring**: Catch issues before they become problems
 - **Resource Optimization**: Identify memory leaks and performance bottlenecks
 - **Operational Control**: Manual intervention when automated systems need help
 
 ### For Production Deployments
+
 - **Enterprise Observability**: Prometheus, Grafana, and alerting integration
 - **Debugging**: Real-time logs and error tracking
 - **Capacity Planning**: Historical metrics for scaling decisions
 - **SLA Monitoring**: Track success rates and latency against targets
 
 ### For Development Teams
+
 - **Local Monitoring**: Understand crawler behavior during development
 - **Performance Testing**: Measure impact of configuration changes
 - **Troubleshooting**: Quickly identify and fix issues
@@ -571,6 +576,7 @@ python docs/releases_review/demo_v0.7.7.py
 ```
 
 **The demo includes:**
+
 1. System health overview with live metrics
 2. Request tracking with active/completed monitoring
 3. Browser pool management (permanent/hot/cold)
@@ -583,10 +589,12 @@ python docs/releases_review/demo_v0.7.7.py
 ## 📚 Documentation
 
 ### New Documentation
+
 - **[Self-Hosting Guide](https://docs.crawl4ai.com/core/self-hosting/)** - Complete self-hosting documentation with monitoring
 - **Demo Script**: `docs/releases_review/demo_v0.7.7.py` - Working examples
 
 ### Updated Documentation
+
 - **Docker Deployment** → **Self-Hosting** (renamed for better positioning)
 - Added comprehensive monitoring sections
 - Production integration patterns
@@ -623,4 +631,4 @@ The monitoring system was built based on real user needs for production deployme
 
 **Happy crawling with full visibility!** 🕷️📊
 
-*- unclecode*
+_- unclecode_

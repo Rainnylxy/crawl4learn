@@ -99,6 +99,7 @@ relevance = BM25(link.preview_text, query)
 ```
 
 Factors:
+
 - Term frequency in preview
 - Inverse document frequency
 - Preview length normalization
@@ -122,6 +123,7 @@ authority = f(domain_rank, url_depth, url_structure)
 ```
 
 Factors:
+
 - Domain reputation
 - URL depth (fewer slashes = higher authority)
 - Clean URL structure
@@ -140,6 +142,7 @@ tech_doc_config = AdaptiveConfig(
 ```
 
 Rationale:
+
 - High threshold ensures comprehensive coverage
 - Lower gain threshold captures edge cases
 - Moderate link following for depth
@@ -156,6 +159,7 @@ news_config = AdaptiveConfig(
 ```
 
 Rationale:
+
 - Lower threshold (articles often repeat information)
 - Higher gain threshold (avoid duplicate stories)
 - More links per page (explore different perspectives)
@@ -172,6 +176,7 @@ ecommerce_config = AdaptiveConfig(
 ```
 
 Rationale:
+
 - Balanced threshold for product variations
 - Focused link following (avoid infinite products)
 - Standard gain threshold
@@ -188,6 +193,7 @@ research_config = AdaptiveConfig(
 ```
 
 Rationale:
+
 - Very high threshold for completeness
 - Many pages allowed for thorough research
 - Very low gain threshold to capture references
@@ -297,12 +303,12 @@ class DomainSpecificStrategy(CrawlStrategy):
         # Custom coverage calculation
         # e.g., weight certain terms more heavily
         pass
-    
+
     def calculate_consistency(self, state: CrawlState) -> float:
         # Custom consistency logic
         # e.g., domain-specific validation
         pass
-    
+
     def rank_links(self, links: List[Link], state: CrawlState) -> List[Link]:
         # Custom link ranking
         # e.g., prioritize specific URL patterns
@@ -326,7 +332,7 @@ class HybridStrategy(CrawlStrategy):
             SemanticSimilarityStrategy(),
             URLPatternStrategy()
         ]
-    
+
     def calculate_confidence(self, state: CrawlState) -> float:
         # Weighted combination of strategies
         scores = [s.calculate_confidence(state) for s in self.strategies]
@@ -367,7 +373,7 @@ if memory_percent > 80:
 # For API documentation
 if "api" in start_url:
     config.top_k_links = 2  # APIs have clear structure
-    
+
 # For blogs
 if "blog" in start_url:
     config.min_gain_threshold = 0.2  # Avoid similar posts

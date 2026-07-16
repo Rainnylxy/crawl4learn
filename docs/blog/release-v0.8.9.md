@@ -1,6 +1,6 @@
 # Crawl4AI v0.8.9: Proxy SSRF Patch
 
-*June 2026 - 2 min read*
+_June 2026 - 2 min read_
 
 ---
 

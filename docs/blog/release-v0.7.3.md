@@ -1,6 +1,6 @@
 # 🚀 Crawl4AI v0.7.3: The Multi-Config Intelligence Update
 
-*August 6, 2025 • 5 min read*
+_August 6, 2025 • 5 min read_
 
 ---
 
@@ -36,14 +36,14 @@ configs = [
         cache_mode="write",
         markdown_generator_options={"include_links": True}
     ),
-    
+
     # News/blog sites - fresh content, scroll for lazy loading
     CrawlerRunConfig(
         url_matcher=lambda url: 'blog' in url or 'news' in url,
         cache_mode="bypass",
         js_code="window.scrollTo(0, document.body.scrollHeight/2);"
     ),
-    
+
     # API endpoints - structured extraction
     CrawlerRunConfig(
         url_matcher=["*.json", "*api*"],
@@ -52,7 +52,7 @@ configs = [
             extraction_type="structured"
         )
     ),
-    
+
     # Default fallback for everything else
     CrawlerRunConfig()  # No url_matcher = matches everything
 ]
@@ -62,7 +62,7 @@ async with AsyncWebCrawler() as crawler:
     results = await crawler.arun_many(
         urls=[
             "https://docs.python.org/3/",      # → Uses documentation config
-            "https://blog.python.org/",        # → Uses blog config  
+            "https://blog.python.org/",        # → Uses blog config
             "https://api.github.com/users",    # → Uses API config
             "https://example.com/"             # → Uses default config
         ],
@@ -71,12 +71,14 @@ async with AsyncWebCrawler() as crawler:
 ```
 
 **Matching Capabilities:**
+
 - **String Patterns**: Wildcards like `"*.pdf"`, `"*/blog/*"`
 - **Function Matchers**: Lambda functions for complex logic
 - **Mixed Matchers**: Combine strings and functions with AND/OR logic
 - **Fallback Support**: Default config when nothing matches
 
 **Expected Real-World Impact:**
+
 - **Mixed Content Sites**: Handle blogs, docs, and downloads in one crawl
 - **Multi-Domain Crawling**: Different strategies per domain without separate runs
 - **Reduced Complexity**: No more if/else forests in your extraction code
@@ -107,7 +109,7 @@ browser_config = BrowserConfig(
 async with AsyncWebCrawler(config=browser_config) as crawler:
     # This will bypass most bot detection systems
     result = await crawler.arun("https://protected-site.com")
-    
+
     if result.success:
         print("✅ Successfully bypassed bot detection!")
         print(f"Content length: {len(result.markdown)}")
@@ -126,7 +128,7 @@ config = CrawlerRunConfig(
         "Accept-Encoding": "gzip, deflate, br",
         "DNT": "1"
     },
-    
+
     # Human-like behavior simulation
     js_code="""
         // Random mouse movements
@@ -138,7 +140,7 @@ config = CrawlerRunConfig(
             document.dispatchEvent(event);
         };
         setInterval(simulateHuman, 100 + Math.random() * 200);
-        
+
         // Random scrolling
         const randomScroll = () => {
             const scrollY = Math.random() * (document.body.scrollHeight - window.innerHeight);
@@ -146,7 +148,7 @@ config = CrawlerRunConfig(
         };
         setTimeout(randomScroll, 500 + Math.random() * 1000);
     """,
-    
+
     # Delay to appear more human
     delay_before_return_html=2.0
 )
@@ -155,6 +157,7 @@ result = await crawler.arun("https://bot-protected-site.com", config=config)
 ```
 
 **Expected Real-World Impact:**
+
 - **Enterprise Scraping**: Access previously blocked corporate sites and databases
 - **Market Research**: Gather data from competitor sites with protection
 - **Price Monitoring**: Track e-commerce sites that block automated access
@@ -178,19 +181,19 @@ monitor = MemoryMonitor()
 async with AsyncWebCrawler() as crawler:
     # Start monitoring
     monitor.start_monitoring()
-    
+
     # Perform memory-intensive operations
     results = await crawler.arun_many([
         "https://heavy-js-site.com",
-        "https://large-images-site.com", 
+        "https://large-images-site.com",
         "https://dynamic-content-site.com"
     ])
-    
+
     # Get detailed memory report
     memory_report = monitor.get_report()
     print(f"Peak memory usage: {memory_report['peak_mb']:.1f} MB")
     print(f"Memory efficiency: {memory_report['efficiency']:.1f}%")
-    
+
     # Automatic cleanup suggestions
     if memory_report['peak_mb'] > 1000:  # > 1GB
         print("💡 Consider batch size optimization")
@@ -198,6 +201,7 @@ async with AsyncWebCrawler() as crawler:
 ```
 
 **Expected Real-World Impact:**
+
 - **Production Stability**: Prevent memory-related crashes in long-running services
 - **Cost Optimization**: Right-size server resources based on actual usage
 - **Performance Tuning**: Identify memory bottlenecks and optimization opportunities
@@ -221,21 +225,22 @@ result = await crawler.arun("https://site-with-tables.com")
 # Direct table access
 if result.tables:
     print(f"Found {len(result.tables)} tables")
-    
+
     # Convert to pandas DataFrame instantly
     import pandas as pd
-    
+
     for i, table in enumerate(result.tables):
         df = pd.DataFrame(table['data'])
         print(f"Table {i}: {df.shape[0]} rows × {df.shape[1]} columns")
         print(df.head())
-        
+
         # Table metadata
         print(f"Source: {table.get('source_xpath', 'Unknown')}")
         print(f"Headers: {table.get('headers', [])}")
 ```
 
 **Expected Real-World Impact:**
+
 - **Data Analysis**: Faster transition from web data to analysis-ready DataFrames
 - **ETL Pipelines**: Cleaner integration with data processing workflows
 - **Reporting**: Simplified table extraction for automated reporting systems
@@ -245,12 +250,14 @@ if result.tables:
 I've launched GitHub Sponsors to ensure Crawl4AI's continued development and support our growing community.
 
 **Sponsorship Tiers:**
+
 - **🌱 Supporter ($5/month)**: Community support + early feature previews
 - **🚀 Professional ($25/month)**: Priority support + beta access
 - **🏢 Business ($100/month)**: Direct consultation + custom integrations
 - **🏛️ Enterprise ($500/month)**: Dedicated support + feature development
 
 **Why Sponsor?**
+
 - Ensure continuous development and maintenance
 - Get priority support and feature requests
 - Access to premium documentation and examples
@@ -287,6 +294,7 @@ docker run -d \
 ```
 
 Override per request when needed:
+
 ```python
 # Use default provider from .llm.env
 response = requests.post("http://localhost:11235/crawl", json={
@@ -305,6 +313,7 @@ response = requests.post("http://localhost:11235/crawl", json={
 ```
 
 **Expected Real-World Impact:**
+
 - **Cost Optimization**: Use cheaper models for simple tasks, premium for complex
 - **A/B Testing**: Compare provider performance without deployment changes
 - **Fallback Strategies**: Switch providers on-the-fly during outages
@@ -324,6 +333,7 @@ This release includes several important bug fixes that improve stability and rel
 ## 📚 Documentation Enhancements
 
 Based on community feedback, we've updated:
+
 - Clearer examples for multi-URL configuration
 - Improved CrawlResult documentation with all available fields
 - Fixed typos and inconsistencies across documentation
@@ -343,8 +353,8 @@ Thanks to our contributors and the entire community for feedback and bug reports
 
 ---
 
-*Crawl4AI continues to evolve with your needs. This release makes it smarter, more flexible, and more stable. Try the new multi-config feature and flexible Docker deployment—they're game changers!*
+_Crawl4AI continues to evolve with your needs. This release makes it smarter, more flexible, and more stable. Try the new multi-config feature and flexible Docker deployment—they're game changers!_
 
 **Happy Crawling! 🕷️**
 
-*- The Crawl4AI Team*
+_- The Crawl4AI Team_

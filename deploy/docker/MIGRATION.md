@@ -66,10 +66,16 @@ safe maximums.
 {
   "hooks": {
     "hooks": [
-      {"action": "block_resources", "params": {"resource_types": ["image", "font"]}},
-      {"action": "scroll_to_bottom",  "params": {"max_steps": 10, "delay_ms": 500}}
-    ]
-  }
+      {
+        "action": "block_resources",
+        "params": { "resource_types": ["image", "font"] },
+      },
+      {
+        "action": "scroll_to_bottom",
+        "params": { "max_steps": 10, "delay_ms": 500 },
+      },
+    ],
+  },
 }
 ```
 
@@ -82,8 +88,14 @@ schemas. Arbitrary hook code is available in a self-hosted in-process build.
 `output_path` is removed. The server stores the result and returns an id + URL:
 
 ```jsonc
-{"success": true, "screenshot": "<base64>",
- "artifact_id": "….", "url": "/artifacts/….", "mime": "image/png", "size": 12345}
+{
+  "success": true,
+  "screenshot": "<base64>",
+  "artifact_id": "….",
+  "url": "/artifacts/….",
+  "mime": "image/png",
+  "size": 12345,
+}
 ```
 
 Fetch the file with `GET /artifacts/{artifact_id}` (authenticated). Artifacts
@@ -132,12 +144,12 @@ longer published. For an **external** redis, set `REDIS_PASSWORD`.
 
 ```yaml
 limits:
-  max_body_bytes: 10485760   # request body cap (413); 0 = unbounded
-  wall_clock_s: 0            # per-crawl deadline (504); 0 = none
+  max_body_bytes: 10485760 # request body cap (413); 0 = unbounded
+  wall_clock_s: 0 # per-crawl deadline (504); 0 = none
   queue:
-    maxsize: 1000            # background job queue (503 when full); 0 = unbounded
+    maxsize: 1000 # background job queue (503 when full); 0 = unbounded
     workers: 4
-    per_principal: 0         # max concurrent jobs per caller (429); 0 = unlimited
+    per_principal: 0 # max concurrent jobs per caller (429); 0 = unlimited
 ```
 
 To keep the previous behavior exactly, set the caps you don't want to `0`.
@@ -152,18 +164,18 @@ messages are unchanged.
 
 ## Defaults summary
 
-| Setting | Old | New |
-| --- | --- | --- |
-| Bind | `0.0.0.0`, open | `127.0.0.1`; exposing requires a token |
-| Auth | off by default | on by default |
-| Security headers / CSP | off | on (strict on the API surface) |
-| CORS | none | deny-by-default |
-| TLS verification | disabled | enabled |
-| Redis | no password, port published | password, loopback, not published |
-| `output_path` | accepted | removed (artifact store) |
-| LLM `base_url` in request | honored | removed |
-| Hooks | Python code | declarative actions |
-| Background jobs | unbounded | bounded queue (configurable, 0 = unbounded) |
+| Setting                   | Old                         | New                                         |
+| ------------------------- | --------------------------- | ------------------------------------------- |
+| Bind                      | `0.0.0.0`, open             | `127.0.0.1`; exposing requires a token      |
+| Auth                      | off by default              | on by default                               |
+| Security headers / CSP    | off                         | on (strict on the API surface)              |
+| CORS                      | none                        | deny-by-default                             |
+| TLS verification          | disabled                    | enabled                                     |
+| Redis                     | no password, port published | password, loopback, not published           |
+| `output_path`             | accepted                    | removed (artifact store)                    |
+| LLM `base_url` in request | honored                     | removed                                     |
+| Hooks                     | Python code                 | declarative actions                         |
+| Background jobs           | unbounded                   | bounded queue (configurable, 0 = unbounded) |
 
 ## Operational notes
 
@@ -172,7 +184,7 @@ messages are unchanged.
   user namespace (`unprivileged_userns_clone=1`) or a seccomp profile, then set
   `CRAWL4AI_CHROMIUM_SANDBOX=true`. See `SECURITY-VERIFY.md`.
 - The hardened `docker-compose.yml` uses `read_only: true` + tmpfs, `cap_drop:
-  [ALL]`, `no-new-privileges`, and `shm_size` instead of a host `/dev/shm` bind.
+[ALL]`, `no-new-privileges`, and `shm_size` instead of a host `/dev/shm` bind.
   Mirror these in a custom compose file.
 - The `/dashboard` and `/playground` UIs get baseline headers
   (`nosniff`, `X-Frame-Options: DENY`) and are auth-gated; a stricter CSP for

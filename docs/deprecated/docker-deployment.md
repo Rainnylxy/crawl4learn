@@ -10,6 +10,7 @@ Crawl4AI is available as Docker images for easy deployment. You can either pull 
 Choose the appropriate image based on your platform and needs:
 
 ### For AMD64 (Regular Linux/Windows):
+
 ```bash
 # Basic version (recommended)
 docker pull unclecode/crawl4ai:basic-amd64
@@ -25,6 +26,7 @@ docker run -p 11235:11235 unclecode/crawl4ai:gpu-amd64
 ```
 
 ### For ARM64 (M1/M2 Macs, ARM servers):
+
 ```bash
 # Basic version (recommended)
 docker pull unclecode/crawl4ai:basic-arm64
@@ -40,16 +42,19 @@ docker run -p 11235:11235 unclecode/crawl4ai:gpu-arm64
 ```
 
 Need more memory? Add `--shm-size`:
+
 ```bash
 docker run --shm-size=2gb -p 11235:11235 unclecode/crawl4ai:basic-amd64
 ```
 
 Test the installation:
+
 ```bash
 curl http://localhost:11235/health
 ```
 
 ### For Raspberry Pi (32-bit) (coming soon):
+
 ```bash
 # Pull and run basic version (recommended for Raspberry Pi)
 docker pull unclecode/crawl4ai:basic-armv7
@@ -87,11 +92,13 @@ docker build --platform linux/arm64 \
 ```
 
 Build options:
+
 - INSTALL_TYPE=basic (default): Basic crawling features
 - INSTALL_TYPE=all: Full ML/LLM support
 - ENABLE_GPU=true: Add GPU support
 
 Example with all options:
+
 ```bash
 docker build --platform linux/amd64 \
   --tag crawl4ai:local \
@@ -101,6 +108,7 @@ docker build --platform linux/amd64 \
 ```
 
 Run your local build:
+
 ```bash
 # Regular run
 docker run -p 11235:11235 crawl4ai:local
@@ -110,6 +118,7 @@ docker run --shm-size=2gb -p 11235:11235 crawl4ai:local
 ```
 
 Test the installation:
+
 ```bash
 curl http://localhost:11235/health
 ```
@@ -128,6 +137,7 @@ cd crawl4ai
 ```
 
 ### For AMD64 (Regular Linux/Windows):
+
 ```bash
 # Build and run locally
 docker-compose --profile local-amd64 up
@@ -139,6 +149,7 @@ VERSION=gpu docker-compose --profile hub-amd64 up     # GPU support
 ```
 
 ### For ARM64 (M1/M2 Macs, ARM servers):
+
 ```bash
 # Build and run locally
 docker-compose --profile local-arm64 up
@@ -150,6 +161,7 @@ VERSION=gpu docker-compose --profile hub-arm64 up     # GPU support
 ```
 
 Environment variables (optional):
+
 ```bash
 # Create a .env file
 CRAWL4AI_API_TOKEN=your_token
@@ -158,6 +170,7 @@ CLAUDE_API_KEY=your_claude_key
 ```
 
 The compose file includes:
+
 - Memory management (4GB limit, 1GB reserved)
 - Shared memory volume for browser support
 - Health checks
@@ -165,6 +178,7 @@ The compose file includes:
 - All necessary port mappings
 
 Test the installation:
+
 ```bash
 curl http://localhost:11235/health
 ```
@@ -181,6 +195,7 @@ Deploy your own instance of Crawl4AI with one click:
 > 💡 **Recommended specs**: 4GB RAM minimum. Select "professional-xs" or higher when deploying for stable operation.
 
 The deploy will:
+
 - Set up a Docker container with Crawl4AI
 - Configure Playwright and all dependencies
 - Start the FastAPI server on port `11235`

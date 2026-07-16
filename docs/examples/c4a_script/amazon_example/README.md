@@ -5,6 +5,7 @@ A real-world demonstration of Crawl4AI's multi-step crawling with LLM-generated 
 ## 🎯 What This Example Shows
 
 This example demonstrates advanced Crawl4AI features:
+
 - **LLM-Generated Scripts**: Automatically create C4A-Script from HTML snippets
 - **Multi-Step Crawling**: Navigate through multiple pages using session persistence
 - **Structured Data Extraction**: Extract product data using JSON CSS schemas
@@ -13,11 +14,14 @@ This example demonstrates advanced Crawl4AI features:
 ## 🚀 How It Works
 
 ### 1. **Script Generation Phase**
+
 The example uses `C4ACompiler.generate_script()` to analyze Amazon's HTML and create:
+
 - **Search Script**: Automates filling the search box and clicking search
 - **Extraction Schema**: Defines how to extract product information
 
 ### 2. **Crawling Workflow**
+
 ```
 Homepage → Execute Search Script → Extract Products → Save Results
 ```
@@ -25,7 +29,9 @@ Homepage → Execute Search Script → Extract Products → Save Results
 All steps use the same `session_id` to maintain browser state.
 
 ### 3. **Data Extraction**
+
 Products are extracted with:
+
 - Title, price, rating, reviews
 - Delivery information
 - Sponsored/Small Business badges
@@ -45,15 +51,17 @@ Products are extracted with:
 ## 🏃 Running the Example
 
 1. **Prerequisites**
+
    ```bash
    # Ensure Crawl4AI is installed
    pip install crawl4ai
-   
+
    # Set up LLM API key (for script generation)
    export OPENAI_API_KEY="your-key-here"
    ```
 
 2. **Run the scraper**
+
    ```bash
    python amazon_r2d2_search.py
    ```
@@ -86,6 +94,7 @@ Products are extracted with:
 ## 🔍 Key Features Demonstrated
 
 ### Session Persistence
+
 ```python
 # Same session_id across multiple arun() calls
 config = CrawlerRunConfig(
@@ -95,6 +104,7 @@ config = CrawlerRunConfig(
 ```
 
 ### LLM Script Generation
+
 ```python
 # Generate automation from natural language + HTML
 script = C4ACompiler.generate_script(
@@ -105,6 +115,7 @@ script = C4ACompiler.generate_script(
 ```
 
 ### JSON CSS Extraction
+
 ```python
 # Structured data extraction with CSS selectors
 schema = {
@@ -119,7 +130,9 @@ schema = {
 ## 🛠️ Customization
 
 ### Search Different Products
+
 Change the search term in the script generation:
+
 ```python
 search_goal = """
 ...
@@ -129,7 +142,9 @@ search_goal = """
 ```
 
 ### Extract More Data
+
 Add fields to the extraction schema:
+
 ```python
 "fields": [
     # ... existing fields
@@ -139,7 +154,9 @@ Add fields to the extraction schema:
 ```
 
 ### Use Different Sites
+
 Adapt the approach for other e-commerce sites by:
+
 1. Providing their HTML snippets
 2. Adjusting the search goals
 3. Updating the extraction schema

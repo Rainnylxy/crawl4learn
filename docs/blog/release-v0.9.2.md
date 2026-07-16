@@ -1,6 +1,6 @@
 # Crawl4AI v0.9.2: Maintenance Bug Fixes
 
-*July 2026 - 2 min read*
+_July 2026 - 2 min read_
 
 ---
 

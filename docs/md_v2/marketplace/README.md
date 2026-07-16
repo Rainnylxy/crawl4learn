@@ -7,17 +7,20 @@ A terminal-themed marketplace for tools, integrations, and resources related to 
 ### Backend
 
 1. Install dependencies:
+
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
 2. Generate dummy data:
+
 ```bash
 python dummy_data.py
 ```
 
 3. Run the server:
+
 ```bash
 python server.py
 ```
@@ -32,6 +35,7 @@ The API will be available at http://localhost:8100
 ## Database Schema
 
 The marketplace uses SQLite with automatic migration from `schema.yaml`. Tables include:
+
 - **apps**: Tools and integrations
 - **articles**: Reviews, tutorials, and news
 - **categories**: App categories
@@ -61,6 +65,7 @@ Coming soon - for now, edit the database directly or modify `dummy_data.py`
 ## Deployment
 
 For production deployment on EC2:
+
 1. Update `API_BASE` in `marketplace.js` to production URL
 2. Run FastAPI with proper production settings (use gunicorn/uvicorn)
 3. Set up nginx proxy if needed

@@ -1,7 +1,9 @@
 # Chunking Strategies
+
 Chunking strategies are critical for dividing large texts into manageable parts, enabling effective content processing and extraction. These strategies are foundational in cosine similarity-based extraction techniques, which allow users to retrieve only the most relevant chunks of content for a given query. Additionally, they facilitate direct integration into RAG (Retrieval-Augmented Generation) systems for structured and scalable workflows.
 
 ### Why Use Chunking?
+
 1. **Cosine Similarity and Query Relevance**: Prepares chunks for semantic similarity analysis.
 2. **RAG System Integration**: Seamlessly processes and stores chunks for retrieval.
 3. **Structured Processing**: Allows for diverse segmentation methods, such as sentence-based, topic-based, or windowed approaches.
@@ -9,9 +11,11 @@ Chunking strategies are critical for dividing large texts into manageable parts,
 ### Methods of Chunking
 
 #### 1. Regex-Based Chunking
+
 Splits text based on regular expression patterns, useful for coarse segmentation.
 
 **Code Example**:
+
 ```python
 class RegexChunking:
     def __init__(self, patterns=None):
@@ -32,9 +36,11 @@ print(chunker.chunk(text))
 ```
 
 #### 2. Sentence-Based Chunking
+
 Divides text into sentences using NLP tools, ideal for extracting meaningful statements.
 
 **Code Example**:
+
 ```python
 from nltk.tokenize import sent_tokenize
 
@@ -50,9 +56,11 @@ print(chunker.chunk(text))
 ```
 
 #### 3. Topic-Based Segmentation
+
 Uses algorithms like TextTiling to create topic-coherent chunks.
 
 **Code Example**:
+
 ```python
 from nltk.tokenize import TextTilingTokenizer
 
@@ -71,9 +79,11 @@ print(chunker.chunk(text))
 ```
 
 #### 4. Fixed-Length Word Chunking
+
 Segments text into chunks of a fixed word count.
 
 **Code Example**:
+
 ```python
 class FixedLengthWordChunking:
     def __init__(self, chunk_size=100):
@@ -90,9 +100,11 @@ print(chunker.chunk(text))
 ```
 
 #### 5. Sliding Window Chunking
+
 Generates overlapping chunks for better contextual coherence.
 
 **Code Example**:
+
 ```python
 class SlidingWindowChunking:
     def __init__(self, window_size=100, step=50):
@@ -113,9 +125,11 @@ print(chunker.chunk(text))
 ```
 
 ### Combining Chunking with Cosine Similarity
+
 To enhance the relevance of extracted content, chunking strategies can be paired with cosine similarity techniques. Here’s an example workflow:
 
 **Code Example**:
+
 ```python
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -131,7 +145,7 @@ class CosineSimilarityExtractor:
         return [(chunks[i], similarities[i]) for i in range(len(chunks))]
 
 # Example Workflow
-text = """This is a sample document. It has multiple sentences. 
+text = """This is a sample document. It has multiple sentences.
 We are testing chunking and similarity."""
 
 chunker = SlidingWindowChunking(window_size=5, step=3)

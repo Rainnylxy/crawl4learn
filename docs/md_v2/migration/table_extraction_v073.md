@@ -103,6 +103,7 @@ config = CrawlerRunConfig(
 ### Scenario 1: Basic Usage (No Changes Needed)
 
 **Before (v0.7.2):**
+
 ```python
 config = CrawlerRunConfig()
 result = await crawler.arun(url, config)
@@ -111,6 +112,7 @@ for table in result.tables:
 ```
 
 **After (v0.7.3):**
+
 ```python
 # Exactly the same - no changes required
 config = CrawlerRunConfig()
@@ -122,6 +124,7 @@ for table in result.tables:
 ### Scenario 2: Custom Threshold (No Changes Needed)
 
 **Before (v0.7.2):**
+
 ```python
 config = CrawlerRunConfig(
     table_score_threshold=5
@@ -129,6 +132,7 @@ config = CrawlerRunConfig(
 ```
 
 **After (v0.7.3):**
+
 ```python
 # Still works the same
 config = CrawlerRunConfig(
@@ -148,6 +152,7 @@ config = CrawlerRunConfig(
 ### Scenario 3: Advanced Filtering (New Feature)
 
 **Before (v0.7.2):**
+
 ```python
 # Had to filter after extraction
 config = CrawlerRunConfig(
@@ -157,12 +162,13 @@ result = await crawler.arun(url, config)
 
 # Manual filtering
 large_tables = [
-    t for t in result.tables 
+    t for t in result.tables
     if len(t['rows']) >= 5 and len(t['headers']) >= 3
 ]
 ```
 
 **After (v0.7.3):**
+
 ```python
 # Filter during extraction (more efficient)
 strategy = DefaultTableExtraction(
@@ -182,6 +188,7 @@ result = await crawler.arun(url, config)
 ### Module Structure
 
 **Before (v0.7.2):**
+
 ```
 crawl4ai/
   content_scraping_strategy.py
@@ -191,12 +198,13 @@ crawl4ai/
 ```
 
 **After (v0.7.3):**
+
 ```
 crawl4ai/
   content_scraping_strategy.py
     - LXMLWebScrapingStrategy
       # Table methods removed, uses strategy
-  
+
   table_extraction.py (NEW)
     - TableExtractionStrategy    # Base class
     - DefaultTableExtraction      # Moved logic here
@@ -206,6 +214,7 @@ crawl4ai/
 ### Import Changes
 
 **New imports available (optional):**
+
 ```python
 # These are now available but not required for existing code
 from crawl4ai import (
@@ -220,6 +229,7 @@ from crawl4ai import (
 ### No Performance Impact
 
 For existing code, performance remains identical:
+
 - Same extraction logic
 - Same scoring algorithm
 - Same processing time
@@ -256,14 +266,14 @@ from crawl4ai import AsyncWebCrawler, CrawlerRunConfig
 
 async def verify_extraction():
     url = "your_url_here"
-    
+
     async with AsyncWebCrawler() as crawler:
         # Test 1: Old approach
         config_old = CrawlerRunConfig(
             table_score_threshold=7
         )
         result_old = await crawler.arun(url, config_old)
-        
+
         # Test 2: New explicit approach
         from crawl4ai import DefaultTableExtraction
         config_new = CrawlerRunConfig(
@@ -272,16 +282,16 @@ async def verify_extraction():
             )
         )
         result_new = await crawler.arun(url, config_new)
-        
+
         # Compare results
         assert len(result_old.tables) == len(result_new.tables)
         print(f"✓ Both approaches extracted {len(result_old.tables)} tables")
-        
+
         # Verify structure
         for old, new in zip(result_old.tables, result_new.tables):
             assert old['headers'] == new['headers']
             assert old['rows'] == new['rows']
-        
+
         print("✓ Table content identical")
 
 asyncio.run(verify_extraction())
@@ -318,7 +328,8 @@ While not required, using the new pattern provides:
 
 **Cause**: Threshold or filtering differences
 
-**Solution**: 
+**Solution**:
+
 ```python
 # Ensure same threshold
 strategy = DefaultTableExtraction(
@@ -333,6 +344,7 @@ strategy = DefaultTableExtraction(
 **Cause**: Using new classes without importing
 
 **Solution**:
+
 ```python
 # Add imports if using new features
 from crawl4ai import (
@@ -347,6 +359,7 @@ from crawl4ai import (
 **Cause**: Incorrect method signature
 
 **Solution**:
+
 ```python
 class CustomExtractor(TableExtractionStrategy):
     def extract_tables(self, element, **kwargs):  # Correct signature

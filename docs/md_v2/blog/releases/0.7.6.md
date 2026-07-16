@@ -1,6 +1,6 @@
 # Crawl4AI v0.7.6 Release Notes
 
-*Release Date: October 22, 2025*
+_Release Date: October 22, 2025_
 
 I'm excited to announce Crawl4AI v0.7.6, featuring a complete webhook infrastructure for the Docker job queue API! This release eliminates polling and brings real-time notifications to both crawling and LLM extraction workflows.
 
@@ -24,6 +24,7 @@ The headline feature of v0.7.6 is comprehensive webhook support for asynchronous
 Instead of constantly checking job status:
 
 **OLD WAY (Polling):**
+
 ```python
 # Submit job
 response = requests.post("http://localhost:11235/crawl/job", json=payload)
@@ -38,6 +39,7 @@ while True:
 ```
 
 **NEW WAY (Webhooks):**
+
 ```python
 # Submit job with webhook
 payload = {
@@ -92,6 +94,7 @@ curl -X POST http://localhost:11235/llm/job \
 ### Webhook Payload Structure
 
 **Success (with data):**
+
 ```json
 {
   "task_id": "llm_1698765432",
@@ -110,6 +113,7 @@ curl -X POST http://localhost:11235/llm/job \
 ```
 
 **Failure:**
+
 ```json
 {
   "task_id": "crawl_abc123",
@@ -174,16 +178,19 @@ app.run(port=8080)
 ## 🌍 Expected Real-World Impact
 
 ### For Web Scraping Workflows
+
 - **Reduced Costs**: Less API calls = lower bandwidth and server costs
 - **Better UX**: Instant notifications improve user experience
 - **Scalability**: Handle 100s of concurrent jobs without polling overhead
 
 ### For LLM Extraction Pipelines
+
 - **Async Processing**: Submit LLM extraction jobs and move on
 - **Batch Processing**: Queue multiple extractions, get notified as they complete
 - **Integration**: Easy integration with workflow automation tools (Zapier, n8n, etc.)
 
 ### For Microservices
+
 - **Event-Driven**: Perfect for event-driven microservice architectures
 - **Decoupling**: Decouple job submission from result processing
 - **Reliability**: Automatic retries ensure webhooks are delivered
@@ -199,10 +206,12 @@ app.run(port=8080)
 ## 📚 Documentation
 
 ### New Documentation
+
 - **[WEBHOOK_EXAMPLES.md](../deploy/docker/WEBHOOK_EXAMPLES.md)** - Comprehensive webhook usage guide
 - **[docker_webhook_example.py](../docs/examples/docker_webhook_example.py)** - Working code examples
 
 ### Updated Documentation
+
 - **[Docker README](../deploy/docker/README.md)** - Added webhook sections
 - API documentation with webhook examples
 
@@ -238,7 +247,7 @@ payload = {
 ```yaml
 webhooks:
   enabled: true
-  default_url: "https://myapp.com/webhooks/default"  # Optional
+  default_url: "https://myapp.com/webhooks/default" # Optional
   data_in_payload: false
   retry:
     max_attempts: 5
@@ -291,6 +300,7 @@ python docs/releases_review/demo_v0.7.6.py
 ```
 
 This comprehensive demo showcases:
+
 - Crawl job webhooks (notification-only and with data)
 - LLM extraction webhooks (with JSON schema support)
 - Custom headers for authentication
@@ -311,4 +321,4 @@ Thank you to the community for the feedback that shaped this feature! Special th
 
 **Happy crawling with webhooks!** 🕷️🪝
 
-*- unclecode*
+_- unclecode_

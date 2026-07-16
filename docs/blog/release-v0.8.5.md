@@ -1,6 +1,6 @@
 # Crawl4AI v0.8.5: Anti-Bot, Shadow DOM & 60+ Bug Fixes
 
-*March 2026 • 10 min read*
+_March 2026 • 10 min read_
 
 ---
 
@@ -28,6 +28,7 @@ I'm releasing Crawl4AI v0.8.5—our biggest release since v0.8.0. This update br
 This is the headline feature. Crawl4AI now automatically detects when a page is blocked by anti-bot protection and takes action—retrying with different proxies or falling back to an alternative fetch method.
 
 The detection uses three tiers:
+
 - **Tier 1**: Known vendor patterns (Cloudflare, Akamai, DataDome, PerimeterX, etc.)
 - **Tier 2**: Generic block indicators on small pages
 - **Tier 3**: Structural integrity checks (empty shells, script-heavy pages with no content)
@@ -190,6 +191,7 @@ This prevents memory leaks during sustained crawling. The recycling uses a versi
 Tables in markdown output now have proper GitHub-Flavored Markdown pipe delimiters:
 
 **Before (v0.8.0)**:
+
 ```
 Name | Age | City
 ---|---|---
@@ -197,6 +199,7 @@ Alice | 30 | NYC
 ```
 
 **After (v0.8.5)**:
+
 ```
 | Name | Age | City |
 | --- | --- | --- |
@@ -381,4 +384,4 @@ Issues fixed: #462, #880, #943, #1031, #1077, #1183, #1213, #1251, #1281, #1290,
 
 **Happy crawling!**
 
-*- unclecode*
+_- unclecode_

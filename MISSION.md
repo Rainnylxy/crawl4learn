@@ -27,6 +27,7 @@ Building on this open-source foundation, we're developing a platform that helps 
 ### 3. Creating a Data Marketplace
 
 The final piece is establishing a marketplace where individuals and organizations can willingly share their data assets. This creates opportunities for:
+
 - Individuals to earn equity, revenue, or other forms of value from their data
 - Enterprises to access diverse, high-quality data for AI development
 - Researchers to work with authentic human-generated data
@@ -37,6 +38,7 @@ The final piece is establishing a marketplace where individuals and organization
 We envision a future where data becomes a fundamental asset class in a thriving shared economy. This transformation will democratize AI development by enabling willing participation in data sharing, ensuring that the benefits of AI advancement flow back to data creators. Just as property rights revolutionized economic systems, establishing data as a capital asset will create new opportunities for wealth creation and economic participation.
 
 This shared data economy will:
+
 - Enable individuals to capitalize on their digital footprints
 - Create new revenue streams for data creators
 - Provide AI developers with access to diverse, authentic data

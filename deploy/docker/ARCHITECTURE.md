@@ -67,6 +67,7 @@ This document provides a comprehensive technical overview of the Crawl4AI Docker
 ### 1. Server Core (`server.py`)
 
 **Responsibilities:**
+
 - FastAPI application lifecycle management
 - Route registration and middleware
 - Background task orchestration
@@ -96,6 +97,7 @@ async def lifespan(app: FastAPI):
 ```
 
 **Configuration:**
+
 - Loaded from `config.yml`
 - Browser settings, memory thresholds, rate limiting
 - LLM provider credentials
@@ -105,17 +107,17 @@ async def lifespan(app: FastAPI):
 
 **Endpoints:**
 
-| Endpoint | Method | Purpose | Pool Usage |
-|----------|--------|---------|------------|
-| `/health` | GET | Health check | None |
-| `/crawl` | POST | Full crawl with all features | ✓ Pool |
-| `/crawl_stream` | POST | Streaming crawl results | ✓ Pool |
-| `/html` | POST | HTML extraction | ✓ Pool |
-| `/md` | POST | Markdown generation | ✓ Pool |
-| `/screenshot` | POST | Page screenshots | ✓ Pool |
-| `/pdf` | POST | PDF generation | ✓ Pool |
-| `/llm/{path}` | GET/POST | LLM extraction | ✓ Pool |
-| `/crawl/job` | POST | Background job creation | ✓ Pool |
+| Endpoint        | Method   | Purpose                      | Pool Usage |
+| --------------- | -------- | ---------------------------- | ---------- |
+| `/health`       | GET      | Health check                 | None       |
+| `/crawl`        | POST     | Full crawl with all features | ✓ Pool     |
+| `/crawl_stream` | POST     | Streaming crawl results      | ✓ Pool     |
+| `/html`         | POST     | HTML extraction              | ✓ Pool     |
+| `/md`           | POST     | Markdown generation          | ✓ Pool     |
+| `/screenshot`   | POST     | Page screenshots             | ✓ Pool     |
+| `/pdf`          | POST     | PDF generation               | ✓ Pool     |
+| `/llm/{path}`   | GET/POST | LLM extraction               | ✓ Pool     |
+| `/crawl/job`    | POST     | Background job creation      | ✓ Pool     |
 
 **Request Flow:**
 
@@ -163,6 +165,7 @@ def get_container_memory_percent() -> float:
 ```
 
 **Helper Functions:**
+
 - `get_base_url()`: Request base URL extraction
 - `is_task_id()`: Task ID validation
 - `should_cleanup_task()`: TTL-based cleanup logic
@@ -527,48 +530,48 @@ async def get_requests(status: str = "all", limit: int = 50):
 ```javascript
 // WebSocket with auto-reconnect
 function connectWebSocket() {
-    if (wsReconnectAttempts >= MAX_WS_RECONNECT) {
-        // Fallback to polling after 5 failed attempts
-        useWebSocket = false;
-        updateConnectionStatus('polling');
-        startAutoRefresh();
-        return;
+  if (wsReconnectAttempts >= MAX_WS_RECONNECT) {
+    // Fallback to polling after 5 failed attempts
+    useWebSocket = false;
+    updateConnectionStatus("polling");
+    startAutoRefresh();
+    return;
+  }
+
+  updateConnectionStatus("connecting");
+  const wsUrl = `${protocol}//${window.location.host}/monitor/ws`;
+  websocket = new WebSocket(wsUrl);
+
+  websocket.onopen = () => {
+    wsReconnectAttempts = 0;
+    updateConnectionStatus("connected");
+    stopAutoRefresh(); // Stop polling
+  };
+
+  websocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    updateDashboard(data); // Update all sections
+  };
+
+  websocket.onclose = () => {
+    updateConnectionStatus("disconnected", "Reconnecting...");
+    if (useWebSocket) {
+      setTimeout(connectWebSocket, 2000 * wsReconnectAttempts);
+    } else {
+      startAutoRefresh(); // Fallback to polling
     }
-
-    updateConnectionStatus('connecting');
-    const wsUrl = `${protocol}//${window.location.host}/monitor/ws`;
-    websocket = new WebSocket(wsUrl);
-
-    websocket.onopen = () => {
-        wsReconnectAttempts = 0;
-        updateConnectionStatus('connected');
-        stopAutoRefresh();  // Stop polling
-    };
-
-    websocket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        updateDashboard(data);  // Update all sections
-    };
-
-    websocket.onclose = () => {
-        updateConnectionStatus('disconnected', 'Reconnecting...');
-        if (useWebSocket) {
-            setTimeout(connectWebSocket, 2000 * wsReconnectAttempts);
-        } else {
-            startAutoRefresh();  // Fallback to polling
-        }
-    };
+  };
 }
 ```
 
 **Connection Status Indicator:**
 
-| Status | Color | Animation | Meaning |
-|--------|-------|-----------|---------|
-| Live | Green | Pulsing fast | WebSocket connected |
+| Status        | Color  | Animation    | Meaning               |
+| ------------- | ------ | ------------ | --------------------- |
+| Live          | Green  | Pulsing fast | WebSocket connected   |
 | Connecting... | Yellow | Pulsing slow | Attempting connection |
-| Polling | Blue | Pulsing slow | HTTP polling fallback |
-| Disconnected | Red | None | Connection failed |
+| Polling       | Blue   | Pulsing slow | HTTP polling fallback |
+| Disconnected  | Red    | None         | Connection failed     |
 
 ---
 
@@ -657,6 +660,7 @@ async def crawl(body: CrawlRequest):
 ### Container Memory Detection
 
 **Priority Order:**
+
 1. cgroup v2 (`/sys/fs/cgroup/memory.{current,max}`)
 2. cgroup v1 (`/sys/fs/cgroup/memory/memory.{usage,limit}_in_bytes`)
 3. psutil fallback (may be inaccurate in containers)
@@ -678,12 +682,12 @@ else:  # Normal
 
 ### Memory Budgets
 
-| Component | Memory | Notes |
-|-----------|--------|-------|
-| Base Container | 270 MB | Python + FastAPI + libraries |
-| Permanent Browser | 270 MB | Always-on default browser |
-| Hot Pool Browser | 180 MB | Per frequently-used config |
-| Cold Pool Browser | 180 MB | Per rarely-used config |
+| Component             | Memory    | Notes                             |
+| --------------------- | --------- | --------------------------------- |
+| Base Container        | 270 MB    | Python + FastAPI + libraries      |
+| Permanent Browser     | 270 MB    | Always-on default browser         |
+| Hot Pool Browser      | 180 MB    | Per frequently-used config        |
+| Cold Pool Browser     | 180 MB    | Per rarely-used config            |
 | Active Crawl Overhead | 50-200 MB | Temporary, released after request |
 
 **Example Calculation:**
@@ -707,54 +711,50 @@ Under load (10 concurrent):
 ### Code Review Fixes Applied
 
 **Critical (3):**
+
 1. ✅ Lock protection for browser pool access
 2. ✅ Async track_janitor_event implementation
 3. ✅ Error handling in request tracking
 
-**Important (8):**
-4. ✅ Background persistence worker (replaces fire-and-forget)
-5. ✅ Time-based expiry (5min cleanup for old entries)
-6. ✅ Input validation (status, limit, metric, window)
-7. ✅ Timeline updater timeout (4s max)
-8. ✅ Warn when killing browsers with active requests
-9. ✅ Monitor cleanup on shutdown
-10. ✅ Document memory estimates
-11. ✅ Structured error responses (HTTPException)
+**Important (8):** 4. ✅ Background persistence worker (replaces fire-and-forget) 5. ✅ Time-based expiry (5min cleanup for old entries) 6. ✅ Input validation (status, limit, metric, window) 7. ✅ Timeline updater timeout (4s max) 8. ✅ Warn when killing browsers with active requests 9. ✅ Monitor cleanup on shutdown 10. ✅ Document memory estimates 11. ✅ Structured error responses (HTTPException)
 
 ### Performance Characteristics
 
 **Latency:**
 
-| Scenario | Time | Notes |
-|----------|------|-------|
-| Pool Hit (Permanent) | <100ms | Browser ready |
-| Pool Hit (Hot/Cold) | <100ms | Browser ready |
-| New Browser Creation | 3-5s | Chromium startup |
-| Simple Page Fetch | 1-3s | Network + render |
-| Complex Extraction | 5-10s | LLM processing |
+| Scenario             | Time   | Notes            |
+| -------------------- | ------ | ---------------- |
+| Pool Hit (Permanent) | <100ms | Browser ready    |
+| Pool Hit (Hot/Cold)  | <100ms | Browser ready    |
+| New Browser Creation | 3-5s   | Chromium startup |
+| Simple Page Fetch    | 1-3s   | Network + render |
+| Complex Extraction   | 5-10s  | LLM processing   |
 
 **Throughput:**
 
-| Load | Concurrent | Response Time | Success Rate |
-|------|-----------|---------------|--------------|
-| Light | 1-10 | <3s | 100% |
-| Medium | 10-50 | 3-8s | 100% |
-| Heavy | 50-100 | 8-15s | 95-100% |
-| Extreme | 100+ | 15-30s | 80-95% |
+| Load    | Concurrent | Response Time | Success Rate |
+| ------- | ---------- | ------------- | ------------ |
+| Light   | 1-10       | <3s           | 100%         |
+| Medium  | 10-50      | 3-8s          | 100%         |
+| Heavy   | 50-100     | 8-15s         | 95-100%      |
+| Extreme | 100+       | 15-30s        | 80-95%       |
 
 ### Reliability Features
 
 **Race Condition Protection:**
+
 - `asyncio.Lock` on all pool operations
 - Lock on browser pool stats access
 - Async janitor event tracking
 
 **Graceful Degradation:**
+
 - WebSocket → HTTP polling fallback
 - Redis persistence failures (logged, non-blocking)
 - Monitor tracking failures (logged, non-blocking)
 
 **Resource Cleanup:**
+
 - Janitor cleanup (adaptive intervals)
 - Time-based expiry (5min for old data)
 - Shutdown cleanup (persist final stats, close browsers)
@@ -806,26 +806,28 @@ crawler:
       - "--no-sandbox"
     kwargs:
       headless: true
-      text_mode: true  # Reduces memory by 30-40%
+      text_mode: true # Reduces memory by 30-40%
 
-  memory_threshold_percent: 95  # Refuse new browsers above this
+  memory_threshold_percent: 95 # Refuse new browsers above this
 
   pool:
-    idle_ttl_sec: 300  # Base TTL for cold pool (5 min)
+    idle_ttl_sec: 300 # Base TTL for cold pool (5 min)
 
   rate_limiter:
     enabled: true
-    base_delay: [1.0, 3.0]  # Random delay between requests
+    base_delay: [1.0, 3.0] # Random delay between requests
 ```
 
 ### Monitoring
 
 **Access Dashboard:**
+
 ```
 http://localhost:11235/static/monitor/
 ```
 
 **Check Logs:**
+
 ```bash
 # All activity
 docker logs crawl4ai -f
@@ -838,6 +840,7 @@ docker logs crawl4ai | grep ERROR
 ```
 
 **Metrics:**
+
 ```bash
 # Container stats
 docker stats crawl4ai
@@ -860,6 +863,7 @@ curl http://localhost:11235/monitor/browsers | jq '.summary'
 Symptoms: Yellow "Connecting..." indicator, falls back to blue "Polling"
 
 Debug:
+
 ```bash
 # Check server logs
 docker logs crawl4ai | grep WebSocket
@@ -875,6 +879,7 @@ Fix: Check firewall/proxy settings, ensure port 11235 accessible
 Symptoms: Container OOM kills, 503 errors, slow responses
 
 Debug:
+
 ```bash
 # Check current memory
 curl http://localhost:11235/monitor/health | jq '.container.memory_percent'
@@ -887,6 +892,7 @@ docker logs crawl4ai | grep "🧹"
 ```
 
 Fix:
+
 - Lower `memory_threshold_percent` in config.yml
 - Increase container memory limit
 - Enable `text_mode: true` in browser config
@@ -897,6 +903,7 @@ Fix:
 Symptoms: High "New Created" count, poor reuse rate
 
 Debug:
+
 ```python
 # Check config signature matching
 from crawl4ai import BrowserConfig
@@ -908,6 +915,7 @@ print(f"Config signature: {sig[:8]}")
 ```
 
 Check logs for permanent browser signature:
+
 ```bash
 docker logs crawl4ai | grep "permanent"
 ```
@@ -919,6 +927,7 @@ Fix: Ensure endpoint configs match permanent browser config exactly
 Symptoms: Memory stays high after idle period
 
 Debug:
+
 ```bash
 # Check janitor events
 curl http://localhost:11235/monitor/logs/janitor
@@ -928,6 +937,7 @@ watch -n 5 'curl -s http://localhost:11235/monitor/browsers | jq ".summary"'
 ```
 
 Fix:
+
 - Janitor runs every 10-60s depending on memory
 - Hot pool browsers have longer TTL (by design)
 - Permanent browser never cleaned (by design)
@@ -996,11 +1006,11 @@ asyncio.run(test_websocket())
 ```yaml
 # config.yml
 crawler:
-  memory_threshold_percent: 90  # Allow more browsers
+  memory_threshold_percent: 90 # Allow more browsers
   pool:
-    idle_ttl_sec: 600  # Keep browsers longer
+    idle_ttl_sec: 600 # Keep browsers longer
   rate_limiter:
-    enabled: false  # Disable for max speed
+    enabled: false # Disable for max speed
 ```
 
 **For Low Memory:**
@@ -1010,10 +1020,10 @@ crawler:
 crawler:
   browser:
     kwargs:
-      text_mode: true  # 30-40% memory reduction
-  memory_threshold_percent: 80  # More conservative
+      text_mode: true # 30-40% memory reduction
+  memory_threshold_percent: 80 # More conservative
   pool:
-    idle_ttl_sec: 60  # Aggressive cleanup
+    idle_ttl_sec: 60 # Aggressive cleanup
 ```
 
 **For Stability:**
@@ -1021,12 +1031,12 @@ crawler:
 ```yaml
 # config.yml
 crawler:
-  memory_threshold_percent: 85  # Balanced
+  memory_threshold_percent: 85 # Balanced
   pool:
-    idle_ttl_sec: 300  # Moderate cleanup
+    idle_ttl_sec: 300 # Moderate cleanup
   rate_limiter:
     enabled: true
-    base_delay: [2.0, 5.0]  # Prevent rate limiting
+    base_delay: [2.0, 5.0] # Prevent rate limiting
 ```
 
 ---
@@ -1072,11 +1082,13 @@ done
 **Decision:** PERMANENT + HOT_POOL + COLD_POOL
 
 **Rationale:**
+
 - 90% of requests use default config → permanent browser serves most traffic
 - Frequent variants (hot) deserve longer TTL for better reuse
 - Rare configs (cold) should be cleaned aggressively to save memory
 
 **Alternatives Considered:**
+
 - Single pool: Too simple, no optimization for common case
 - LRU cache: Doesn't capture "hot" vs "rare" distinction
 - Per-endpoint pools: Too complex, over-engineering
@@ -1086,11 +1098,13 @@ done
 **Decision:** WebSocket primary, HTTP polling backup
 
 **Rationale:**
+
 - WebSocket provides real-time updates (2s interval)
 - Polling fallback ensures reliability in restricted networks
 - Auto-reconnect handles temporary disconnections
 
 **Alternatives Considered:**
+
 - Polling only: Works but higher latency, more server load
 - WebSocket only: Fails in restricted networks
 - Server-Sent Events: One-way, no client messages
@@ -1100,11 +1114,13 @@ done
 **Decision:** Queue-based worker for Redis operations
 
 **Rationale:**
+
 - Fire-and-forget loses data on failures
 - Queue provides buffering and retry capability
 - Non-blocking keeps request path fast
 
 **Alternatives Considered:**
+
 - Synchronous writes: Blocks request handling
 - Fire-and-forget: Silent failures
 - Batch writes: Complex state management
@@ -1122,6 +1138,7 @@ When modifying the architecture:
 5. **Test under load** using the test suite
 
 **Code Review Checklist:**
+
 - [ ] Race conditions protected with locks
 - [ ] Error handling with proper logging
 - [ ] Graceful degradation on failures

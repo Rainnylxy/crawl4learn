@@ -1,6 +1,6 @@
 # Crawl4AI v0.9.0: Secure-by-Default Docker Server
 
-*June 2026 - 6 min read*
+_June 2026 - 6 min read_
 
 ---
 

@@ -178,8 +178,9 @@ class BrowserConfig:
 - `text_mode=True` disables images, possibly speeding up text-only crawls.
 - `light_mode=True` turns off certain background features for performance.
 
-10. **`extra_args`**:  
-- Additional flags for the underlying browser.  
+10. **`extra_args`**:
+
+- Additional flags for the underlying browser.
 - E.g. `["--disable-extensions"]`.
 
 ### Helper Methods
@@ -290,20 +291,24 @@ class CrawlerRunConfig:
 - If `True`, enables rate limiting for batch processing.
 - Requires `rate_limit_config` to be set.
 
-10. **`memory_threshold_percent`**:  
-- The memory threshold (as a percentage) to monitor.  
+10. **`memory_threshold_percent`**:
+
+- The memory threshold (as a percentage) to monitor.
 - If exceeded, the crawler will pause or slow down.
 
-11. **`check_interval`**:  
-- The interval (in seconds) to check system resources.  
+11. **`check_interval`**:
+
+- The interval (in seconds) to check system resources.
 - Affects how often memory and CPU usage are monitored.
 
-12. **`max_session_permit`**:  
-- The maximum number of concurrent crawl sessions.  
+12. **`max_session_permit`**:
+
+- The maximum number of concurrent crawl sessions.
 - Helps prevent overwhelming the system.
 
-13. **`display_mode`**:  
-- The display mode for progress information (`DETAILED`, `BRIEF`, etc.).  
+13. **`display_mode`**:
+
+- The display mode for progress information (`DETAILED`, `BRIEF`, etc.).
 - Affects how much information is printed during the crawl.
 
 ### Helper Methods
@@ -348,8 +353,9 @@ The `clone()` method:
 - Which LLM provider to use.
 - Possible values are `"ollama/llama3","groq/llama3-70b-8192","groq/llama3-8b-8192", "openai/gpt-4o-mini" ,"openai/gpt-4o","openai/o1-mini","openai/o1-preview","openai/o3-mini","openai/o3-mini-high","anthropic/claude-3-haiku-20240307","anthropic/claude-3-opus-20240229","anthropic/claude-3-sonnet-20240229","anthropic/claude-3-5-sonnet-20240620","gemini/gemini-pro","gemini/gemini-1.5-pro","gemini/gemini-2.0-flash","gemini/gemini-2.0-flash-exp","gemini/gemini-2.0-flash-lite-preview-02-05","deepseek/deepseek-chat"`<br/>_(default: `"openai/gpt-4o-mini"`)_
 
-2. **`api_token`**:  
-- Optional. When not provided explicitly, api_token will be read from environment variables based on provider. For example: If a gemini model is passed as provider then,`"GEMINI_API_KEY"` will be read from environment variables  
+2. **`api_token`**:
+
+- Optional. When not provided explicitly, api_token will be read from environment variables based on provider. For example: If a gemini model is passed as provider then,`"GEMINI_API_KEY"` will be read from environment variables
 - API token of LLM provider <br/> eg: `api_token = "gsk_1ClHGGJ7Lpn4WGybR7vNWGdyb3FY7zXEw3SCiy0BAVM9lL8CQv"` - Environment variable - use with prefix "env:" <br/> eg:`api_token = "env: GROQ_API_KEY"`
 
 3. **`base_url`**:

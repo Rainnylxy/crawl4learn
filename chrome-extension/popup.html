@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        width: 320px;
+        padding: 16px;
+        font-family: -apple-system, "Segoe UI", sans-serif;
+        background: #1e1e2e;
+        color: #cdd6f4;
+      }
+      h1 {
+        font-size: 18px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      h1 span {
+        color: #89b4fa;
+      }
+      .info {
+        font-size: 11px;
+        color: #6c7086;
+        margin-bottom: 12px;
+        word-break: break-all;
+        max-height: 32px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        color: #a6adc8;
+        margin-bottom: 4px;
+      }
+      textarea {
+        width: 100%;
+        height: 64px;
+        padding: 8px;
+        font-size: 12px;
+        background: #313244;
+        color: #cdd6f4;
+        border: 1px solid #45475a;
+        border-radius: 6px;
+        resize: vertical;
+        margin-bottom: 12px;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #89b4fa;
+      }
+      .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e1e2e;
+        background: #89b4fa;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-bottom: 8px;
+      }
+      .btn:hover {
+        background: #74c7ec;
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #status {
+        font-size: 12px;
+        min-height: 18px;
+        text-align: center;
+      }
+      .ok {
+        color: #a6e3a1;
+      }
+      .err {
+        color: #f38ba8;
+      }
+      .loading {
+        color: #f9e2af;
+      }
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .toggle-row label {
+        margin-bottom: 0;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><span>&#9883;</span> Crawl4Learn</h1>
+    <div class="info" id="url"></div>
+
+    <label for="instruction">提取指令（可选）</label>
+    <textarea
+      id="instruction"
+      placeholder="提取核心内容、关键论点和重要数据，用中文输出"
+    ></textarea>
+
+    <div class="toggle-row">
+      <label for="autoSave">提取后直接存入 Obsidian</label>
+      <input type="checkbox" id="autoSave" checked />
+    </div>
+
+    <button class="btn" id="goBtn">提取知识</button>
+    <div id="status"></div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

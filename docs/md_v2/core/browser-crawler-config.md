@@ -113,20 +113,23 @@ class BrowserConfig:
 - If `True`, uses a **persistent** browser profile, storing cookies/local storage across runs.
 - Typically also set `user_data_dir` to point to a folder.
 
-10.⠀**`cookies`** & **`headers`**  
-- If you want to start with specific cookies or add universal HTTP headers to the browser context, set them here.  
+10.⠀**`cookies`** & **`headers`**
+
+- If you want to start with specific cookies or add universal HTTP headers to the browser context, set them here.
 - E.g. `cookies=[{"name": "session", "value": "abc123", "domain": "example.com"}]`.
 
-11.⠀**`user_agent`** & **`user_agent_mode`**  
-- `user_agent`: Custom User-Agent string. If `None`, a default is used.  
+11.⠀**`user_agent`** & **`user_agent_mode`**
+
+- `user_agent`: Custom User-Agent string. If `None`, a default is used.
 - `user_agent_mode`: Set to `"random"` for randomization (helps fight bot detection).
 
 12.⠀**`text_mode`** & **`light_mode`** - `text_mode=True` disables images, possibly speeding up text-only crawls. - `light_mode=True` turns off certain background features for performance.
 
 13.⠀**`avoid_ads`** & **`avoid_css`** - `avoid_ads=True` blocks requests to common ad and tracker domains (Google Analytics, DoubleClick, Facebook, Hotjar, etc.) at the browser context level. Reduces network overhead and memory usage. - `avoid_css=True` blocks loading of CSS files (`.css`, `.less`, `.scss`, `.sass`), useful when you only need text content and want faster, leaner crawls. - Both default to `False` (opt-in). Can be combined with each other and with `text_mode`.
 
-14.⠀**`extra_args`**  
-- Additional flags for the underlying browser.  
+14.⠀**`extra_args`**
+
+- Additional flags for the underlying browser.
 - E.g. `["--disable-extensions"]`.
 
 15.⠀**`enable_stealth`** - If `True`, enables stealth mode using playwright-stealth. - Modifies browser fingerprints to avoid basic bot detection. - Default is `False`. Recommended for sites with bot protection.
@@ -306,14 +309,17 @@ class CrawlerRunConfig:
 
 12.⠀**Page Interaction Parameters**: - **`scan_full_page`**: If `True`, scroll through the entire page to load all content - **`wait_until`**: Condition to wait for when navigating (e.g., "domcontentloaded", "networkidle") - **`page_timeout`**: Timeout in milliseconds for page operations (default: 60000) - **`delay_before_return_html`**: Delay in seconds before retrieving final HTML.
 
-13.⠀**`url_matcher`** & **`match_mode`**:  
+13.⠀**`url_matcher`** & **`match_mode`**:
+
 - Enable URL-specific configurations when used with `arun_many()`. - Set `url_matcher` to patterns (glob, function, or list) to match specific URLs. - Use `match_mode` (OR/AND) to control how multiple patterns combine. - See [URL-Specific Configurations](../api/arun_many.md#url-specific-configurations) for examples.
 
-13.⠀**`verbose`**:  
-- Logs additional runtime details.  
+13.⠀**`verbose`**:
+
+- Logs additional runtime details.
 - Overlaps with the browser's verbosity if also set to `True` in `BrowserConfig`.
 
-14.⠀**`stream`**:  
+14.⠀**`stream`**:
+
 - If `True`, enables streaming mode for `arun_many()` to process URLs as they complete. - Allows handling results incrementally instead of waiting for all URLs to finish.
 
 ### Helper Methods
@@ -358,8 +364,9 @@ The `clone()` method:
 - Which LLM provider to use.
 - Possible values are `"ollama/llama3","groq/llama3-70b-8192","groq/llama3-8b-8192", "openai/gpt-4o-mini" ,"openai/gpt-4o","openai/o1-mini","openai/o1-preview","openai/o3-mini","openai/o3-mini-high","anthropic/claude-3-haiku-20240307","anthropic/claude-3-opus-20240229","anthropic/claude-3-sonnet-20240229","anthropic/claude-3-5-sonnet-20240620","gemini/gemini-pro","gemini/gemini-1.5-pro","gemini/gemini-2.0-flash","gemini/gemini-2.0-flash-exp","gemini/gemini-2.0-flash-lite-preview-02-05","deepseek/deepseek-chat"`<br/>_(default: `"openai/gpt-4o-mini"`)_
 
-2.⠀**`api_token`**:  
-- Optional. When not provided explicitly, api_token will be read from environment variables based on provider. For example: If a gemini model is passed as provider then,`"GEMINI_API_KEY"` will be read from environment variables  
+2.⠀**`api_token`**:
+
+- Optional. When not provided explicitly, api_token will be read from environment variables based on provider. For example: If a gemini model is passed as provider then,`"GEMINI_API_KEY"` will be read from environment variables
 - API token of LLM provider <br/> eg: `api_token = "gsk_1ClHGGJ7Lpn4WGybR7vNWGdyb3FY7zXEw3SCiy0BAVM9lL8CQv"` - Environment variable - use with prefix "env:" <br/> eg:`api_token = "env: GROQ_API_KEY"`
 
 3.⠀**`base_url`**:

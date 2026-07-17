@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Crawl4Learn",
+  "version": "0.1.0",
+  "description": "一键提取网页或学术 PDF 的核心知识，存入 Obsidian 知识库",
+
+  "permissions": ["activeTab"],
+  "host_permissions": ["http://127.0.0.1:8888/*"],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Crawl4Learn — 提取并存入 Obsidian",
+    "default_icon": {
+      "16": "icon-16.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    }
+  },
+
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  }
+}

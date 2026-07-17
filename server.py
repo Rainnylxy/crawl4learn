@@ -221,12 +221,11 @@ async def _crawl_pdf(url: str, llm_strategy: LLMExtractionStrategy):
     finally:
         os.unlink(tmp_path)
 
-    title = url.rsplit("/", 1)[-1].rsplit(".", 1)[0]
     return CrawlResultProxy(
         success=result.success,
         error_message=result.error_message,
         markdown=pdf_text,
-        metadata={"title": title},
+        metadata={},
         extracted_content=result.extracted_content,
     )
 
